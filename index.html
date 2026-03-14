@@ -5,302 +5,343 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Hero's Journey">
-<title>The Hero's Journey</title>
+<meta name="apple-mobile-web-app-title" content="Grand Line">
+<title>Grand Line Training Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Cabin:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { height: 100%; }
-  body { height: 100%; background: #f5ede0; font-family: 'Crimson Text', Georgia, serif; color: #3b1a0a; overflow: hidden; }
+  body { height: 100%; background: #fdf6e3; font-family: 'Lora', Georgia, serif; color: #1a0a00; overflow: hidden; }
   #app { height: 100%; display: flex; flex-direction: column; max-width: 430px; margin: 0 auto; position: relative; }
   ::-webkit-scrollbar { width: 3px; }
-  ::-webkit-scrollbar-track { background: #e8d5b7; }
-  ::-webkit-scrollbar-thumb { background: #8b4513; border-radius: 2px; }
+  ::-webkit-scrollbar-track { background: #e8d5a0; }
+  ::-webkit-scrollbar-thumb { background: #c0392b; border-radius: 2px; }
   input, textarea, button { font-family: inherit; -webkit-appearance: none; border-radius: 0; }
   button { cursor: pointer; border: none; background: none; }
   button:active { opacity: 0.75; }
   input:focus, textarea:focus { outline: none; }
-  @keyframes fadeIn    { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes slideUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes banterIn  { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
-  @keyframes encPop    { from { opacity:0; transform:scale(0.93); } to { opacity:1; transform:scale(1); } }
-  @keyframes pulse     { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-  @keyframes celeb     { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
-  .fade-in  { animation: fadeIn  0.3s ease forwards; }
-  .slide-up { animation: slideUp 0.35s ease forwards; }
+
+  /* Palette:
+     Navy:  #0a1628
+     Red:   #c0392b
+     Gold:  #d4a017
+     Cream: #fdf6e3
+     Tan:   #e8d5a0
+     Ink:   #1a0a00
+  */
+
+  @keyframes fadeIn   { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideUp  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes banterIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
+  @keyframes encPop   { from { opacity:0; transform:scale(0.93); } to { opacity:1; transform:scale(1); } }
+  @keyframes pulse    { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  @keyframes celeb    { 0%,100% { transform:scale(1) rotate(0deg); } 25% { transform:scale(1.05) rotate(-1deg); } 75% { transform:scale(1.05) rotate(1deg); } }
+  @keyframes waveBob  { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
+
+  .fade-in   { animation: fadeIn  0.3s ease forwards; }
+  .slide-up  { animation: slideUp 0.35s ease forwards; }
   .banter-in { animation: banterIn 0.3s ease forwards; }
-  .enc-pop  { animation: encPop  0.25s ease forwards; }
-  .pulsing  { animation: pulse 1.2s ease infinite; }
-  .celebrating { animation: celeb 0.8s ease infinite; }
+  .enc-pop   { animation: encPop  0.25s ease forwards; }
+  .pulsing   { animation: pulse 1.2s ease infinite; }
+  .celebrating { animation: celeb 0.7s ease infinite; }
+  .wave-bob  { animation: waveBob 2s ease infinite; }
 
   /* ── Layout ── */
-  .view { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
-  .navbar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(255,251,244,0.96); backdrop-filter: blur(12px); border-top: 1.5px solid #c4a97d; display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom); }
-  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 14px; border-top: 3px solid transparent; transition: color 0.2s, border-color 0.2s; color: #c4a97d; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.5px; }
-  .nav-btn.active { color: #8b4513; border-top-color: #8b4513; }
-  .nav-btn .nav-icon { font-size: 22px; margin-bottom: 1px; }
-  .nav-api { width: 52px; flex-shrink: 0; position: relative; }
-  .api-dot { position: absolute; top: 9px; right: 10px; width: 7px; height: 7px; border-radius: 50%; background: #22c55e; border: 1.5px solid #fffbf4; }
+  .view { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; padding-bottom:85px; }
+  .navbar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:rgba(10,22,40,0.97); backdrop-filter:blur(12px); border-top:2px solid #d4a017; display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
+  .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; padding:10px 0 14px; border-top:3px solid transparent; transition:color 0.2s, border-color 0.2s; color:#4a6080; font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; }
+  .nav-btn.active { color:#d4a017; border-top-color:#d4a017; }
+  .nav-btn .nav-icon { font-size:22px; margin-bottom:2px; }
+  .nav-api { width:52px; flex-shrink:0; position:relative; }
+  .api-dot { position:absolute; top:9px; right:10px; width:7px; height:7px; border-radius:50%; background:#22c55e; border:1.5px solid #0a1628; }
 
-  /* ── Cards ── */
-  .card { margin: 14px 14px 0; background: #fffbf4; border: 1px solid rgba(196,169,125,0.4); border-radius: 14px; padding: 16px; box-shadow: 0 2px 8px rgba(92,45,14,0.06); }
+  /* ── Wanted poster card ── */
+  .card { margin:14px 14px 0; background:#fdf6e3; border:2px solid #1a0a00; border-radius:4px; padding:16px; box-shadow:3px 3px 0 #1a0a0033, inset 0 0 0 1px #d4a01744; }
+  .card-inner { border:1px solid #d4a017; border-radius:2px; padding:14px; }
 
-  /* ── Header ── */
-  .page-header { background: linear-gradient(170deg, #2d0f02 0%, #5c2d0e 55%, #8b4513 100%); padding: calc(env(safe-area-inset-top) + 44px) 20px 20px; text-align: center; }
-  .header-deco { font-family: 'Cinzel', serif; font-size: 10px; color: #c4a97d; letter-spacing: 4px; margin-bottom: 8px; }
-  .hero-name { font-family: 'Cinzel', serif; font-size: 32px; font-weight: 900; color: #fef3c7; letter-spacing: -0.5px; line-height: 1.05; }
-  .hero-sub { font-family: 'Crimson Text', serif; font-style: italic; font-size: 15px; color: #c4a97d; margin-top: 4px; margin-bottom: 14px; }
-  .xp-row { display: flex; align-items: center; gap: 10px; }
-  .xp-label { font-family: 'Cinzel', serif; font-size: 10px; color: #c4a97d; white-space: nowrap; }
-  .xp-track { flex: 1; height: 5px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; }
-  .xp-fill  { height: 100%; background: linear-gradient(90deg,#c4a97d,#fef3c7); border-radius: 3px; transition: width 1s ease; }
+  /* ── Page header ── */
+  .page-header { background:linear-gradient(170deg, #0a1628 0%, #1a2d4a 60%, #0a1628 100%); padding:calc(env(safe-area-inset-top) + 44px) 20px 22px; text-align:center; border-bottom:3px solid #d4a017; position:relative; overflow:hidden; }
+  .header-waves { position:absolute; bottom:0; left:0; right:0; height:8px; background:repeating-linear-gradient(90deg,#d4a017 0,#d4a017 8px,#0a1628 8px,#0a1628 16px); }
+  .wanted-label { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a017; letter-spacing:6px; text-transform:uppercase; margin-bottom:6px; }
+  .hero-name { font-family:'Pirata One',cursive; font-size:42px; color:#fdf6e3; line-height:1; text-shadow:2px 2px 0 #c0392b, 4px 4px 0 #1a0a0066; }
+  .hero-sub  { font-family:'Cabin',sans-serif; font-size:12px; font-weight:600; color:#d4a017; letter-spacing:2px; text-transform:uppercase; margin-top:6px; margin-bottom:14px; }
+  .bounty-row { background:#d4a017; border-radius:3px; padding:5px 12px; display:inline-block; margin-bottom:14px; }
+  .bounty-val { font-family:'Pirata One',cursive; font-size:22px; color:#0a1628; }
+  .bounty-lbl { font-family:'Cabin',sans-serif; font-size:9px; font-weight:700; color:#0a1628; letter-spacing:2px; }
+  .xp-row   { display:flex; align-items:center; gap:10px; }
+  .xp-label { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a01799; }
+  .xp-track { flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:1px; overflow:hidden; border:1px solid #d4a01744; }
+  .xp-fill  { height:100%; background:linear-gradient(90deg,#c0392b,#d4a017); transition:width 1s ease; }
 
-  /* ── Page titles ── */
-  .page-title-area { padding: calc(env(safe-area-inset-top) + 52px) 16px 16px; }
-  .page-title { font-family: 'Cinzel', serif; font-weight: 900; font-size: 26px; color: #3b1a0a; }
-  .page-sub   { font-family: 'Crimson Text', serif; font-style: italic; font-size: 14px; color: #92400e; margin-top: 4px; }
+  /* ── Section headers ── */
+  .section-head { font-family:'Cabin',sans-serif; font-weight:700; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#c0392b; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .section-head::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,#c0392b44,transparent); }
 
-  /* ── Sub-header bar (log/quest/pickparty) ── */
-  .sub-header { background: #3b1a0a; padding: calc(env(safe-area-inset-top) + 46px) 16px 14px; display: flex; align-items: center; justify-content: space-between; }
-  .sub-header-title { font-family: 'Cinzel', serif; font-weight: 700; color: #fef3c7; font-size: 15px; flex: 1; text-align: center; }
-  .back-btn { font-family: 'Cinzel', serif; font-size: 13px; color: #c4a97d; padding: 4px 0; min-width: 60px; }
+  /* ── Page title areas ── */
+  .page-title-area { padding:calc(env(safe-area-inset-top) + 52px) 16px 16px; border-bottom:2px solid #d4a017; background:#0a1628; }
+  .page-title { font-family:'Pirata One',cursive; font-size:32px; color:#fdf6e3; }
+  .page-sub   { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#d4a01799; margin-top:3px; }
+
+  /* ── Sub-header ── */
+  .sub-header { background:#0a1628; padding:calc(env(safe-area-inset-top) + 46px) 16px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #d4a017; }
+  .sub-header-title { font-family:'Pirata One',cursive; color:#fdf6e3; font-size:20px; flex:1; text-align:center; }
+  .back-btn { font-family:'Cabin',sans-serif; font-size:12px; font-weight:700; color:#d4a017; padding:4px 0; min-width:60px; letter-spacing:0.5px; }
 
   /* ── Week grid ── */
-  .week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-bottom: 12px; }
-  .day-pip { border-radius: 8px; padding: 5px 0; text-align: center; }
-  .day-label { font-size: 9px; font-family: 'Cinzel', serif; font-weight: 600; }
-  .day-mark  { font-size: 15px; }
-  .progress-track { height: 5px; background: #e8d5b7; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
-  .progress-fill  { height: 100%; background: linear-gradient(90deg,#8b4513,#166534); border-radius: 3px; transition: width 1s ease; }
-  .progress-text  { font-family: 'Crimson Text', serif; font-style: italic; font-size: 12px; color: #92400e; text-align: center; }
+  .week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:12px; }
+  .day-pip { border-radius:3px; padding:5px 0; text-align:center; border:1px solid; }
+  .day-label { font-size:9px; font-family:'Cabin',sans-serif; font-weight:700; letter-spacing:0.5px; }
+  .day-mark  { font-size:15px; }
+  .progress-track { height:6px; background:#e8d5a0; border-radius:1px; overflow:hidden; margin-bottom:6px; border:1px solid #d4a01766; }
+  .progress-fill  { height:100%; background:linear-gradient(90deg,#c0392b,#d4a017); transition:width 1s ease; }
+  .progress-text  { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#c0392b; text-align:center; }
 
-  /* ── Contract card ── */
-  .contract-card { background: #fffbf4; border: 1px solid #c4a97d; border-radius: 14px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(92,45,14,0.06); transition: transform 0.15s, box-shadow 0.15s; }
-  .contract-top { display: flex; align-items: flex-start; gap: 12px; padding: 14px 14px 10px; }
-  .contract-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px; color: #3b1a0a; line-height: 1.3; }
-  .contract-loc   { font-family: 'Crimson Text', serif; font-style: italic; font-size: 12px; color: #92400e; margin-top: 2px; }
-  .tag { font-family: 'Cinzel', serif; font-size: 11px; border-radius: 20px; padding: 1px 8px; display: inline-block; }
-  .tag-xp   { color: #8b4513; background: #fef3c7; border: 1px solid #c4a97d; }
-  .tag-type { color: #166534; background: #dcfce7; border: 1px solid #86efac; }
-  .tag-diff { border: 1px solid; font-size: 10px; padding: 1px 7px; }
-  .contract-body { padding: 0 14px 14px; border-top: 1px solid rgba(196,169,125,0.2); animation: fadeIn 0.2s ease; }
-  .flavor-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 13px; color: #92400e; margin: 12px 0 8px; padding-left: 10px; border-left: 3px solid #c4a97d; line-height: 1.5; }
-  .contract-desc { font-family: 'Crimson Text', serif; font-size: 14px; color: #3b1a0a; line-height: 1.55; margin-bottom: 10px; }
-  .criteria-box { background: #fef3c7; border: 1px solid #d4aa60; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
-  .criteria-h { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; color: #8b4513; margin-bottom: 4px; }
-  .criteria-t { font-family: 'Crimson Text', serif; font-size: 13px; color: #5c2d0e; line-height: 1.5; }
-  .trait-pill { font-family: 'Crimson Text', serif; font-size: 11px; background: #e8d5b7; color: #5c2d0e; border: 1px solid #c4a97d; border-radius: 20px; padding: 1px 9px; display: inline-block; margin: 2px; }
-  .accept-btn { width: 100%; padding: 13px; background: linear-gradient(135deg,#8b4513,#5c2d0e); color: #fef3c7; border-radius: 10px; font-family: 'Cinzel', serif; font-weight: 700; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 3px 12px rgba(92,45,14,0.3); }
-  .done-tag { text-align: center; font-family: 'Cinzel', serif; font-size: 13px; color: #166534; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; padding: 8px; }
-  .chevron { color: #92400e; font-size: 14px; flex-shrink: 0; margin-left: 4px; }
+  /* ── Mission card (contract) ── */
+  .mission-card { background:#fdf6e3; border:2px solid #1a0a00; border-radius:3px; margin-bottom:12px; overflow:hidden; box-shadow:2px 2px 0 #1a0a0022; transition:transform 0.15s; }
+  .mission-top  { display:flex; align-items:flex-start; gap:12px; padding:14px 14px 10px; }
+  .mission-title { font-family:'Pirata One',cursive; font-size:17px; color:#1a0a00; line-height:1.2; }
+  .mission-loc   { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#c0392b; margin-top:2px; }
+  .tag { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; border-radius:2px; padding:1px 8px; display:inline-block; letter-spacing:0.5px; }
+  .tag-berry { color:#0a1628; background:#d4a017; border:1px solid #0a162833; }
+  .tag-type  { color:#fdf6e3; background:#c0392b; border:1px solid #0a162833; }
+  .tag-diff  { border:1.5px solid; font-size:10px; padding:1px 7px; font-weight:700; }
+  .mission-body { padding:0 14px 14px; border-top:1px dashed #d4a017; animation:fadeIn 0.2s ease; }
+  .flavor-text  { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#c0392b; margin:12px 0 8px; padding-left:10px; border-left:3px solid #d4a017; line-height:1.5; }
+  .mission-desc { font-family:'Lora',serif; font-size:14px; color:#1a0a00; line-height:1.6; margin-bottom:10px; }
+  .criteria-box { background:#fff9e6; border:1px solid #d4a017; border-radius:3px; padding:10px 12px; margin-bottom:10px; }
+  .criteria-h   { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#c0392b; letter-spacing:2px; margin-bottom:4px; text-transform:uppercase; }
+  .criteria-t   { font-family:'Lora',serif; font-size:13px; color:#1a0a00; line-height:1.5; }
+  .trait-pill   { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; background:#e8d5a0; color:#1a0a00; border:1px solid #d4a017; border-radius:2px; padding:1px 8px; display:inline-block; margin:2px; }
+  .accept-btn   { width:100%; padding:14px; background:#c0392b; color:#fdf6e3; border-radius:3px; font-family:'Pirata One',cursive; font-size:18px; letter-spacing:1px; box-shadow:3px 3px 0 #1a0a00; border:2px solid #1a0a00; }
+  .done-tag     { text-align:center; font-family:'Cabin',sans-serif; font-size:12px; font-weight:700; color:#166534; background:#dcfce7; border:1px solid #86efac; border-radius:3px; padding:8px; letter-spacing:1px; text-transform:uppercase; }
+  .chevron { color:#d4a017; font-size:14px; flex-shrink:0; margin-left:4px; }
 
   /* ── Injured banner ── */
-  .injured-card { margin: 12px 14px 0; background: #fff8f8; border: 1px solid #fca5a5; border-radius: 14px; padding: 14px; }
-  .injured-h    { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; color: #991b1b; margin-bottom: 10px; }
-  .injured-row  { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .injured-card { margin:12px 14px 0; background:#fff5f5; border:2px solid #c0392b; border-radius:3px; padding:14px; }
+  .injured-h    { font-family:'Cabin',sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#c0392b; margin-bottom:10px; }
 
   /* ── Stats ── */
-  .stats-row { display: flex; gap: 10px; margin: 14px 14px 0; }
-  .stat-box  { flex: 1; background: #fffbf4; border: 1px solid rgba(196,169,125,0.35); border-radius: 12px; padding: 12px 8px; text-align: center; }
-  .stat-val  { font-family: 'Cinzel', serif; font-weight: 900; font-size: 24px; color: #8b4513; }
-  .stat-lbl  { font-family: 'Crimson Text', serif; font-size: 11px; color: #92400e; margin-top: 2px; }
+  .stats-row { display:flex; gap:10px; margin:14px 14px 0; }
+  .stat-box  { flex:1; background:#fdf6e3; border:2px solid #1a0a00; border-radius:3px; padding:12px 8px; text-align:center; box-shadow:2px 2px 0 #1a0a0022; }
+  .stat-val  { font-family:'Pirata One',cursive; font-size:26px; color:#c0392b; }
+  .stat-lbl  { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a017; letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
 
   /* ── Buttons ── */
-  .primary-btn { width: 100%; padding: 15px; background: linear-gradient(135deg,#8b4513,#5c2d0e); color: #fef3c7; border-radius: 12px; font-family: 'Cinzel', serif; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(92,45,14,0.3); }
-  .primary-btn:disabled { opacity: 0.4; }
-  .ghost-btn  { width: 100%; padding: 11px; background: none; border: 1px solid #c4a97d; border-radius: 10px; font-family: 'Cinzel', serif; font-size: 13px; color: #92400e; }
-  .option-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; margin-bottom: 10px; border: 1.5px solid #c4a97d; background: #fffbf4; width: 100%; text-align: left; transition: background 0.15s, border-color 0.15s; }
-  .option-row.selected { border-color: #8b4513; background: rgba(139,69,19,0.07); }
-  .opt-label { font-family: 'Cinzel', serif; font-weight: 700; color: #3b1a0a; font-size: 15px; }
-  .opt-sub   { font-family: 'Crimson Text', serif; font-style: italic; font-size: 12px; color: #92400e; }
+  .primary-btn { width:100%; padding:15px; background:#c0392b; color:#fdf6e3; border-radius:3px; font-family:'Pirata One',cursive; font-size:20px; letter-spacing:1px; box-shadow:3px 3px 0 #1a0a00; border:2px solid #1a0a00; }
+  .primary-btn:disabled { opacity:0.4; box-shadow:none; }
+  .ghost-btn  { width:100%; padding:11px; background:none; border:2px solid #d4a017; border-radius:3px; font-family:'Cabin',sans-serif; font-weight:700; font-size:13px; color:#1a0a00; letter-spacing:0.5px; }
+  .option-row { display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:3px; margin-bottom:10px; border:2px solid #d4a01766; background:#fdf6e3; width:100%; text-align:left; transition:border-color 0.15s, background 0.15s; }
+  .option-row.selected { border-color:#c0392b; background:#fff0ee; }
+  .opt-label { font-family:'Cabin',sans-serif; font-weight:700; color:#1a0a00; font-size:15px; }
+  .opt-sub   { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#c0392b; }
 
-  /* ── Companion grid ── */
-  .comp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
-  .comp-btn  { border-radius: 12px; padding: 12px 6px; display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; border: 2px solid #c4a97d; background: #fffbf4; transition: all 0.15s; }
-  .comp-btn.selected { border-color: var(--cc); background: rgba(var(--cc-rgb),0.1); }
-  .comp-btn.matched  { border-color: rgba(var(--cc-rgb),0.5); }
-  .comp-check { position: absolute; top: 3px; right: 6px; font-size: 13px; font-weight: 900; }
-  .comp-name  { font-family: 'Cinzel', serif; font-size: 9px; font-weight: 700; color: #5c2d0e; line-height: 1.2; text-align: center; }
-  .comp-match { font-size: 9px; }
+  /* ── Crew grid ── */
+  .crew-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+  .crew-btn  { border-radius:3px; padding:12px 6px; display:flex; flex-direction:column; align-items:center; gap:3px; position:relative; border:2px solid #d4a01766; background:#fdf6e3; transition:all 0.15s; }
+  .crew-btn.selected { border-color:var(--cc); background:var(--cc)18; }
+  .crew-btn.matched  { border-color:var(--cc)99; background:var(--cc)09; }
+  .crew-check { position:absolute; top:3px; right:6px; font-size:13px; font-weight:900; }
+  .crew-name  { font-family:'Cabin',sans-serif; font-size:9px; font-weight:700; color:#1a0a00; line-height:1.2; text-align:center; letter-spacing:0.3px; }
+  .crew-role  { font-size:9px; font-family:'Lora',serif; font-style:italic; color:#c0392b; }
+  .crew-match { font-size:9px; }
 
-  /* ── Party / companion detail ── */
-  .comp-row  { margin: 0 14px 12px; border-radius: 14px; padding: 14px; display: flex; gap: 14px; border: 1px solid rgba(196,169,125,0.35); background: #fffbf4; }
-  .comp-icon { width: 54px; height: 54px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 28px; }
-  .hp-track  { height: 5px; background: #e8d5b7; border-radius: 3px; overflow: hidden; margin: 4px 0 6px; }
-  .hp-fill   { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  /* ── Crew detail rows ── */
+  .crew-row  { margin:0 14px 12px; border-radius:3px; padding:14px; display:flex; gap:14px; border:2px solid #1a0a0022; background:#fdf6e3; box-shadow:2px 2px 0 #1a0a0011; }
+  .crew-icon-box { width:54px; height:54px; border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:30px; border:2px solid; }
+  .hp-track  { height:5px; background:#e8d5a0; border-radius:1px; overflow:hidden; margin:4px 0 6px; }
+  .hp-fill   { height:100%; border-radius:1px; transition:width 0.8s ease; }
 
   /* ── Quest header ── */
-  .quest-header { background: linear-gradient(170deg,#2d0f02,#5c2d0e); padding: calc(env(safe-area-inset-top) + 44px) 14px 12px; flex-shrink: 0; }
-  .quest-title  { font-family: 'Cinzel', serif; font-weight: 900; color: #fef3c7; font-size: 17px; line-height: 1.2; }
-  .quest-loc    { font-family: 'Crimson Text', serif; font-style: italic; color: #c4a97d; font-size: 12px; margin-top: 2px; }
-  .quest-timer  { font-family: 'Cinzel', serif; color: #c4a97d; font-size: 11px; }
-  .quest-bonus  { font-family: 'Cinzel', serif; color: #fb923c; font-size: 13px; font-weight: 700; margin-top: 2px; }
-  .milestone-bar { display: flex; gap: 4px; margin-top: 10px; }
-  .ms-pip { flex: 1; height: 4px; border-radius: 2px; transition: background 0.4s; }
+  .quest-header { background:linear-gradient(170deg,#0a1628,#1a2d4a); padding:calc(env(safe-area-inset-top) + 44px) 14px 12px; flex-shrink:0; border-bottom:3px solid #d4a017; }
+  .quest-title  { font-family:'Pirata One',cursive; color:#fdf6e3; font-size:20px; line-height:1.2; }
+  .quest-loc    { font-family:'Lora',serif; font-style:italic; color:#d4a01799; font-size:12px; margin-top:2px; }
+  .quest-timer  { font-family:'Cabin',sans-serif; font-weight:700; color:#d4a017; font-size:11px; letter-spacing:1px; }
+  .quest-bonus  { font-family:'Pirata One',cursive; color:#c0392b; font-size:14px; margin-top:2px; }
+  .milestone-bar { display:flex; gap:4px; margin-top:10px; }
+  .ms-pip { flex:1; height:5px; border-radius:1px; transition:background 0.4s; }
 
   /* ── Quest feed ── */
-  .quest-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-  .quest-feed { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px 14px 0; }
-  .story-card    { background: #fffbf4; border: 1px solid #c4a97d; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .milestone-card { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-  .ms-label { font-family: 'Cinzel', serif; font-weight: 700; color: #166534; font-size: 11px; margin-bottom: 5px; }
-  .ms-story { font-family: 'Crimson Text', serif; font-size: 15px; color: #3b1a0a; line-height: 1.6; }
-  .banter-msg { background: #fffbf4; border: 1px solid rgba(196,169,125,0.3); border-left: 4px solid; border-radius: 0 10px 10px 0; padding: 12px; margin-bottom: 10px; }
-  .banter-who { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-  .banter-name { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; }
-  .banter-text { font-family: 'Crimson Text', serif; font-style: italic; font-size: 14px; color: #3b1a0a; line-height: 1.55; }
-  .player-msg  { background: #fef3c7; border: 1px solid #c4a97d; border-radius: 10px 10px 0 10px; padding: 10px 14px; margin-bottom: 10px; }
-  .player-who  { font-family: 'Cinzel', serif; font-size: 10px; color: #5c2d0e; font-weight: 700; margin-bottom: 3px; }
-  .enc-result  { background: #fef3c7; border: 1px solid #c4a97d; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-  .enc-res-h   { font-family: 'Cinzel', serif; font-size: 10px; color: #8b4513; margin-bottom: 3px; }
-  .sys-msg     { font-family: 'Crimson Text', serif; font-style: italic; font-size: 12px; color: rgba(146,64,14,0.6); text-align: center; padding: 6px; }
+  .quest-view { display:flex; flex-direction:column; height:100%; overflow:hidden; }
+  .quest-feed { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:14px 14px 0; }
+
+  .story-card    { background:#fdf6e3; border:2px solid #1a0a00; border-radius:3px; padding:16px; margin-bottom:12px; box-shadow:2px 2px 0 #1a0a0022; }
+  .milestone-card { background:#fff9e6; border:2px solid #d4a017; border-radius:3px; padding:14px; margin-bottom:10px; }
+  .ms-label { font-family:'Cabin',sans-serif; font-weight:700; color:#d4a017; font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+  .ms-story { font-family:'Lora',serif; font-size:15px; color:#1a0a00; line-height:1.6; }
+
+  .banter-msg { background:#fdf6e3; border:1px solid #d4a01744; border-left:4px solid; border-radius:0 6px 6px 0; padding:12px; margin-bottom:10px; }
+  .banter-who { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+  .banter-name { font-family:'Cabin',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+  .banter-text { font-family:'Lora',serif; font-style:italic; font-size:14px; color:#1a0a00; line-height:1.55; }
+
+  .player-msg  { background:#fff9e6; border:2px solid #d4a017; border-radius:6px 6px 0 6px; padding:10px 14px; margin-bottom:10px; }
+  .player-who  { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#c0392b; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+
+  .enc-result  { background:#f0f9ff; border:2px solid #0369a1; border-radius:3px; padding:12px; margin-bottom:10px; }
+  .enc-res-h   { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#0369a1; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+  .sys-msg     { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#d4a017; text-align:center; padding:6px; }
 
   /* ── Quest footer ── */
-  .quest-footer { flex-shrink: 0; background: rgba(255,251,244,0.96); backdrop-filter: blur(10px); border-top: 1.5px solid #c4a97d; padding: 10px 14px calc(env(safe-area-inset-bottom) + 10px); }
-  .chat-row     { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-  .chat-input   { flex: 1; padding: 11px 14px; background: #fffbf4; border: 1.5px solid #c4a97d; border-radius: 24px; font-family: 'Crimson Text', serif; font-size: 15px; color: #3b1a0a; }
-  .chat-input:focus { border-color: #8b4513; }
-  .send-btn     { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#8b4513,#5c2d0e); color: #fef3c7; font-size: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-  .send-btn:disabled { opacity: 0.35; }
-  .ms-action    { display: flex; gap: 8px; }
-  .ms-cue       { font-family: 'Crimson Text', serif; font-style: italic; font-size: 13px; color: #8b4513; text-align: center; margin-bottom: 5px; }
-  .ms-advance   { flex: 1; padding: 12px; background: linear-gradient(135deg,#8b4513,#5c2d0e); color: #fef3c7; border-radius: 10px; font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; }
-  .quit-btn     { padding: 0 14px; background: none; border: 1px solid #c4a97d; border-radius: 10px; font-family: 'Cinzel', serif; font-size: 12px; color: #92400e; }
+  .quest-footer { flex-shrink:0; background:rgba(253,246,227,0.97); backdrop-filter:blur(10px); border-top:2px solid #d4a017; padding:10px 14px calc(env(safe-area-inset-bottom) + 10px); }
+  .chat-row     { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+  .chat-input   { flex:1; padding:11px 14px; background:#fdf6e3; border:2px solid #d4a01766; border-radius:24px; font-family:'Lora',serif; font-size:15px; color:#1a0a00; }
+  .chat-input:focus { border-color:#c0392b; }
+  .send-btn     { width:42px; height:42px; border-radius:50%; background:#c0392b; color:#fdf6e3; font-size:16px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:2px solid #1a0a00; }
+  .send-btn:disabled { opacity:0.35; }
+  .ms-action    { display:flex; gap:8px; }
+  .ms-cue       { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#c0392b; text-align:center; margin-bottom:5px; }
+  .ms-advance   { flex:1; padding:12px; background:#c0392b; color:#fdf6e3; border-radius:3px; font-family:'Pirata One',cursive; font-size:16px; border:2px solid #1a0a00; box-shadow:2px 2px 0 #1a0a00; }
+  .quit-btn     { padding:0 14px; background:none; border:2px solid #d4a01766; border-radius:3px; font-family:'Cabin',sans-serif; font-weight:700; font-size:11px; color:#1a0a00; letter-spacing:0.5px; }
 
   /* ── Encounter overlay ── */
-  .enc-overlay { position: fixed; inset: 0; background: rgba(59,26,10,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-  .enc-card    { background: #fffbf4; border: 2px solid #c4a97d; border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; }
-  .enc-title   { font-family: 'Cinzel', serif; font-weight: 700; color: #3b1a0a; font-size: 16px; text-align: center; margin-bottom: 8px; }
-  .enc-text    { font-family: 'IM Fell English', serif; font-style: italic; font-size: 13px; color: #92400e; margin: 8px 0; padding-left: 10px; border-left: 3px solid #c4a97d; line-height: 1.5; }
-  .choice-btn  { width: 100%; padding: 12px 16px; background: #f5ede0; border: 1.5px solid #c4a97d; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-  .choice-label { font-family: 'Cinzel', serif; font-weight: 700; color: #3b1a0a; font-size: 13px; }
-  .choice-xp    { font-family: 'Cinzel', serif; color: #8b4513; font-size: 11px; }
+  .enc-overlay { position:fixed; inset:0; background:rgba(10,22,40,0.85); display:flex; align-items:center; justify-content:center; z-index:200; padding:20px; }
+  .enc-card    { background:#fdf6e3; border:3px solid #d4a017; border-radius:4px; padding:20px; width:100%; max-width:380px; box-shadow:4px 4px 0 #1a0a00; }
+  .enc-title   { font-family:'Pirata One',cursive; color:#1a0a00; font-size:20px; text-align:center; margin-bottom:8px; }
+  .enc-text    { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#c0392b; margin:8px 0; padding-left:10px; border-left:3px solid #d4a017; line-height:1.5; }
+  .choice-btn  { width:100%; padding:12px 16px; background:#fdf6e3; border:2px solid #1a0a00; border-radius:3px; display:flex; justify-content:space-between; align-items:center; margin-top:8px; transition:background 0.15s; }
+  .choice-btn:active { background:#fff9e6; }
+  .choice-label { font-family:'Cabin',sans-serif; font-weight:700; color:#1a0a00; font-size:13px; }
+  .choice-berry { font-family:'Pirata One',cursive; color:#d4a017; font-size:13px; }
 
   /* ── Journal ── */
-  .journal-entry { margin: 0 14px 12px; background: #fffbf4; border: 1px solid rgba(196,169,125,0.35); border-radius: 12px; padding: 14px; }
-  .journal-note  { font-family: 'IM Fell English', serif; font-style: italic; font-size: 13px; color: #5c2d0e; border-left: 3px solid #c4a97d; padding-left: 10px; margin-top: 6px; }
-  .empty-state   { text-align: center; font-family: 'IM Fell English', serif; font-style: italic; font-size: 16px; color: #92400e; padding: 60px 20px; line-height: 1.8; }
+  .journal-entry { margin:0 14px 12px; background:#fdf6e3; border:2px solid #1a0a0022; border-radius:3px; padding:14px; box-shadow:2px 2px 0 #1a0a0011; }
+  .journal-note  { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#c0392b; border-left:3px solid #d4a017; padding-left:10px; margin-top:6px; }
+  .empty-state   { text-align:center; font-family:'Lora',serif; font-style:italic; font-size:16px; color:#d4a017; padding:60px 20px; line-height:1.9; }
 
   /* ── Celebration ── */
-  .celeb-screen { position: fixed; inset: 0; background: #fef3c7; display: flex; align-items: center; justify-content: center; z-index: 999; text-align: center; padding: 20px; }
-  .celeb-icon   { font-size: 80px; }
-  .celeb-title  { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; color: #8b4513; margin-top: 16px; }
-  .celeb-sub    { font-family: 'IM Fell English', serif; font-size: 18px; color: #92400e; margin-top: 8px; font-style: italic; }
+  .celeb-screen { position:fixed; inset:0; background:radial-gradient(circle at 50% 40%,#1a2d4a,#0a1628); display:flex; align-items:center; justify-content:center; z-index:999; text-align:center; padding:20px; }
+  .celeb-icon   { font-size:80px; }
+  .celeb-title  { font-family:'Pirata One',cursive; font-size:36px; color:#d4a017; margin-top:16px; text-shadow:3px 3px 0 #c0392b; }
+  .celeb-sub    { font-family:'Lora',serif; font-size:16px; color:#fdf6e399; margin-top:8px; font-style:italic; }
 
   /* ── API setup ── */
-  .api-setup { padding: calc(env(safe-area-inset-top) + 60px) 20px 40px; }
-  .api-setup h1 { font-family: 'Cinzel', serif; font-weight: 900; font-size: 22px; color: #3b1a0a; margin-bottom: 6px; }
-  .api-setup p  { font-family: 'Crimson Text', serif; font-size: 15px; color: #5c2d0e; line-height: 1.6; margin-bottom: 16px; }
-  .api-hint  { background: #fef3c7; border: 1px solid #c4a97d; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; }
-  .api-hint-h { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; color: #8b4513; margin-bottom: 8px; letter-spacing: 1px; }
-  .api-hint p { font-family: 'Crimson Text', serif; font-size: 14px; color: #5c2d0e; line-height: 1.7; margin: 0; }
-  .api-label { font-family: 'Cinzel', serif; font-size: 11px; color: #8b4513; margin-bottom: 6px; letter-spacing: 1px; display: block; }
-  .api-input { width: 100%; padding: 14px; background: #fffbf4; border: 1.5px solid #c4a97d; border-radius: 10px; font-family: monospace; font-size: 14px; color: #3b1a0a; margin-bottom: 16px; }
-  .api-input:focus { border-color: #8b4513; }
-  .hint-box  { background: #fef3c7; border: 1px solid #c4a97d; border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; }
-  .xp-estimate { background: #fef3c7; border: 1px solid #c4a97d; border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .badge { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; border: 1px solid; border-radius: 20px; padding: 1px 10px; }
+  .api-setup { padding:calc(env(safe-area-inset-top) + 60px) 20px 40px; }
+  .api-setup h1 { font-family:'Pirata One',cursive; font-size:28px; color:#1a0a00; margin-bottom:6px; }
+  .api-setup p  { font-family:'Lora',serif; font-size:15px; color:#1a0a00; line-height:1.6; margin-bottom:16px; }
+  .api-hint  { background:#fff9e6; border:2px solid #d4a017; border-radius:3px; padding:14px 16px; margin-bottom:20px; }
+  .api-hint-h { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#c0392b; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .api-hint p { font-family:'Lora',serif; font-size:14px; color:#1a0a00; line-height:1.7; margin:0; white-space:pre-line; }
+  .api-label  { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#c0392b; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; display:block; }
+  .api-input  { width:100%; padding:14px; background:#fdf6e3; border:2px solid #d4a01766; border-radius:3px; font-family:monospace; font-size:14px; color:#1a0a00; margin-bottom:16px; }
+  .api-input:focus { border-color:#c0392b; }
+  .hint-box   { background:#fff9e6; border:1px solid #d4a017; border-radius:3px; padding:10px 12px; margin-bottom:14px; }
+  .xp-estimate { background:#fff9e6; border:2px solid #d4a017; border-radius:3px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .badge { font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; border:2px solid; border-radius:2px; padding:2px 10px; letter-spacing:1px; text-transform:uppercase; }
 
-  /* ── Row util ── */
-  .row { display: flex; align-items: center; gap: 8px; }
-  .spacer { flex: 1; }
+  /* ── Utils ── */
+  .row    { display:flex; align-items:center; gap:8px; }
+  .spacer { flex:1; }
 </style>
 </head>
 <body>
 <div id="app"></div>
-
 <script type="module">
 import { h, render } from 'https://esm.sh/preact@10.19.3';
 import { useState, useEffect, useRef, useCallback } from 'https://esm.sh/preact@10.19.3/hooks';
-const html = String.raw;
 
 /* ═══════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════ */
-const COMPANIONS = [
-  { id:"astarion",    name:"Astarion",    race:"Vampire Elf", role:"Rogue",     icon:"🧛", color:"#7c3aed", rgb:"124,58,237",  strengths:["stealth","agility","traps"],        injuredQ:"I'm feeling... unusually mortal.",               healthyQ:"Exquisite form. Even for a ranger." },
-  { id:"shadowheart", name:"Shadowheart", race:"Half-Elf",    role:"Cleric",    icon:"🌙", color:"#4338ca", rgb:"67,56,202",   strengths:["healing","undead","divine"],         injuredQ:"Shar tests me through your failures.",          healthyQ:"You've earned a sliver of my respect." },
-  { id:"gale",        name:"Gale",        race:"Human",       role:"Wizard",    icon:"✨", color:"#0369a1", rgb:"3,105,161",   strengths:["arcane","puzzles","knowledge"],      injuredQ:"I've suffered worse. Barely.",                  healthyQ:"Magnificent. Truly magnificent." },
-  { id:"karlach",     name:"Karlach",     race:"Tiefling",    role:"Barbarian", icon:"🔥", color:"#b91c1c", rgb:"185,28,28",   strengths:["strength","combat","endurance"],     injuredQ:"Engine's running cold. Not good.",              healthyQ:"LET'S GOOO! You absolute beast!" },
-  { id:"wyll",        name:"Wyll",        race:"Human",       role:"Warlock",   icon:"🗡️", color:"#065f46", rgb:"6,95,70",     strengths:["charisma","combat","negotiation"],   injuredQ:"Even heroes need their champion to show up.",   healthyQ:"The ballads will be legendary." },
-  { id:"laeze",       name:"Lae'zel",     race:"Githyanki",   role:"Fighter",   icon:"⚔️", color:"#92400e", rgb:"146,64,14",   strengths:["strength","combat","discipline"],    injuredQ:"You dishonor us both.",                         healthyQ:"Acceptable. Perhaps even impressive." },
-  { id:"halsin",      name:"Halsin",      race:"Wood Elf",    role:"Druid",     icon:"🐻", color:"#166534", rgb:"22,101,52",   strengths:["nature","endurance","healing"],      injuredQ:"Even the forest rests — but not for long.",    healthyQ:"Your body is a wilderness worth exploring." },
-  { id:"jaheira",     name:"Jaheira",     race:"Half-Elf",    role:"Harper",    icon:"🌿", color:"#3f6212", rgb:"63,98,18",    strengths:["wisdom","nature","combat"],          injuredQ:"I did not survive the Harpers to watch you quit.", healthyQ:"Good. Now do it again tomorrow." },
-  { id:"minsc",       name:"Minsc & Boo", race:"Human",       role:"Ranger",    icon:"🐭", color:"#b45309", rgb:"180,83,9",    strengths:["strength","courage","animals"],      injuredQ:"Boo is disappointed. BOO IS DISAPPOINTED.",     healthyQ:"BUTT-KICKING FOR GOODNESS!" },
-  { id:"minthara",    name:"Minthara",    race:"Drow",        role:"Paladin",   icon:"🕷️", color:"#6b21a8", rgb:"107,33,168",  strengths:["combat","intimidation","dark arts"], injuredQ:"Your failure is deeply offensive to me.",        healthyQ:"You may have earned a fraction of my contempt — the good kind." },
+
+const CREW = [
+  { id:"luffy",      name:"Luffy",      role:"Captain",        icon:"👒", color:"#c0392b", rgb:"192,57,43",   strengths:["strength","courage","endurance"],       injuredQ:"...I'm hungry. Also maybe hurt.",                   healthyQ:"Let's gooo! I'm gonna be King of the Pirates!" },
+  { id:"zoro",       name:"Zoro",       role:"Swordsman",      icon:"⚔️", color:"#166534", rgb:"22,101,52",   strengths:["strength","discipline","combat"],        injuredQ:"Nothing happened. Keep moving.",                    healthyQ:"Good. Don't embarrass the crew." },
+  { id:"nami",       name:"Nami",       role:"Navigator",      icon:"🗺️", color:"#d97706", rgb:"217,119,6",   strengths:["speed","strategy","agility"],            injuredQ:"You owe me for every injury, you hear me?",         healthyQ:"Not bad. I've calculated worse odds." },
+  { id:"usopp",      name:"Usopp",      role:"Sniper",         icon:"🎯", color:"#92400e", rgb:"146,64,14",   strengths:["agility","precision","courage"],         injuredQ:"The great warrior Usopp is... resting.",            healthyQ:"USOPP THE MAGNIFICENT approves of this performance!" },
+  { id:"sanji",      name:"Sanji",      role:"Cook",           icon:"🦵", color:"#1d4ed8", rgb:"29,78,216",   strengths:["speed","agility","combat"],              injuredQ:"I'd be fine if someone hadn't — never mind.",       healthyQ:"Flawless. Mellorine~!" },
+  { id:"chopper",    name:"Chopper",    role:"Doctor",         icon:"🦌", color:"#c0392b", rgb:"192,57,43",   strengths:["healing","endurance","nature"],          injuredQ:"You need treatment! So do I! This is bad!",         healthyQ:"Wahhhh you're amazing! That's amazing! Don't compliment me!" },
+  { id:"robin",      name:"Robin",      role:"Archaeologist",  icon:"📖", color:"#6d28d9", rgb:"109,40,217",  strengths:["strategy","knowledge","discipline"],     injuredQ:"How unfortunate. For you, I mean.",                 healthyQ:"Fufufu. Impressive, in a brutish sort of way." },
+  { id:"franky",     name:"Franky",     role:"Shipwright",     icon:"⚙️", color:"#0369a1", rgb:"3,105,161",   strengths:["strength","endurance","combat"],         injuredQ:"My body... is SUPER NOT OKAY right now.",           healthyQ:"SUPER! You are absolutely SUPER!" },
+  { id:"brook",      name:"Brook",      role:"Musician",       icon:"💀", color:"#4a4a4a", rgb:"74,74,74",    strengths:["speed","agility","courage"],             injuredQ:"Yohoho... I cannot feel the pain. Because I have no nerves. Or flesh.",  healthyQ:"Yohohoho! Shall I play a victory song? SKULL JOKE!" },
+  { id:"jinbe",      name:"Jinbe",      role:"Helmsman",       icon:"🌊", color:"#0369a1", rgb:"3,105,161",   strengths:["strength","endurance","discipline"],     injuredQ:"A helmsman must know when the sea wins.",           healthyQ:"You have the bearing of a true pirate. I am honoured." },
+  { id:"yamato",     name:"Yamato",     role:"Oden's Heir",    icon:"❄️", color:"#7c3aed", rgb:"124,58,237",  strengths:["strength","combat","courage"],           injuredQ:"Oden would push through this! And so would I... eventually.", healthyQ:"That's the spirit of Oden! MAGNIFICENT!" },
+  { id:"vivi",       name:"Vivi",       role:"Princess",       icon:"🦜", color:"#0891b2", rgb:"8,145,178",   strengths:["strategy","courage","healing"],          injuredQ:"I won't give up! I just need... a moment.",         healthyQ:"You're incredible! The people of Alabasta would be proud!" },
 ];
+
 const WORKOUT_TYPES = [
-  { id:"gym",      label:"Strength Training", icon:"🏋️" },
-  { id:"run",      label:"Run / Cardio",       icon:"🏃" },
-  { id:"mobility", label:"Mobility / Yoga",    icon:"🧘" },
-  { id:"home",     label:"Home Workout",       icon:"🏠" },
+  { id:"strength", label:"Strength Training", icon:"⚓" },
+  { id:"run",      label:"Run / Cardio",       icon:"💨" },
+  { id:"mobility", label:"Mobility / Yoga",    icon:"🌊" },
+  { id:"home",     label:"Home Training",      icon:"🚢" },
 ];
+
 const EFFORT = [
-  { v:1, label:"Light",     desc:"Active recovery",   mult:0.75, icon:"🌱" },
-  { v:2, label:"Moderate",  desc:"Broke a sweat",     mult:1.0,  icon:"⚡" },
-  { v:3, label:"Hard",      desc:"Pushed limits",     mult:1.35, icon:"🔥" },
-  { v:4, label:"Legendary", desc:"Left it all there", mult:1.75, icon:"💀" },
+  { v:1, label:"Calm Seas",    desc:"Active recovery",       mult:0.75, icon:"⛅" },
+  { v:2, label:"Steady Wind",  desc:"Broke a sweat",         mult:1.0,  icon:"💨" },
+  { v:3, label:"Storm Force",  desc:"Pushed limits",         mult:1.35, icon:"⛈️" },
+  { v:4, label:"Gear Fourth",  desc:"Left it all on deck",   mult:1.75, icon:"🔥" },
 ];
-const CONTRACTS = [
-  { id:"spiders",     title:"Clear the Cellar",              loc:"The Burning Witch Tavern",      desc:"A nest of giant spiders has infested the tavern's cellar. The innkeeper offers gold and an open tab to whoever clears them out.",                            type:"gym",      diff:"Common",   xp:180, traits:["strength","endurance","combat"],       criteria:"Raw strength and the will to be covered in webs.",    icon:"🕷️", flavor:"\"The webs are everywhere,\" the innkeeper whimpers. \"Everywhere.\"" },
-  { id:"warehouse",   title:"Smash the Smugglers",           loc:"Docks District — Warehouse Row", desc:"Flaming Fist informants report a smuggling ring in a fortified warehouse. Break the operation, make an example.",                                           type:"gym",      diff:"Uncommon", xp:220, traits:["strength","combat","intimidation"],    criteria:"Heavy lifting, door-breaching, sustained combat.",     icon:"📦", flavor:"\"Break everything. Ask questions never.\" — Flaming Fist Captain" },
-  { id:"golem",       title:"Subdue the Iron Golem",         loc:"Sorcerous Sundries — Vault",    desc:"A malfunctioning iron golem is rampaging through the vault. Restrain it before priceless artefacts are destroyed. Magic won't help.",                      type:"gym",      diff:"Rare",     xp:320, traits:["strength","endurance","discipline"],   criteria:"Brute force only. Magic slides off its runes.",        icon:"⚙️", flavor:"The grinding of iron joints echoes three floors up." },
-  { id:"boulder",     title:"Move the Fallen Menhir",        loc:"Emerald Grove — Sacred Path",   desc:"A druidic standing stone has toppled, blocking the sacred path. The Tiefling refugees cannot pass. Restore it before nightfall.",                          type:"gym",      diff:"Common",   xp:160, traits:["strength","nature","endurance"],       criteria:"Raw strength and cooperation. No sorcery will shift it.", icon:"🪨", flavor:"\"The stone remembers those who honor it,\" Kagha says, not offering to help." },
-  { id:"chase",       title:"Chase the Pickpocket",          loc:"Upper City Markets",            desc:"A halfling thief has lifted a merchant's family heirloom. Run them down before they vanish into the sewers.",                                               type:"run",      diff:"Common",   xp:150, traits:["agility","stealth","speed"],           criteria:"Sprint, dodge stalls, vault obstacles. Speed is everything.", icon:"💨", flavor:"\"That's my grandmother's locket!\" the merchant wails." },
-  { id:"messenger",   title:"The Urgent Dispatch",           loc:"Wyrm's Rock — Fortress Gate",   desc:"A sealed message from Duke Ravengard must reach the Iron Throne negotiations before dawn.",                                                                  type:"run",      diff:"Common",   xp:140, traits:["endurance","speed","courage"],         criteria:"Distance and pace. The clock is your enemy.",          icon:"📜", flavor:"The wax seal bears a dragon pressed in crimson." },
-  { id:"wildfire",    title:"Outrun the Wildfire",           loc:"Rivington — Outer Fields",      desc:"A fire elemental escaped the circus. Evacuate three families before the blaze reaches the farmhouses.",                                                      type:"run",      diff:"Uncommon", xp:200, traits:["speed","endurance","nature"],          criteria:"Multiple sprint relays. Staying power matters.",       icon:"🔥", flavor:"The screaming is already audible from the gate." },
-  { id:"patrol",      title:"Night Patrol — Full Circuit",   loc:"Lower City — Outer Wall",       desc:"Three Flaming Fist guards failed to report. Walk the full circuit before dawn, check all posts, account for the missing.",                                  type:"run",      diff:"Common",   xp:130, traits:["endurance","discipline","courage"],    criteria:"Long and sustained. Not a sprint — a thorough march.", icon:"🌙", flavor:"The city never truly sleeps, but it does occasionally misplace its guards." },
-  { id:"ritual",      title:"The Druid's Preparation Rite", loc:"Emerald Grove — Inner Sanctum", desc:"Halsin requires an ancient preparatory ritual. An hour of precise, deliberate movement. No shortcuts.",                                                     type:"mobility", diff:"Common",   xp:140, traits:["wisdom","nature","healing"],           criteria:"Precision over power.",                                icon:"🌿", flavor:"\"Still the body. Still the mind. Then — act.\" — Halsin" },
-  { id:"shadowdance", title:"Learn the Shadow Dance",        loc:"Sharess's Caress",              desc:"A Sharran assassin owes you a favour. She'll teach you the shadow-step form — only if you match her movements without breaking form.",                       type:"mobility", diff:"Uncommon", xp:190, traits:["agility","stealth","dark arts"],      criteria:"Flexibility, body control, balance.",                  icon:"🩰", flavor:"She moves like water. Cold water." },
-  { id:"meditation",  title:"The Githzerai Mindwall",        loc:"Astral Prism — Inner Chamber", desc:"Lae'zel demands you attempt the Githyanki centering form. She will watch. She will judge.",                                                                  type:"mobility", diff:"Common",   xp:145, traits:["discipline","wisdom","endurance"],    criteria:"Controlled breathing, slow movement, mental focus.",   icon:"🧘", flavor:"\"Your mind is a weapon. Treat it as one.\" — Lae'zel" },
-  { id:"training",    title:"Dawn Training — Barracks Form", loc:"Flaming Fist Barracks",         desc:"Ravengard's drill instructor offers private dawn sessions. Bodyweight mastery, discipline, repetition until the form is perfect.",                           type:"home",     diff:"Common",   xp:140, traits:["discipline","strength","endurance"],   criteria:"No equipment. Pure discipline.",                       icon:"🌅", flavor:"\"Again. And again. And again until I stop counting.\"" },
-  { id:"rooftop",     title:"Rooftop Sentry Duty",           loc:"Upper City — Merchant Quarter", desc:"A nervous nobleman hired you to stand watch on his roof. Calisthenics encouraged to stay warm.",                                                             type:"home",     diff:"Common",   xp:130, traits:["endurance","discipline","courage"],    criteria:"Sustained movement in confined space.",                icon:"🏙️", flavor:"The view is spectacular. The nobleman is annoying." },
-  { id:"rooftophard", title:"The Infiltrator's Circuit",     loc:"Upper City — Guild Rooftops",   desc:"The Guild needs a scouting route mapped across twelve rooftops before dawn. No harnesses. No margin for error.",                                            type:"home",     diff:"Uncommon", xp:195, traits:["agility","stealth","endurance"],      criteria:"Explosive movement, balance, sustained effort.",       icon:"🌆", flavor:"The Guild doesn't ask twice." },
+
+const MISSIONS = [
+  /* STRENGTH */
+  { id:"arlong",     title:"Defeat Arlong's Crew",        loc:"Arlong Park, East Blue",         desc:"Arlong's fishmen have terrorised Nami's village for years. Fight your way through the park and put an end to it.",                                  type:"strength", diff:"Uncommon", xp:220, traits:["strength","combat","endurance"],    criteria:"Heavy compound lifts. Push press, rows, deadlifts.",                    icon:"🐟", flavor:"\"This is my sea! And humans are WEAK!\" — Arlong" },
+  { id:"merry",      title:"Repair the Going Merry",      loc:"Shipyard, Water 7",              desc:"The Going Merry is falling apart. Haul timber, drive bolts, and wrestle the ship back into shape before the next tide.",                              type:"strength", diff:"Common",   xp:170, traits:["strength","endurance","discipline"],  criteria:"Full body pushing and pulling. It's all heavy work.",                   icon:"🐑", flavor:"The ship creaks and groans. She's asking for help." },
+  { id:"hody",       title:"Battle in the Ryugu Palace",  loc:"Fish-Man Island",                desc:"Hody Jones has taken the palace. Fight through his crew in the underwater halls.",                                                                     type:"strength", diff:"Rare",     xp:320, traits:["strength","combat","courage"],       criteria:"Max effort. Every set counts.",                                          icon:"👑", flavor:"\"Fish-Man Island has no need of humans or their kings.\"" },
+  { id:"dressrosa",  title:"Clear the Colosseum",         loc:"Corrida Colosseum, Dressrosa",   desc:"To win SMILE and protect the crew, you've entered the colosseum tournament. Fight every block until you're standing alone.",                           type:"strength", diff:"Uncommon", xp:240, traits:["strength","combat","endurance"],    criteria:"Circuit format. Keep moving between rounds.",                            icon:"🏟️", flavor:"The crowd roars. Somewhere in the stands, your crew is watching." },
+  /* RUN */
+  { id:"marinechase",title:"Outrun the Marine Pursuit",   loc:"Loguetown, East Blue",           desc:"The Marines have your scent. Weave through market stalls and rooftops. Don't get caught.",                                                             type:"run",      diff:"Common",   xp:150, traits:["speed","agility","courage"],          criteria:"Sprint intervals. Push on every straight.",                             icon:"⚓", flavor:"\"STRAW HAT! YOU WON'T ESCAPE!\" — Smoker" },
+  { id:"skypiea",    title:"Cross the White Sea",         loc:"Skypiea — Upper Yard",           desc:"The only way through the Upper Yard is to run it. Enel's priests are everywhere. Move fast, trust the log pose.",                                      type:"run",      diff:"Uncommon", xp:195, traits:["speed","endurance","agility"],        criteria:"Sustained pace. No stopping for lightning.",                            icon:"⚡", flavor:"\"God does not permit passage.\" — Enel. You go anyway." },
+  { id:"thriller",   title:"Escape Thriller Bark",        loc:"Thriller Bark, Florian Triangle", desc:"Gekko Moriah has the shadows. Getting out means running — through mist, through fog, past things you don't want to look at.",                         type:"run",      diff:"Common",   xp:155, traits:["speed","courage","endurance"],         criteria:"Steady pace. Don't stop when it gets dark.",                            icon:"🌫️", flavor:"The mast of Thriller Bark disappears into the mist behind you. Keep running." },
+  { id:"wano_run",   title:"The Mountain Path to Wano",   loc:"Wano — Mt. Fuji approach",       desc:"The only way into the inner chamber is up — a brutal mountain trail in the rain, carrying supplies for the alliance.",                                  type:"run",      diff:"Uncommon", xp:200, traits:["endurance","discipline","strength"],  criteria:"Long and hilly. This is a sustained effort.",                           icon:"⛩️", flavor:"The samurai do not complain about the climb." },
+  /* MOBILITY */
+  { id:"cp9",        title:"Master the Six Powers",       loc:"Enies Lobby",                    desc:"CP9 move like no human should. To even understand them, you have to move through the forms they use — Soru, Geppo, Tekkai.",                          type:"mobility", diff:"Uncommon", xp:190, traits:["agility","speed","discipline"],       criteria:"Controlled movement. Flow between positions.",                          icon:"🕶️", flavor:"\"The Six Powers cannot be learned. They must be felt.\" — Rob Lucci" },
+  { id:"haki_train", title:"Haki Awakening",              loc:"Rusukaina Island",                desc:"Two years of training. Rayleigh demands you hold perfect form while your body screams otherwise.",                                                      type:"mobility", diff:"Rare",     xp:290, traits:["discipline","endurance","courage"],   criteria:"Static holds and slow movements. Control is everything.",               icon:"✊", flavor:"\"Conqueror's Haki isn't learned. But the body must be ready.\" — Rayleigh" },
+  { id:"amazon",     title:"Train with the Kuja Tribe",   loc:"Amazon Lily",                    desc:"The Kuja warriors have agreed to teach you. Their warm-up alone is legendary.",                                                                         type:"mobility", diff:"Common",   xp:145, traits:["agility","strength","discipline"],   criteria:"Flow and hold. Precision over power.",                                   icon:"🏹", flavor:"\"Warriors of Kuja do not stretch. They move.\" — Hancock" },
+  /* HOME */
+  { id:"two_years",  title:"Two Years of Solitary Training", loc:"Somewhere in the New World",  desc:"No crew. No audience. Just you, the training, and the goal of becoming strong enough to protect them when it matters.",                               type:"home",     diff:"Common",   xp:160, traits:["discipline","endurance","courage"],   criteria:"No equipment needed. Discipline is the equipment.",                     icon:"🌅", flavor:"\"I'll get stronger. I promised.\"" },
+  { id:"sunny",      title:"Deck Drills on the Sunny",    loc:"Thousand Sunny, New World",      desc:"The crew's strength is built between islands. Franky designed the drills. Zoro runs them. You show up.",                                                type:"home",     diff:"Common",   xp:140, traits:["endurance","strength","discipline"],  criteria:"Bodyweight circuit. Full rounds.",                                       icon:"🌞", flavor:"The Sunny's deck is big enough. There are no excuses." },
+  { id:"impel_down", title:"Survive Level 4",             loc:"Impel Down — Blazing Hell",      desc:"The heat is almost unbearable. The guards are relentless. You have to move through it or burn.",                                                        type:"home",     diff:"Uncommon", xp:200, traits:["endurance","courage","strength"],    criteria:"High intensity. Short rests. Keep moving.",                             icon:"🔥", flavor:"\"Welcome to Hell.\" — Magellan" },
 ];
-const BANTER = {
-  astarion:    [ {at:"start",l:["Let's get this over with. Elegantly.","I've survived worse. Marginally.","If I die here, I want it noted I looked magnificent."]}, {at:"mid",l:["Still standing. Irritatingly impressive.","You're actually doing it. How... unexpected.","I'll admit I'm mildly less embarrassed to be seen with you."]}, {at:"push",l:["Don't you dare stop now. I refuse to have come this far for nothing.","We are NOT retreating.","You're going to feel this tomorrow. Do it anyway."]}, {at:"done",l:["Against all odds. We succeeded.","Disgusting. Sweaty. Victorious. I'm almost proud.","...Fine. You were adequate. Don't let it go to your head."]} ],
-  shadowheart: [ {at:"start",l:["Shar watches. Don't give her reason to look away.","Focus. Doubt is a weapon your enemies will use.","All effort costs something. Pay willingly."]}, {at:"mid",l:["You're holding. Good.","Half the battle is simply refusing to stop.","I've said a prayer. The rest is up to you."]}, {at:"push",l:["This is the moment that matters. Not the start — now.","Your body is lying to you. Push past it.","I believe in you. Don't make me regret saying that."]}, {at:"done",l:["Well done. I mean that.","Shar is... satisfied. So am I.","You earned that. Remember how it feels."]} ],
-  gale:        [ {at:"start",l:["Fascinating — the body is the most complex spell of all.","I've theorised about this exertion. Let's test the hypothesis.","Shall we begin? I have seventeen observations ready."]}, {at:"mid",l:["Your form is improving empirically.","The endorphin release at this stage is quite pronounced.","Scientifically speaking, you're doing well."]}, {at:"push",l:["Push now and the rewards compound.","I once held a spell for six hours. You can hold this for six more seconds.","The Weave responds to will. So does your body. WILL it."]}, {at:"done",l:["Extraordinary. I shall write a paper.","The data is conclusive: you are capable of this.","Magnificent. Truly, genuinely magnificent."]} ],
-  karlach:     [ {at:"start",l:["LET'S GOOOOO! This is LITERALLY the best day!","My engine is RUNNING! Let's burn it DOWN!","I have been WAITING for this. You have no idea."]}, {at:"mid",l:["YOU'RE DOING IT! ABSOLUTE UNIT!","Don't slow down! We're just getting started!","I love this so much. KEEP GOING."]}, {at:"push",l:["THIS IS THE PART! WHERE LEGENDS ARE MADE!","PUSH IT!","COME ON! COME ON! COME OOOOON!"]}, {at:"done",l:["YESSSSS! That was INCREDIBLE! I'm going to cry!","We DID that!","You beautiful, sweaty person. I'm SO proud."]} ],
-  wyll:        [ {at:"start",l:["The Blade of Frontiers does not begin without confidence.","Ready? Good. The story starts now.","Every legend begins somewhere. This is your somewhere."]}, {at:"mid",l:["The bards always write about those who held the line.","You're writing your chapter right now. Make it worth reading.","Halfway is where heroes are separated from the merely willing."]}, {at:"push",l:["This is the verse they'll remember.","The Blade of Frontiers never retreated. Neither do you.","The ending depends on what you do next."]}, {at:"done",l:["They'll sing of this day. I'll make sure personally.","That is how a contract gets fulfilled.","The legend grows. I had no doubt."]} ],
-  laeze:       [ {at:"start",l:["Your weakness ends today. Begin.","Do not embarrass us.","Move. Now."]}, {at:"mid",l:["You are still standing. Acceptable.","More. You are capable of more.","A Githyanki warrior would not pause."]}, {at:"push",l:["NOW. PUSH.","Your body says stop. Your body is wrong.","I REFUSE to accept failure from you."]}, {at:"done",l:["...You did not disappoint. This time.","Acceptable. Perhaps even impressive — for a non-Githyanki.","I will note this favorably."]} ],
-  halsin:      [ {at:"start",l:["The forest does not rush, and yet it grows. Begin with intention.","Breathe. Then move.","Every step begins with the first. Take it."]}, {at:"mid",l:["You are finding your rhythm.","The effort is real. So is the reward.","Even the oak bends in the storm. Bend, but do not break."]}, {at:"push",l:["You're close. Keep moving.","I have seen bears push through worse. You are not lesser.","Final effort. Give it everything."]}, {at:"done",l:["The grove would be proud. I know I am.","Nature rewards those who give fully.","Rest now. The forest approves."]} ],
-  jaheira:     [ {at:"start",l:["I've survived worse than this. So will you.","No speeches. Just movement. Begin.","I know what you're capable of. Do it."]}, {at:"mid",l:["Still here. Good.","Halfway isn't the end.","You're doing better than you think."]}, {at:"push",l:["This is where most people stop. You are not most people.","I did not come out of retirement to watch you quit. PUSH.","I have seen you at your worst. Show me your best."]}, {at:"done",l:["Good. Now do it again tomorrow.","I've seen worse. You were not worse.","Thirty years of training. You're among the ones I'd do again."]} ],
-  minsc:       [ {at:"start",l:["BOO IS READY! BOO HAS BEEN READY FOR HOURS!","MINSC AND BOO SHALL SHOW THIS QUEST WHO IS BOSS!","For goodness! For justice! For better cardiovascular health!"]}, {at:"mid",l:["BOO SAYS YOU ARE DOING WONDERFULLY!","MINSC FEELS THE POWER! DO YOU?!","Fifty percent complete! THE BEST FIFTY PERCENT IS NEXT!"]}, {at:"push",l:["GO FOR THE GAINS! BOO COMMANDS IT!","THIS IS WHERE LEGENDS ARE MADE! BOO IS WATCHING!","RAAAAAAHHHH!"]}, {at:"done",l:["BUTT-KICKING FOR GOODNESS! BOO IS SO PROUD!","Minsc weeps. These are the good tears.","BOO HAS NIBBLED YOUR SHOULDER APPROVINGLY."]} ],
-  minthara:    [ {at:"start",l:["I am here under protest.","Begin. Do not embarrass yourself in front of me.","This should be trivial for someone of your supposed calibre."]}, {at:"mid",l:["You're still upright. Marginally impressive.","I expected you to stop by now. Interesting.","I am not disapproving. Yet."]}, {at:"push",l:["I FORBID you to stop.","Finish it properly. No half-measures.","I have never respected anything that quit before the end."]}, {at:"done",l:["You have earned a fraction of my contempt. The complimentary kind.","Tolerable. That is the highest praise I offer.","Do not tell anyone I said this, but — well done."]} ],
-};
-const ENCOUNTERS = [
-  { id:"e1", icon:"👤", title:"A Stranger Approaches",  text:"A cloaked figure blocks your path and holds out a sealed envelope. 'Delivery,' they say, before vanishing.",              choices:[{label:"Open it immediately",        xp:30, out:"Inside: a map fragment and a cryptic note. Someone is watching your progress. +30 XP"},{label:"Pocket it for later",       xp:15, out:"Wise. You keep your focus. Whatever it contains can wait. +15 XP"}] },
-  { id:"e2", icon:"🐀", title:"Rat King Sighting",       text:"Hundreds of rats part like a tide, revealing a crowned rat on a tiny throne. It regards you with unsettling intelligence.", choices:[{label:"Bow respectfully",           xp:40, out:"The Rat King nods. A small rat drops a coin at your feet. +40 XP"},{label:"Keep moving",                xp:10, out:"You choose not to engage. Probably wise. +10 XP"}] },
-  { id:"e3", icon:"⚡", title:"Surge of Energy",         text:"Something shifts — a second wind, a moment of clarity. The party feels it too.",                                           choices:[{label:"Push harder through it",      xp:50, out:"You dig deeper than you thought possible. +50 XP"},{label:"Stay steady and controlled",xp:25, out:"Disciplined. You bank the energy. +25 XP"}] },
-  { id:"e4", icon:"🍺", title:"The Off-Duty Guard",      text:"A Flaming Fist soldier offers you a swig of something that smells like it could strip rust. 'For the effort.'",            choices:[{label:"Decline with honour",         xp:20, out:"He nods. 'Smart. That stuff's terrible.' +20 XP"},{label:"Accept and grimace through it",xp:35, out:"Terrible. He slaps you on the back. You keep going. +35 XP"}] },
-  { id:"e5", icon:"🎵", title:"A Bard is Watching",      text:"A halfling bard in an improbably large hat has been following you, scribbling notes and humming to herself.",               choices:[{label:"Perform for her",            xp:45, out:"She erupts into applause. 'This goes in the epic!' +45 XP"},{label:"Ignore her completely",     xp:15, out:"She writes something down with great enthusiasm. +15 XP"}] },
-  { id:"e6", icon:"👁️", title:"You Are Being Watched",   text:"From a high window, a hooded figure observes. When you look directly, they raise one hand slowly.",                        choices:[{label:"Hold their gaze, push harder",xp:40, out:"They nod once, then withdraw. You passed some kind of test. +40 XP"},{label:"Look away and focus forward",xp:20, out:"You owe nothing to watchers in shadows. +20 XP"}] },
-  { id:"e7", icon:"🌧️", title:"The Weather Turns",       text:"The sky opens — a proper downpour, the kind that soaks through in seconds. The party looks to you.",                       choices:[{label:"Drive through it — no stopping",xp:55, out:"Drenched and unstoppable. +55 XP"},{label:"Brief shelter and regroup",  xp:20, out:"Tactical pause. You resume with clarity. +20 XP"}] },
-  { id:"e8", icon:"🏅", title:"Rival Adventurers",       text:"A well-equipped party rounds the corner — expensive armour, matching insignia, professional smugness.",                      choices:[{label:"Acknowledge them as equals",  xp:25, out:"Mutual respect. They nod. You nod. +25 XP"},{label:"Outpace them visibly",       xp:45, out:"You accelerate. They notice. You're already gone. +45 XP"}] },
-];
+
 const MILESTONES = {
-  spiders:     [{l:"Descend into the cellar",         c:"Tap when you're warmed up and ready to go",             s:"The smell hits you first — damp wood, old wine, and something else entirely. Webs catch the torchlight. Somewhere deeper, something skitters."},{l:"Clear the first chamber",          c:"Tap when your main working sets are done",               s:"The first wave breaks against you like water. The party works in rhythm. The floor crunches underfoot."},{l:"Face the Brood Mother",             c:"Tap when you're starting your last hard push",           s:"She's enormous. Eight eyes, each one reflecting your torchlight back at you. The party tightens. You lead."},{l:"Return victorious",                 c:"Tap when you're done — cooldown, stretching, finished",  s:"The innkeeper is already pouring when you emerge. You don't say how bad it was. Some things are between you and the cellar."}],
-  warehouse:   [{l:"Breach the perimeter",            c:"Tap when you're warmed up and ready to go",             s:"The warehouse is bigger than the briefing suggested. Of course it is."},{l:"Fight through the floor",           c:"Tap when your main working sets are done",               s:"Chaos. Controlled chaos, if you're doing it right. The party moves through the warehouse like a tide."},{l:"Confront the ringleader",           c:"Tap when you're starting your last hard push",           s:"He's bigger than expected. You remind him of the current situation."},{l:"Secure the cargo and exit",         c:"Tap when you're done — cooldown, stretching, finished",  s:"The Flaming Fist will take it from here. You hand over the manifest and don't ask what's in the crates."}],
-  golem:       [{l:"Enter the restricted vault",      c:"Tap when you're warmed up and ready to go",             s:"The vault door grinds open. Inside, you can already hear it — rhythmic and heavy, like a drumbeat made of iron."},{l:"First engagement",                  c:"Tap when your main working sets are done",               s:"It's fast for its size. You dodge and assess. There's a pattern."},{l:"Find the weakness",                 c:"Tap when you're starting your last hard push",           s:"There — the joint at the right shoulder, where the magic has started to fray. If you can reach it—"},{l:"Subdue and secure",                 c:"Tap when you're done — cooldown, stretching, finished",  s:"The golem winds down with a sound like a clock stopping. The vault falls quiet."}],
-  boulder:     [{l:"Reach the fallen stone",          c:"Tap when you're warmed up and ready to go",             s:"The menhir is older than Baldur's Gate itself. The druids won't touch it — sacred law. That's why they need you."},{l:"First attempt — assess",            c:"Tap when your main working sets are done",               s:"It doesn't move. Obviously. You reposition. This is going to take everything."},{l:"Combined effort",                   c:"Tap when you're starting your last hard push",           s:"Together. On three. The stone shifts an inch, then another. Your arms are screaming."},{l:"The stone stands",                  c:"Tap when you're done — cooldown, stretching, finished",  s:"It rises, settles, locks into place with a sound like distant thunder. The druids exhale."}],
-  chase:       [{l:"Spot the pickpocket",             c:"Tap when you're warmed up and into your pace",          s:"There — a flash of movement through the crowd. The halfling is fast. You're faster."},{l:"Through the market stalls",         c:"Tap when you're halfway through your run",               s:"Stalls blur past. Shouting vendors, startled chickens. The halfling is good. You're better."},{l:"The sewer entrance",                c:"Tap when you're starting your final sprint stretch",     s:"They're heading for the drain cover. If they get underground you lose them. This is the sprint."},{l:"Cornered and caught",               c:"Tap when you've finished and caught your breath",        s:"The halfling backs into a wall, and looks up with an expression that's mostly resignation and slightly impressed."}],
-  messenger:   [{l:"Leave Wyrm's Rock",               c:"Tap when you're warmed up and into your pace",          s:"The message is in your satchel. Dawn is four hours away. Start moving."},{l:"Through the Lower City",            c:"Tap when you're halfway through your run",               s:"The Lower City at night — quieter, more watchful. You keep pace and keep your head down."},{l:"The final stretch",                 c:"Tap when you're starting your final push home",          s:"The Iron Throne tower is visible. Your lungs are making their opinion known. You do not slow down."},{l:"Delivery made",                     c:"Tap when you've finished and caught your breath",        s:"The negotiator breaks the seal, reads, and nods. 'You made good time.' You don't tell him how close it was."}],
-  wildfire:    [{l:"Reach the first farmhouse",       c:"Tap when you've done your first sprint interval",       s:"The smoke is already visible from the gate. The nearest field is fully alight. First family first."},{l:"Second evacuation run",             c:"Tap when you've completed your second interval block",   s:"Back through the smoke. Your eyes sting. The fire elemental is closer."},{l:"Final family — closest to the blaze",c:"Tap when you're on your last interval — give it everything",s:"You can hear the fire now. The house is still standing. The family is not yet out."},{l:"Clear the field",                   c:"Tap when you're done — walk it out",                     s:"The last child clears the fence as the barn catches. Everyone is accounted for."}],
-  patrol:      [{l:"Begin the wall circuit",          c:"Tap when you're warmed up and into your steady pace",   s:"The outer wall at night — cold, quiet, with the whole city on one side and darkness on the other."},{l:"First posts checked",               c:"Tap at the halfway point of your run or walk",           s:"Two guards found, sleeping. You wake them. The night watch is long."},{l:"The missing post",                  c:"Tap when you're on the final stretch home",              s:"This station is empty. Not asleep — gone. Signs of a struggle. You are looking."},{l:"Circuit complete",                  c:"Tap when you're done — walk it out",                     s:"You file the report as dawn breaks over the bay. Three missing guards, two leads."}],
-  ritual:      [{l:"Enter the inner sanctum",         c:"Tap when you've settled in and started moving",         s:"Halsin has cleared the space. Candles at the cardinal points. The air smells of pine. He nods and steps back."},{l:"The opening sequence",              c:"Tap when you've finished your first flow or sequence",   s:"The movements feel strange at first — too slow, too deliberate. Then the body finds the logic."},{l:"The long hold",                     c:"Tap when you're in your deepest, hardest hold",          s:"Everything in you wants to shift. You don't. The grove is very quiet."},{l:"The closing",                       c:"Tap when you're done — lying still, breathing",          s:"Halsin exhales. 'The grove's defences will hold.' He pauses. 'Your form was... not embarrassing.' Highest praise."}],
-  shadowdance: [{l:"The assassin demonstrates",       c:"Tap when you've started and are ready to begin",        s:"She moves through the form once, slowly, and every movement is also a kill."},{l:"Your first attempt",                c:"Tap when you've worked through the sequence once",       s:"She watches without expression. 'Again,' she says. Nothing more."},{l:"Finding the flow",                  c:"Tap when the movement starts to click — you'll know",    s:"Something clicks. Your body stops fighting the sequence. Astarion makes a sound that might be approval."},{l:"The final form",                    c:"Tap when you've completed your final run-through",       s:"You complete the sequence without a single correction. 'You may come back.' That's everything."}],
-  meditation:  [{l:"Assume the opening stance",       c:"Tap when you've settled and your breathing has slowed", s:"Lae'zel takes position opposite you, arms folded, expression skeptical. 'Begin.' It is not a suggestion."},{l:"The breathing sequences",           c:"Tap when you've completed your breathing cycles",        s:"She counts. You breathe. The rhythm is alien and then, slowly, it isn't."},{l:"The static hold",                   c:"Tap when you're in your hardest hold — stay there",      s:"Your muscles are screaming. Lae'zel's eyes haven't moved. You don't move either."},{l:"Release",                           c:"Tap when you're done — lying still, fully released",     s:"'You did not break,' she says. 'This is not nothing.'"}],
-  training:    [{l:"Report to the yard",              c:"Tap when you're warmed up and ready to go",             s:"The drill instructor doesn't greet you. He points at a mark on the ground and walks away."},{l:"The first circuit",                c:"Tap when you've finished your first round of exercises", s:"He watches every repetition and says nothing."},{l:"When you want to stop",            c:"Tap when you're on your last circuit — don't stop yet",  s:"He hasn't told you to stop. So you don't. This seems to be the entire lesson."},{l:"Stand down",                        c:"Tap when you're done — rest, you earned it",             s:"He finally raises one hand. 'That'll do.' The best review he gives."}],
-  rooftop:     [{l:"Reach the rooftop",               c:"Tap when you've started moving and found your rhythm",  s:"The nobleman goes back inside immediately. The city spreads out below. The wind is something else entirely."},{l:"First hour — find your rhythm",    c:"Tap when you've got a good sweat going",                 s:"The space is limited. You make it work. Up here you're the only thing that matters."},{l:"The difficult middle",             c:"Tap when you want to stop — and haven't",               s:"The wind picks up. The cold settles in. There's a temptation to go inside. You don't."},{l:"Dawn watch",                        c:"Tap when you're completely done",                        s:"The nobleman appears with tea. From up here, Baldur's Gate looks almost peaceful."}],
-  rooftophard: [{l:"First rooftop crossing",          c:"Tap when you're warmed up and moving",                  s:"The gap is wider than it looked. You jump without looking down."},{l:"The tricky middle section",         c:"Tap when you've made it through the hardest block",      s:"Washing lines, pipes, dubious timber. You find a path. Your body makes the argument."},{l:"The exposed stretch",              c:"Tap when you're on your final push — almost there",      s:"No cover. Full moonlight. You move fast and trust your preparation."},{l:"Route mapped",                      c:"Tap when you're done — catch your breath",               s:"The Guild contact examines your notes and almost smiles. 'Again tomorrow. Faster.'"}],
+  arlong:     [{l:"Enter Arlong Park",           c:"Tap when you're warmed up and ready",                s:"The gates are broken. The park is worse than you imagined. Fishmen everywhere, eyes on you. Good."},{l:"Fight through the first wave",    c:"Tap when your main sets are done",                   s:"The crew works with you. You've broken their formation. Arlong hasn't appeared yet."},{l:"Face Arlong himself",              c:"Tap when you're starting your final push",           s:"He's enormous and furious and completely certain you'll lose. You have different information."},{l:"Nami's village is free",           c:"Tap when you're completely done",                    s:"Arlong Park falls into the sea. Nami cries on a hillside. The sky opens up. It's over."}],
+  merry:      [{l:"Gather the timber",           c:"Tap when you're warmed up",                          s:"The yard is loud and smells of sawdust and salt. Merry needs you. The tide waits for no one."},{l:"First repairs done",               c:"Tap when your main work is done",                    s:"The worst sections are patched. She's still groaning, but differently — like relief."},{l:"Final assembly",                   c:"Tap when you're on your last push",                  s:"Every bolt matters. Every board matters. She carried you here. You carry her now."},{l:"She sails",                         c:"Tap when you're done",                               s:"The Going Merry hits the water and holds. Usopp is crying. Everyone pretends not to notice."}],
+  hody:       [{l:"Breach the palace",           c:"Tap when you're warmed up",                          s:"The water presses in from all sides. The palace is enormous and filled with enemies. Begin."},{l:"Through the halls",                c:"Tap when main working sets are done",                s:"Wave after wave. Your lungs know where they are. The palace walls blur past."},{l:"Find Hody",                         c:"Tap when you're starting your final push",           s:"He's taken a dozen pills and his eyes are wrong. This is what the whole thing was for."},{l:"Fish-Man Island is free",          c:"Tap when you're done",                               s:"He sinks. The bubble holds. Above the surface, somewhere, the sun is shining on an ocean."}],
+  dressrosa:  [{l:"Enter the Colosseum",         c:"Tap when you're warmed up",                          s:"The crowd doesn't know who you are. Yet."},{l:"Survive the B Block",              c:"Tap when your main rounds are done",                 s:"You're still standing. The fighters around you are less certain than they were."},{l:"The final block",                  c:"Tap when you're starting your last round",           s:"This is what you entered for. The SMILE. The crew. Everything."},{l:"Standing alone",                   c:"Tap when you're done",                               s:"The Colosseum goes quiet. Then it erupts. You didn't come here for the glory. But here it is."}],
+  marinechase:[{l:"The market streets",          c:"Tap when you're into your pace",                     s:"Smoker is somewhere behind you. The streets of Loguetown are a maze. You know the way."},{l:"Rooftop crossing",                  c:"Tap when you're halfway",                            s:"Below, Marines fan out through the alleys. Up here, it's just wind and the sound of your footfall."},{l:"The harbour run",                  c:"Tap when you're on your final sprint",               s:"The ship is in sight. So is Smoker. This is the part where you run."},{l:"Clear of pursuit",                 c:"Tap when you've finished",                           s:"The ship hits open water. Luffy is laughing. You don't tell him how close it was."}],
+  skypiea:    [{l:"Into the Upper Yard",         c:"Tap when you're warmed up and into pace",            s:"The sky island is strange and beautiful and trying to kill you. Start moving."},{l:"Past the priests",                  c:"Tap when you're halfway",                            s:"Satori. Gedatsu. Ohm. They were supposed to stop you. They didn't."},{l:"Enel's territory",                  c:"Tap when you're on your final stretch",              s:"Lightning cracks nearby. You don't slow down. The going was never going to be easy."},{l:"The golden bell",                  c:"Tap when you're done",                               s:"The bell rings across the sky. Below, the clouds drift. History has been corrected."}],
+  thriller:   [{l:"Into the mist",               c:"Tap when you're moving and into pace",               s:"You can't see the ship behind you anymore. You can only hear things you don't want to hear."},{l:"Through the graveyard",            c:"Tap when you're halfway",                            s:"Don't look at what's moving in the trees. Just run. Eyes forward."},{l:"Moriah's reach",                   c:"Tap when you're on your final stretch",              s:"Your shadow is yours. It was always yours. Remind your legs of that."},{l:"Free of Thriller Bark",            c:"Tap when you're done",                               s:"Dawn. The Florian Triangle releases you. The Sunny is ahead. You made it out."}],
+  wano_run:   [{l:"Start of the mountain path",  c:"Tap when you're into your pace",                     s:"The samurai say the mountain respects effort. You're about to test that theory."},{l:"Halfway up",                        c:"Tap when you're halfway",                            s:"Rain. Wind. The path narrower than it looked. Kin'emon is somewhere ahead, silent as always."},{l:"The final ascent",                 c:"Tap when you're starting your last push",            s:"You can see the summit. Your lungs are very opinionated. Keep going."},{l:"Wano's gates open",                c:"Tap when you're done",                               s:"You deliver the supplies. A samurai nods once. In Wano, that's a standing ovation."}],
+  cp9:        [{l:"Enter the training hall",     c:"Tap when you've settled and started moving",         s:"Rob Lucci watches from the corner. He says nothing. That's worse than anything he could say."},{l:"The first forms",                  c:"Tap when you've finished your first sequence",       s:"Soru — instant movement. Geppo — sky stepping. Your body is beginning to understand."},{l:"Tekkai",                            c:"Tap when you're in your deepest hold",               s:"Steel-hardened muscles. The form asks you to be immovable. Your body argues. Win the argument."},{l:"Forms complete",                   c:"Tap when you're done",                               s:"Lucci says nothing. Then: 'Again tomorrow.' It's the highest thing he offers."}],
+  haki_train: [{l:"Rayleigh begins",             c:"Tap when you've settled and started",                s:"The Dark King says nothing about what's coming. He simply demonstrates. Then waits."},{l:"First breakthrough",                c:"Tap when you've completed your first block",         s:"Something shifts. A hum behind the eyes, a pressure in the chest. You keep moving through it."},{l:"The deep hold",                    c:"Tap when you're in your hardest hold — stay there", s:"Rayleigh is watching. Two years is built in moments like this. Stay."},{l:"Session complete",                  c:"Tap when you're done — breathe",                     s:"He nods once. 'You're different than when we started.' You feel it too."}],
+  amazon:     [{l:"The Kuja greet you",          c:"Tap when you've started moving",                     s:"They're watching. They're always watching. Hancock isn't here, which somehow makes it worse."},{l:"The first sequence",               c:"Tap when you've finished your first flow",            s:"Their forms look effortless. They are not effortless. You're beginning to understand why."},{l:"The long hold",                    c:"Tap when you're in your deepest hold",               s:"One of the Kuja nods. You think it was a nod. You hold the position."},{l:"Training complete",                 c:"Tap when you're done",                               s:"A Kuja elder says something in their language. Another one translates: 'Not terrible.' High praise."}],
+  two_years:  [{l:"The training begins",         c:"Tap when you're warmed up",                          s:"No one is watching. That's the point. You're doing this because you decided to."},{l:"The hard middle",                   c:"Tap when your main work is done",                    s:"This is the part the crew will never see. The part between the dream and the reunion."},{l:"When you want to stop",             c:"Tap when you're on your last push",                  s:"They're out there, somewhere, getting stronger. So are you. Don't stop."},{l:"Another session done",              c:"Tap when you're done",                               s:"One day closer. That's all this is. One day closer."}],
+  sunny:      [{l:"Drills start",                c:"Tap when you're warmed up",                          s:"Zoro counts. You don't ask how many rounds. You'll find out."},{l:"First circuit done",               c:"Tap when your first round is done",                  s:"The deck is warm from the sun. Nami is definitely watching from the crow's nest. Don't embarrass the ship."},{l:"Zoro says more",                   c:"Tap when you're starting your last circuit",         s:"He always says more. You're starting to think that's the point."},{l:"Stand down",                        c:"Tap when you're done",                               s:"Zoro walks past without a word. Sanji brings you something to eat. The Sunny sails on."}],
+  impel_down: [{l:"Level 4 — the heat hits",     c:"Tap when you're moving",                             s:"The temperature in Level 4 is not compatible with comfort. Magellan designed it that way. Move."},{l:"Through the first section",        c:"Tap when your first block is done",                  s:"The guards are not subtle. Neither are you. Keep moving through the heat."},{l:"Almost through",                   c:"Tap when you're on your last push",                  s:"The exit is real. You can feel the difference in the air. Almost."},{l:"Out of Level 4",                    c:"Tap when you're done",                               s:"The temperature drops immediately. Ivankov is already making a speech. You don't listen. You survived."}],
 };
+
 const DEFAULT_MS = [
-  {l:"Begin the quest",  c:"Tap when you're warmed up and ready to go",       s:"You set out. The path ahead is clear, the purpose is clear, and the party is ready."},
-  {l:"The hard middle",  c:"Tap when your main work is done",                 s:"This is the part no one writes songs about — the sustained effort, the grinding through."},
-  {l:"The final push",   c:"Tap when you're starting your last hard effort",  s:"Close now. The end is visible. This is the moment that separates the attempt from the achievement."},
-  {l:"Quest complete",   c:"Tap when you're completely done",                 s:"Done. Finished. The contract fulfilled. Something has shifted. Something always does."},
+  {l:"Set sail",       c:"Tap when you're warmed up and ready",           s:"The Sunny hits open water. The Grand Line stretches ahead. The crew is ready. So are you."},
+  {l:"Open ocean",     c:"Tap when your main work is done",               s:"This is the part between islands — the sustained effort, the push through, the refusal to drift."},
+  {l:"Storm ahead",    c:"Tap when you're starting your final push",      s:"You can see it. The end of this stretch. Your body knows. Push through."},
+  {l:"Port reached",   c:"Tap when you're completely done",               s:"The anchor drops. The log pose resets. Another island. Another chapter. You made it."},
+];
+
+const BANTER = {
+  luffy:   [{at:"start",l:["Let's goooo! I'm so fired up!","This is gonna be fun! Come on!","I'm hungry but ALSO really excited!"]},{at:"mid",l:["You're doing great! Even better than Zoro! Don't tell Zoro.","Keep going! I believe in you! Also I'm really hungry.","We're gonna WIN!"]},{at:"push",l:["This is it! THIS IS THE PART!","Don't stop! We're almost there! GOMU GOMU—","I won't let you quit! Nobody quits on MY crew!"]},{at:"done",l:["YESSSS! That was SO COOL!","You did it! You're amazing! Let's eat!","I KNEW you could do it! You're part of my crew now!"]}],
+  zoro:    [{at:"start",l:["Don't embarrass us.","I've been awake since four. No excuses.","Move."]},{at:"mid",l:["Still standing. Good.","Halfway is nothing. Keep going.","I've trained with worse. Marginally."]},{at:"push",l:["This is where it matters. Push.","Don't stop now.","I didn't come here to watch you give up."]},{at:"done",l:["...Not bad.","You held. Good.","That'll do. Rest. Then we go again tomorrow."]}],
+  nami:    [{at:"start",l:["I've mapped harder routes than this. You'll be fine.","My weather tracking says conditions are perfect. No excuses.","I need you strong. This crew needs you strong. GO."]},{at:"mid",l:["Halfway! The wind is with us.","You're doing better than the charts predicted, honestly.","I've navigated through worse. You can push through this."]},{at:"push",l:["Final stretch! I can see the finish from here!","Push it! We've come too far to stop now!","The log pose is pointing forward. KEEP MOVING."]},{at:"done",l:["Excellent work. I've updated the log.","Not bad at all. The crew's in good hands.","I calculated you'd finish strong. I was right, as usual."]}],
+  usopp:   [{at:"start",l:["The great warrior Usopp once trained for forty days straight! You can do this!","I have fought eight thousand enemies! This is nothing for us!","The brave captain of the Usopp Pirates declares this training... BEGUN!"]},{at:"mid",l:["USOPP THE MAGNIFICENT encourages you greatly!","I personally fought through worse pain than this! Many times! It's true!","You're doing so well! Even better than ME! ...Almost."]},{at:"push",l:["DON'T GIVE UP! The great warrior NEVER gives up!","THIS IS YOUR MOMENT! USOPP COMMANDS YOU TO PUSH!","I'm crying! These are tears of INSPIRATION!"]},{at:"done",l:["INCREDIBLE! USOPP THE GREAT IS SO PROUD!","You are now an honorary member of the Usopp Pirates! ...probably!","That was AMAZING! Better than most of my stories! Almost!"]}],
+  sanji:   [{at:"start",l:["I'll prepare something magnificent when you're done. Now move.","A cook knows the value of sustained effort. Let's see yours.","Mellorine~ Even training looks beautiful when you do it right."]},{at:"mid",l:["Good form. Keep it up.","I've kicked through walls of steel. This is nothing for you.","Your effort deserves a three-course meal. Let's make sure you earn it."]},{at:"push",l:["COME ON! You're embarrassing this crew!","Push harder or I push for you — and my pushes leave marks!","We're almost DONE! Pour everything in!"]},{at:"done",l:["Mellorine~ Perfect. I'll make something special.","Beautiful work. I'll tell Nami you trained well.","That's the spirit of the All Blue. You earned your dinner."]}],
+  chopper: [{at:"start",l:["I'll monitor your vitals! Medically speaking, you're in great shape! Let's go!","As ship's doctor, I prescribe MAXIMUM EFFORT!","Don't be scared! I'll be right here! This is exciting!"]},{at:"mid",l:["Your heart rate is medically perfect! Keep going!","AMAZING! Your form is medically very impressive!","You're doing so well! Don't tell anyone I said that!"]},{at:"push",l:["PUSH! PUSH! I believe in you so much right now!","The doctor orders MORE EFFORT! Stat!","YOU CAN DO IT! I've done the medical calculations!"]},{at:"done",l:["WAHHHH! That was SO AMAZING! Don't compliment me about how I cheered!","Medically speaking... you are incredible!","I'm giving you a full recovery certificate! You've earned it!"]}],
+  robin:   [{at:"start",l:["I've read accounts of warriors who trained like this. Most of them survived.","Fufufu. Shall we begin? The Poneglyphs can wait.","The history books remember those who persisted. Let's see where this goes."]},{at:"mid",l:["You're holding up well. Better than most, actually.","Fufufu. The effort suits you.","I've witnessed stronger people stop at this point. You haven't."]},{at:"push",l:["You're nearly there. Don't let the body win this negotiation.","Fufufu. Now it gets interesting.","The final push is always the most revealing. Show me who you are."]},{at:"done",l:["Fufufu. Splendid. I shall record this in my personal log.","As expected. You don't disappoint.","The historians will note this session with approval. Fufufu."]}],
+  franky:  [{at:"start",l:["ALRIGHT! Let's make this SUPER!","I built this body with cola and determination! Let's GO!","The Franky Family doesn't START unless it's going to be SUPER!"]},{at:"mid",l:["SUPER EFFORT! SUPER RESULTS!","You're doing GREAT! Even better than I calculated!","FRANKY APPROVES OF THIS TRAINING SESSION!"]},{at:"push",l:["SUPER FINAL PUSH TIME!","PUT EVERYTHING INTO IT! SUUUPER!","THIS IS THE MOST SUPER PART! DON'T HOLD BACK!"]},{at:"done",l:["SUUUUPER! That was ABSOLUTELY SUPER!","I'm adding this to the Sunny's log as a SUPER achievement!","You are SUPER. I've decided. It's official."]}],
+  brook:   [{at:"start",l:["Yohohoho! Shall I play something to set the pace? SKULL JOKE!","Even a skeleton can feel the excitement! Let us begin!","I would feel my heart racing, but— yohohoho! SKULL JOKE!"]},{at:"mid",l:["You are doing wonderfully! Even better than a skeleton! Yohohoho!","Halfway! Like a song reaching the bridge! SKULL JOKE!","Your effort would bring tears to my eyes... if I had eyes. Yohohoho!"]},{at:"push",l:["THE FINALE APPROACHES! PLAY IT FORTE!","This is the last verse! Make it count! YOHOHOHO!","Even bones can feel the glory of this moment! Almost there!"]},{at:"done",l:["YOHOHOHOHO! A standing ovation! If I could stand! SKULL JOKE!","Bravissimo! A performance worthy of the Rumbar Pirates!","Magnificent! Shall I compose a ballad? 'The Legend of Ashley's Training'! Yohohoho!"]}],
+  jinbe:   [{at:"start",l:["A helmsman reads the conditions and adjusts. You are the conditions now. Begin.","Fish-Man Karate begins with the breath. Find yours.","The sea does not hurry. But it always arrives. Let's go."]},{at:"mid",l:["You are reading the current correctly. Stay with it.","Good. The hardest part is staying consistent under pressure.","A true helmsman holds steady when others would veer. You're holding."]},{at:"push",l:["This is the open ocean stretch. No shelter. Push through.","The tide is with you now. Use it.","A pirate of your calibre does not stop here."]},{at:"done",l:["Well navigated. The crew is fortunate to have you.","You have the bearing of a true pirate. I am honoured to have watched.","Luffy chose well when he asked you aboard. This session proves it."]}],
+  yamato:  [{at:"start",l:["ODEN WOULD HAVE STARTED BY NOW! LET'S GO!","The samurai of Wano trained in storms! This is nothing! BEGIN!","I have trained in the wilderness of Onigashima! You can do this!"]},{at:"mid",l:["THAT'S IT! ODEN'S SPIRIT IS WITH YOU!","You fight like someone who knows WHY they're fighting! BEAUTIFUL!","HALFWAY! ODEN NEVER STOPPED AT HALFWAY!"]},{at:"push",l:["THIS IS THE MOMENT ODEN WOULD WRITE ABOUT!","PUSH! I WILL PERSONALLY CELEBRATE YOUR FINISH!","ODEN MOVED MOUNTAINS! YOU CAN FINISH THIS!"]},{at:"done",l:["MAGNIFICENT! TRULY MAGNIFICENT! ODEN WOULD WEEP!","You have the spirit of a samurai AND a pirate! THAT IS RARE!","I'm going to tell everyone about this! Starting with Luffy!"]}],
+  vivi:   [{at:"start",l:["The people of Alabasta never gave up. Neither will we!","You can do this! I believe in you completely!","We fight for what matters. Let that carry you!"]},{at:"mid",l:["You're doing so well! Keep going!","The desert was harder than this, and we made it through that!","I'm so proud of you already. Don't stop now!"]},{at:"push",l:["Almost there! You've come so far!","Don't give up! The finish is RIGHT THERE!","I crossed a desert kingdom for the people I love. You can push through this!"]},{at:"done",l:["You did it! I'm so proud!","That was incredible! The crew would be so happy to see that!","You're stronger than you know. This proved it."]}],
+};
+
+const SEA_EVENTS = [
+  { id:"s1", icon:"🏴‍☠️", title:"A Jolly Roger on the Horizon", text:"Another pirate ship. Their flag isn't one you recognise. They're signalling — but it might be a trap.", choices:[{label:"Signal back — show confidence",  xp:40, out:"They lower their weapons and wave. Turns out they're lost. You point them toward the nearest island. +40 Berries"},{label:"Change course — avoid them",  xp:15, out:"Smart. Unknown ships mean unknown intentions. +15 Berries"}] },
+  { id:"s2", icon:"🌊", title:"Sudden Squall",                   text:"The sky turned in minutes. A proper Grand Line storm — the kind Nami would've charted if she'd had more warning.", choices:[{label:"Drive through it — full speed", xp:55, out:"Drenched. Unstoppable. The crew holds the line and the Sunny makes it through. +55 Berries"},{label:"Reef the sails and hold",      xp:20, out:"Tactical. You weather it out and emerge intact. +20 Berries"}] },
+  { id:"s3", icon:"🐋", title:"Sea King Sighting",               text:"Something enormous moves beneath the ship. A Sea King the size of an island. It looks up at you with one eye.", choices:[{label:"Hold its gaze — don't blink",  xp:45, out:"It blinks first. Dips below the surface. Jinbe nods. 'It respected you.' +45 Berries"},{label:"Change course immediately",   xp:10, out:"Caution is a survival skill. +10 Berries"}] },
+  { id:"s4", icon:"⚡", title:"Lightning Fruit",                  text:"A strange Akuma no Mi washes up on deck. No one eats it — but holding it hums with something.", choices:[{label:"Study it carefully",              xp:35, out:"Robin takes notes for three hours. You learn something. +35 Berries"},{label:"Throw it back — too risky",    xp:20, out:"Sanji nearly cries. You explain that you already have enough chaos. +20 Berries"}] },
+  { id:"s5", icon:"🗺️", title:"An Uncharted Island",             text:"The log pose hasn't recorded it. Nami's maps show nothing. But there it is.", choices:[{label:"Land and explore",                xp:50, out:"You find a freshwater spring, strange ruins, and Usopp claims he fought a giant. There's no evidence either way. +50 Berries"},{label:"Stay on course",               xp:15, out:"Discipline. The goal matters more than detours. +15 Berries"}] },
+  { id:"s6", icon:"🍖", title:"Luffy Found the Provisions",      text:"Luffy has located the emergency food supply. He's looking at it with intent.", choices:[{label:"Distract him with training",      xp:40, out:"It works. He gets excited about the training and forgets entirely. +40 Berries"},{label:"Let him have some — morale",   xp:25, out:"The crew's morale genuinely improves. Chopper can't explain it medically. +25 Berries"}] },
+  { id:"s7", icon:"🏝️", title:"A Rival Crew",                    text:"Another crew is training on the same island. They're very well-equipped. They're watching.", choices:[{label:"Outperform them visibly",         xp:45, out:"You accelerate. They notice. You're already past them. +45 Berries"},{label:"Acknowledge them as equals",   xp:25, out:"Mutual respect. Luffy almost challenges their captain. You stop him. +25 Berries"}] },
+  { id:"s8", icon:"📡", title:"A Message from the Marines",       text:"An intercepted Marine broadcast mentions your name. The bounty has gone up.", choices:[{label:"Take it as a compliment",         xp:30, out:"Luffy is furious his hasn't. You have a peaceful twenty minutes while he processes this. +30 Berries"},{label:"Lay low and plan",             xp:20, out:"Smart. Information is a weapon. +20 Berries"}] },
 ];
 
 /* ═══════════════════════════════════════════════════
@@ -312,11 +353,12 @@ const todayIdx = () => { const d=new Date().getDay(); return d===0?6:d-1; };
 const hash     = s => { let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h+s.charCodeAt(i))|0; return Math.abs(h); };
 const pick     = a => a[Math.floor(Math.random()*a.length)];
 const diffColor= d => d==="Rare"?"#6d28d9":d==="Uncommon"?"#0369a1":"#166534";
+const fmt      = n => n>=1000000 ? (n/1000000).toFixed(0)+"M" : n>=1000 ? (n/1000).toFixed(0)+"K" : String(n);
 
-function getDailyContracts() {
+function getDailyMissions() {
   const seed = dayStamp();
-  return ["gym","run","mobility","home"].map(type => {
-    const pool = CONTRACTS.filter(c=>c.type===type);
+  return ["strength","run","mobility","home"].map(type => {
+    const pool = MISSIONS.filter(m=>m.type===type);
     return pool[hash(type+seed) % pool.length];
   });
 }
@@ -328,386 +370,349 @@ const LS = {
 
 function initState() {
   const ch = {};
-  COMPANIONS.forEach(c => { ch[c.id]={hp:100,xp:0,level:1,status:"ready"}; });
-  return { char:{name:"Ashley",level:1,xp:0,total:0}, ch, weekKey:weekKey(), weekW:[], allW:[], streak:0, best:0 };
+  CREW.forEach(c => { ch[c.id]={hp:100,xp:0,level:1,status:"ready"}; });
+  return { char:{name:"Ashley",level:1,xp:0,total:0,bounty:30000000}, ch, weekKey:weekKey(), weekW:[], allW:[], streak:0, best:0 };
 }
 
 /* ═══════════════════════════════════════════════════
    COMPONENTS
 ═══════════════════════════════════════════════════ */
 
-/* ── NavBar ── */
 function NavBar({ view, setView, hasKey, onApiSetup }) {
-  const tabs = [{id:"home",icon:"🏰",label:"Board"},{id:"party",icon:"⚔️",label:"Party"},{id:"journal",icon:"📜",label:"Journal"}];
+  const tabs = [{id:"home",icon:"🗺️",label:"Missions"},{id:"party",icon:"👥",label:"Crew"},{id:"journal",icon:"📜",label:"Log"}];
   return h('nav', {class:"navbar"},
-    tabs.map(t => h('button', {
-      key: t.id,
-      class: `nav-btn${view===t.id?" active":""}`,
-      onClick: () => setView(t.id)
-    }, h('div',{class:"nav-icon"},t.icon), t.label)),
-    h('button', {class:"nav-btn nav-api", onClick: onApiSetup},
-      h('div',{class:"nav-icon"},"⚙️"), "API",
+    tabs.map(t => h('button', {key:t.id, class:`nav-btn${view===t.id?" active":""}`, onClick:()=>setView(t.id)},
+      h('div',{class:"nav-icon"},t.icon), t.label
+    )),
+    h('button', {class:"nav-btn nav-api", onClick:onApiSetup},
+      h('div',{class:"nav-icon"},"⚙️"), "Den Den",
       hasKey && h('div',{class:"api-dot"})
     )
   );
 }
 
-/* ── HomeView ── */
-function HomeView({ gs, setGs, startContract }) {
+function HomeView({ gs, setGs, startMission }) {
   const [expanded, setExpanded] = useState(null);
   const { char, ch, weekW, streak, best } = gs;
   const xpPct = Math.min(100, ((char.xp % 500)/500)*100);
   const today = todayIdx();
-  const contracts = getDailyContracts();
+  const missions = getDailyMissions();
   const doneIds = weekW.map(w=>w.cid).filter(Boolean);
-  const injured = COMPANIONS.filter(c=>ch[c.id]?.status==="injured");
+  const injured = CREW.filter(c=>ch[c.id]?.status==="injured");
 
   return h('div', {class:"view fade-in"},
-    /* Header */
     h('div', {class:"page-header"},
-      h('div', {class:"header-deco"}, "✦ THE HERO'S JOURNEY ✦"),
+      h('div', {class:"wanted-label"}, "✦ WANTED ✦"),
       h('div', {class:"hero-name"}, char.name),
-      h('div', {class:"hero-sub"}, `Tiefling Ranger · Level ${char.level}`),
+      h('div', {class:"hero-sub"}, `Pirate · Level ${char.level}`),
+      h('div', {class:"bounty-row"},
+        h('div', {class:"bounty-lbl"}, "BOUNTY"),
+        h('div', {class:"bounty-val"}, `฿ ${fmt(char.bounty)}`),
+      ),
       h('div', {class:"xp-row"},
-        h('span', {class:"xp-label"}, `${char.xp} XP`),
+        h('span', {class:"xp-label"}, `${char.xp % 500} / 500`),
         h('div', {class:"xp-track"}, h('div', {class:"xp-fill",style:`width:${xpPct}%`})),
         h('span', {class:"xp-label"}, `Lv ${char.level+1}`)
-      )
+      ),
+      h('div',{class:"header-waves"})
     ),
 
-    /* Week tracker */
     h('div', {class:"card"},
       h('div', {class:"row",style:"margin-bottom:12px"},
-        h('div', {style:"font-family:'Cinzel',serif;font-weight:700;font-size:15px;color:#3b1a0a"}, "Weekly Contracts"),
-        h('div', {class:"spacer"}),
-        h('div', {class:"badge",style:`background:${weekW.length>=4?"#dcfce7":"#fef3c7"};color:${weekW.length>=4?"#166534":"#92400e"};border-color:${weekW.length>=4?"#86efac":"#c4a97d"}`}, `${weekW.length}/4`)
+        h('div', {class:"section-head",style:"margin:0;flex:1"}, "Weekly Missions"),
+        h('div', {class:"badge",style:`background:${weekW.length>=4?"#dcfce7":"#fff9e6"};color:${weekW.length>=4?"#166534":"#d4a017"};border-color:${weekW.length>=4?"#86efac":"#d4a017"}`}, `${weekW.length}/4`)
       ),
       h('div', {class:"week-grid"},
-        ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map((d,i) => {
-          const done = weekW.some(w=>w.day===i);
-          const isT  = i===today;
-          return h('div', {key:d, class:"day-pip", style:`background:${done?"#166534":isT?"#8b4513":"#e8d5b7"};border:1.5px solid ${done?"#14532d":isT?"#5c2d0e":"#c4a97d"}`},
-            h('div', {class:"day-label",style:`color:${done?"#dcfce7":isT?"#fef9c3":"#92400e"}`}, d),
-            h('div', {class:"day-mark",style:`color:${done?"#fff":isT?"#fef9c3":"#c4a97d"}`}, done?"✓":isT?"◆":"·")
+        ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map((d,i)=>{
+          const done=weekW.some(w=>w.day===i), isT=i===today;
+          return h('div',{key:d,class:"day-pip",style:`background:${done?"#0a1628":isT?"#c0392b":"#e8d5a0"};border-color:${done?"#d4a017":isT?"#1a0a00":"#d4a01766"}`},
+            h('div',{class:"day-label",style:`color:${done?"#d4a017":isT?"#fdf6e3":"#92400e"}`},d),
+            h('div',{class:"day-mark",style:`color:${done?"#d4a017":isT?"#fdf6e3":"#d4a01788"}`},done?"✓":isT?"◆":"·")
           );
         })
       ),
-      h('div', {class:"progress-track"}, h('div', {class:"progress-fill",style:`width:${Math.min(100,(weekW.length/4)*100)}%`})),
-      h('div', {class:"progress-text"}, weekW.length>=4 ? "⚜️ All contracts fulfilled this week!" : `${4-weekW.length} contract${4-weekW.length!==1?"s":""} remaining — the guild awaits`)
+      h('div',{class:"progress-track"},h('div',{class:"progress-fill",style:`width:${Math.min(100,(weekW.length/4)*100)}%`})),
+      h('div',{class:"progress-text"},weekW.length>=4?"⚓ All missions complete this week!":`${4-weekW.length} mission${4-weekW.length!==1?"s":""} remaining — the Grand Line awaits`)
     ),
 
-    /* Injured */
-    injured.length>0 && h('div', {class:"injured-card"},
-      h('div', {class:"injured-h"}, "⚠️ Companions Require Aid"),
-      injured.map(c => h('div', {key:c.id,class:"injured-row"},
-        h('span', {style:"font-size:20px"}, c.icon),
-        h('div', {style:"flex:1"},
-          h('div', {style:"font-family:'Cinzel',serif;font-weight:700;color:#991b1b;font-size:13px"}, c.name),
-          h('div', {style:"font-family:'Crimson Text',serif;font-style:italic;color:#b91c1c;font-size:12px"}, `"${c.injuredQ}"`)
+    injured.length>0 && h('div',{class:"injured-card"},
+      h('div',{class:"injured-h"},"⚠️ Crew Members Down"),
+      injured.map(c=>h('div',{key:c.id,class:"row",style:"margin-bottom:8px"},
+        h('span',{style:"font-size:20px"},c.icon),
+        h('div',{style:"flex:1"},
+          h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;color:#c0392b;font-size:13px"},c.name),
+          h('div',{style:"font-family:'Lora',serif;font-style:italic;color:#c0392b;font-size:12px"},`"${c.injuredQ}"`)
         ),
-        h('div', {style:"color:#991b1b;font-weight:700;font-size:12px;font-family:'Cinzel',serif"}, `HP ${ch[c.id]?.hp}`)
+        h('div',{style:"color:#c0392b;font-weight:700;font-size:12px;font-family:'Cabin',sans-serif"},`HP ${gs.ch[c.id]?.hp}`)
       ))
     ),
 
-    /* Contract board */
-    h('div', {style:"margin:16px 14px 0"},
-      h('div', {style:"font-family:'Cinzel',serif;font-weight:700;font-size:16px;color:#3b1a0a;margin-bottom:4px"}, "📋 Contract Board"),
-      h('div', {style:"font-family:'Crimson Text',serif;font-style:italic;font-size:13px;color:#92400e;margin-bottom:14px"}, "Today's quests — refreshes at midnight"),
-      contracts.map((c,idx) => {
-        const done = doneIds.includes(c.id);
-        const open = expanded===c.id;
-        const wt = WORKOUT_TYPES.find(w=>w.id===c.type);
-        return h('div', {key:c.id, class:"contract-card", style:`opacity:${done?0.6:1}`},
-          h('div', {class:"contract-top", onClick:()=>setExpanded(open?null:c.id)},
-            h('div', {style:"font-size:28px;line-height:1"}, c.icon),
-            h('div', {style:"flex:1"},
-              h('div', {class:"row",style:"flex-wrap:wrap;gap:6px;margin-bottom:3px"},
-                h('div', {class:"contract-title"}, `${done?"✓ ":""}${c.title}`),
-                h('div', {class:"tag tag-diff",style:`color:${diffColor(c.diff)};border-color:${diffColor(c.diff)}55;background:${diffColor(c.diff)}0f`}, c.diff)
+    h('div',{style:"margin:16px 14px 0"},
+      h('div',{class:"section-head"},"📋 Mission Board"),
+      h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:13px;color:#c0392b;margin-bottom:14px;margin-top:-8px"},"Rotates at midnight — choose your heading"),
+      missions.map((m,idx)=>{
+        const done=doneIds.includes(m.id), open=expanded===m.id;
+        const wt=WORKOUT_TYPES.find(w=>w.id===m.type);
+        return h('div',{key:m.id,class:"mission-card",style:`opacity:${done?0.55:1}`},
+          h('div',{class:"mission-top",onClick:()=>setExpanded(open?null:m.id)},
+            h('div',{style:"font-size:28px;line-height:1"},m.icon),
+            h('div',{style:"flex:1"},
+              h('div',{class:"row",style:"flex-wrap:wrap;gap:6px;margin-bottom:3px"},
+                h('div',{class:"mission-title"},`${done?"✓ ":""}${m.title}`),
+                h('div',{class:"tag tag-diff",style:`color:${diffColor(m.diff)};border-color:${diffColor(m.diff)};background:${diffColor(m.diff)}11`},m.diff)
               ),
-              h('div', {class:"contract-loc"}, c.loc),
-              h('div', {class:"row",style:"gap:6px;margin-top:5px;flex-wrap:wrap"},
-                h('span', {class:"tag tag-xp"}, `⚜️ ${c.xp} XP`),
-                h('span', {class:"tag tag-type"}, `${wt?.icon} ${wt?.label}`)
+              h('div',{class:"mission-loc"},m.loc),
+              h('div',{class:"row",style:"gap:6px;margin-top:5px;flex-wrap:wrap"},
+                h('span',{class:"tag tag-berry"},`฿ ${fmt(m.xp*1000)}`),
+                h('span',{class:"tag tag-type"},`${wt?.icon} ${wt?.label}`)
               )
             ),
-            h('div', {class:"chevron"}, open?"▲":"▼")
+            h('div',{class:"chevron"},open?"▲":"▼")
           ),
-          open && h('div', {class:"contract-body"},
-            h('div', {class:"flavor-text"}, `"${c.flavor}"`),
-            h('div', {class:"contract-desc"}, c.desc),
-            h('div', {class:"criteria-box"}, h('div',{class:"criteria-h"},"⚔️ Success Criteria"), h('div',{class:"criteria-t"},c.criteria)),
-            h('div', {style:"margin-bottom:14px"},
-              h('div', {style:"font-family:'Cinzel',serif;font-size:10px;color:#8b4513;margin-bottom:6px"}, "Recommended party traits:"),
-              c.traits.map(t => h('span', {key:t,class:"trait-pill"}, t))
+          open && h('div',{class:"mission-body"},
+            h('div',{class:"flavor-text"},`"${m.flavor}"`),
+            h('div',{class:"mission-desc"},m.desc),
+            h('div',{class:"criteria-box"},h('div',{class:"criteria-h"},"Mission Requirements"),h('div',{class:"criteria-t"},m.criteria)),
+            h('div',{style:"margin-bottom:14px"},
+              h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px"},"Ideal Crew Traits:"),
+              m.traits.map(t=>h('span',{key:t,class:"trait-pill"},t))
             ),
             !done
-              ? h('button', {class:"accept-btn", onClick:()=>{ setExpanded(null); startContract(c); }}, "Accept Contract →")
-              : h('div', {class:"done-tag"}, "Contract fulfilled ✓")
+              ? h('button',{class:"accept-btn",onClick:()=>{ setExpanded(null); startMission(m); }},"Set Sail →")
+              : h('div',{class:"done-tag"},"Mission Complete ✓")
           )
         );
       })
     ),
 
-    /* Stats */
-    h('div', {class:"stats-row"},
-      [["Quests",char.total],["Streak",`${streak}w`],["Best",`${best}w`]].map(([l,v])=>
-        h('div', {key:l,class:"stat-box"}, h('div',{class:"stat-val"},v), h('div',{class:"stat-lbl"},l))
+    h('div',{class:"stats-row"},
+      [["Missions",char.total],["Streak",`${streak}w`],["Best",`${best}w`]].map(([l,v])=>
+        h('div',{key:l,class:"stat-box"},h('div',{class:"stat-val"},v),h('div',{class:"stat-lbl"},l))
       )
     ),
-    h('div', {style:"height:20px"})
+    h('div',{style:"height:20px"})
   );
 }
 
-/* ── PickPartyView ── */
-function PickPartyView({ contract, gs, onConfirm, onBack }) {
+function PickCrewView({ mission, gs, onConfirm, onBack }) {
   const [sel, setSel] = useState([]);
   function toggle(id) {
-    setSel(s => s.includes(id) ? s.filter(x=>x!==id) : s.length<3 ? [...s,id] : s);
+    setSel(s=>s.includes(id)?s.filter(x=>x!==id):s.length<3?[...s,id]:s);
   }
-  return h('div', {class:"view fade-in"},
-    h('div', {class:"sub-header"},
-      h('button', {class:"back-btn", onClick:onBack}, "← Back"),
-      h('div', {class:"sub-header-title"}, "Assemble Your Party"),
-      h('div', {style:"min-width:60px"})
+  return h('div',{class:"view fade-in"},
+    h('div',{class:"sub-header"},
+      h('button',{class:"back-btn",onClick:onBack},"← Back"),
+      h('div',{class:"sub-header-title"},"Assemble Crew"),
+      h('div',{style:"min-width:60px"})
     ),
-    h('div', {style:"padding:16px"},
-      h('div', {style:"font-family:'Cinzel',serif;font-weight:700;font-size:19px;color:#3b1a0a;margin-bottom:4px"}, "Who rides with you?"),
-      h('div', {style:"font-family:'Crimson Text',serif;font-style:italic;font-size:14px;color:#92400e;margin-bottom:14px"}, "Pick 2–3 companions. Stars mark those suited to this quest."),
-      h('div', {class:"hint-box"},
-        h('div', {style:"font-family:'Cinzel',serif;font-size:11px;color:#8b4513;margin-bottom:6px"}, "Quest calls for:"),
-        h('div', null, contract.traits.map(t=>h('span',{key:t,class:"trait-pill"},t)))
+    h('div',{style:"padding:16px"},
+      h('div',{style:"font-family:'Pirata One',cursive;font-size:26px;color:#1a0a00;margin-bottom:4px"},"Who sails with you?"),
+      h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:14px;color:#c0392b;margin-bottom:14px"},"Pick 2–3. Stars mark crew suited to this mission."),
+      h('div',{class:"hint-box"},
+        h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px"},"Mission calls for:"),
+        h('div',null,mission.traits.map(t=>h('span',{key:t,class:"trait-pill"},t)))
       ),
-      h('div', {class:"comp-grid",style:"margin-top:14px"},
-        COMPANIONS.map(c => {
-          const ch = gs.ch[c.id]||{};
-          const isSel = sel.includes(c.id);
-          const injured = ch.status==="injured";
-          const match = contract.traits.some(t=>c.strengths.includes(t));
-          return h('button', {
-            key: c.id,
-            class: `comp-btn${isSel?" selected":""}${match&&!isSel?" matched":""}`,
-            style: `--cc:${c.color};--cc-rgb:${c.rgb};border-color:${isSel?c.color:match?c.color+"88":"#c4a97d"};background:${isSel?c.color+"1a":match?c.color+"09":"#fffbf4"};opacity:${injured?0.4:1}`,
-            onClick: () => !injured && toggle(c.id)
+      h('div',{class:"crew-grid",style:"margin-top:14px"},
+        CREW.map(c=>{
+          const ch=gs.ch[c.id]||{};
+          const isSel=sel.includes(c.id), injured=ch.status==="injured";
+          const match=mission.traits.some(t=>c.strengths.includes(t));
+          return h('button',{
+            key:c.id, class:`crew-btn${isSel?" selected":""}${match&&!isSel?" matched":""}`,
+            style:`--cc:${c.color};border-color:${isSel?c.color:match?c.color+"88":"#d4a01766"};background:${isSel?c.color+"1a":match?c.color+"09":"#fdf6e3"};opacity:${injured?0.4:1}`,
+            onClick:()=>!injured&&toggle(c.id)
           },
-            isSel && h('div', {class:"comp-check",style:`color:${c.color}`}, "✓"),
-            h('div', {style:"font-size:26px"}, c.icon),
-            h('div', {class:"comp-name"}, c.name),
-            match&&!isSel&&!injured && h('div', {class:"comp-match",style:`color:${c.color}`}, "★ match"),
-            injured && h('div', {style:"font-size:9px;color:#dc2626"}, "injured")
+            isSel&&h('div',{class:"crew-check",style:`color:${c.color}`},"✓"),
+            h('div',{style:"font-size:26px"},c.icon),
+            h('div',{class:"crew-name"},c.name),
+            h('div',{class:"crew-role"},c.role),
+            match&&!isSel&&!injured&&h('div',{class:"crew-match",style:`color:${c.color}`},"★"),
+            injured&&h('div',{style:"font-size:9px;color:#c0392b"},"injured")
           );
         })
       ),
-      h('button', {class:"primary-btn", disabled:sel.length<2, onClick:()=>onConfirm(sel)},
-        `⚔️ Begin Quest (${sel.length}/3 selected)`
+      h('button',{class:"primary-btn",disabled:sel.length<2,onClick:()=>onConfirm(sel)},
+        `⚓ Set Sail (${sel.length}/3)`
       )
     )
   );
 }
 
-/* ── QuestModeView ── */
-function QuestModeView({ contract, companions, gs, apiKey, onFinish, onAbandon }) {
-  const milestones = MILESTONES[contract.id] || DEFAULT_MS;
-  const companionObjs = companions.map(id=>COMPANIONS.find(c=>c.id===id)).filter(Boolean);
+function QuestView({ mission, crewIds, gs, apiKey, onFinish, onAbandon }) {
+  const milestones = MILESTONES[mission.id] || DEFAULT_MS;
+  const crewObjs   = crewIds.map(id=>CREW.find(c=>c.id===id)).filter(Boolean);
 
-  // Build banter feed from selected companions
   const banterFeed = [];
-  companions.forEach(id => {
-    const b = BANTER[id]||[];
-    b.forEach(({at,l}) => banterFeed.push({id,at,line:pick(l)}));
-  });
-  const encounters = [...ENCOUNTERS].sort(()=>Math.random()-0.5).slice(0,2);
+  crewIds.forEach(id=>{ const b=BANTER[id]||[]; b.forEach(({at,l})=>banterFeed.push({id,at,line:pick(l)})); });
+  const events = [...SEA_EVENTS].sort(()=>Math.random()-0.5).slice(0,2);
 
-  const [msIdx, setMsIdx]     = useState(0);
-  const [feed, setFeed]       = useState([]);
-  const [elapsed, setElapsed] = useState(0);
-  const [bonusXP, setBonusXP] = useState(0);
-  const [encounter, setEncounter] = useState(null);
-  const [encDone, setEncDone] = useState([]);
-  const [input, setInput]     = useState("");
-  const [thinking, setThinking] = useState(false);
+  const [msIdx,  setMsIdx]     = useState(0);
+  const [feed,   setFeed]      = useState([]);
+  const [elapsed,setElapsed]   = useState(0);
+  const [bonusXP,setBonusXP]   = useState(0);
+  const [event,  setEvent]     = useState(null);
+  const [evDone, setEvDone]    = useState([]);
+  const [input,  setInput]     = useState("");
+  const [thinking,setThinking] = useState(false);
   const feedRef = useRef(null);
 
-  const addFeed = useCallback(item => {
-    setFeed(f => [...f, {...item, fid: Date.now()+Math.random()}]);
-  }, []);
+  const addFeed = useCallback(item=>setFeed(f=>[...f,{...item,fid:Date.now()+Math.random()}]),[]);
 
-  // Timer
-  useEffect(()=>{
-    const t = setInterval(()=>setElapsed(e=>e+1),1000);
-    return ()=>clearInterval(t);
-  },[]);
+  useEffect(()=>{ const t=setInterval(()=>setElapsed(e=>e+1),1000); return()=>clearInterval(t); },[]);
 
-  // Auto banter schedule
   useEffect(()=>{
-    const ts = [
+    const ts=[
       setTimeout(()=>{ const m=banterFeed.find(b=>b.at==="start"); if(m) addFeed({type:"banter",cid:m.id,text:m.line}); },3000),
-      setTimeout(()=>{ const msgs=banterFeed.filter(b=>b.at==="mid"); if(msgs.length) { const m=pick(msgs); addFeed({type:"banter",cid:m.id,text:m.line}); } },90000),
-      setTimeout(()=>{ const msgs=banterFeed.filter(b=>b.at==="push"); if(msgs.length) { const m=pick(msgs); addFeed({type:"banter",cid:m.id,text:m.line}); } },240000),
-      setTimeout(()=>{ if(!encDone.includes(0)&&encounters[0]) setEncounter({...encounters[0],idx:0}); },120000),
-      setTimeout(()=>{ if(!encDone.includes(1)&&encounters[1]) setEncounter({...encounters[1],idx:1}); },300000),
+      setTimeout(()=>{ const ms=banterFeed.filter(b=>b.at==="mid"); if(ms.length){ const m=pick(ms); addFeed({type:"banter",cid:m.id,text:m.line}); } },90000),
+      setTimeout(()=>{ const ms=banterFeed.filter(b=>b.at==="push"); if(ms.length){ const m=pick(ms); addFeed({type:"banter",cid:m.id,text:m.line}); } },240000),
+      setTimeout(()=>{ if(!evDone.includes(0)&&events[0]) setEvent({...events[0],idx:0}); },120000),
+      setTimeout(()=>{ if(!evDone.includes(1)&&events[1]) setEvent({...events[1],idx:1}); },300000),
     ];
-    return ()=>ts.forEach(clearTimeout);
+    return()=>ts.forEach(clearTimeout);
   },[]);
 
-  // Scroll feed
-  useEffect(()=>{
-    if(feedRef.current) feedRef.current.scrollTop = feedRef.current.scrollHeight;
-  },[feed,thinking]);
+  useEffect(()=>{ if(feedRef.current) feedRef.current.scrollTop=feedRef.current.scrollHeight; },[feed,thinking]);
 
-  async function sendMessage() {
-    const text = input.trim();
-    if(!text||thinking) return;
-    setInput("");
-    addFeed({type:"player",text});
+  async function sendMsg() {
+    const text=input.trim(); if(!text||thinking) return;
+    setInput(""); addFeed({type:"player",text});
     if(!apiKey) {
-      const msgs = banterFeed.filter(b=>b.at==="mid");
-      if(msgs.length) { const m=pick(msgs); setTimeout(()=>addFeed({type:"banter",cid:m.id,text:m.line}),700); }
+      const ms=banterFeed.filter(b=>b.at==="mid");
+      if(ms.length){ const m=pick(ms); setTimeout(()=>addFeed({type:"banter",cid:m.id,text:m.line}),700); }
       return;
     }
     setThinking(true);
     try {
-      const phase = msIdx===0?"just beginning":msIdx>=milestones.length-1?"almost done, final push":`${msIdx} of ${milestones.length} milestones complete`;
-      const recentFeed = feed.slice(-6).map(f=>{
+      const phase=msIdx===0?"just setting sail":msIdx>=milestones.length-1?"almost done, final push":`${msIdx} of ${milestones.length} milestones complete`;
+      const recent=feed.slice(-6).map(f=>{
         if(f.type==="player") return `Ashley: "${f.text}"`;
-        if(f.type==="banter") { const c=COMPANIONS.find(x=>x.id===f.cid); return c?`${c.name}: "${f.text}"`:""; }
+        if(f.type==="banter"){ const c=CREW.find(x=>x.id===f.cid); return c?`${c.name}: "${f.text}"`:""; }
         return "";
       }).filter(Boolean).join("\n");
 
-      const sys = `You are the companion voice system for "The Hero's Journey", a gamified workout app set in Baldur's Gate 3.
+      const sys=`You are the crew voice system for a One Piece themed workout app.
 
-Ashley is a Tiefling Ranger doing a real workout: "${contract.title}" — ${contract.desc}
-Quest phase: ${phase}. Time elapsed: ${Math.floor(elapsed/60)} minutes.
-Her party: ${companionObjs.map(c=>`${c.name} (${c.race} ${c.role})`).join(", ")}
-Recent chat:\n${recentFeed||"(quest just started)"}
+Ashley is a pirate doing a real workout: "${mission.title}" — ${mission.desc}
+Mission phase: ${phase}. Time elapsed: ${Math.floor(elapsed/60)} minutes.
+Her crew: ${crewObjs.map(c=>`${c.name} (${c.role})`).join(", ")}
+Recent chat:\n${recent||"(mission just started)"}
 
-Respond as 1-2 party members. Stay TRUE to BG3 personality:
-- Astarion: dry wit, theatrical, secretly warm, never admits effort
-- Shadowheart: guarded, devoted to Shar, dry humour, grudging respect
-- Gale: intellectual, enthusiastic, slightly pompous, genuinely caring
-- Karlach: boundlessly enthusiastic, loud, warm, emotional
-- Wyll: noble, heroic framing, story-minded, genuinely good
-- Lae'zel: demanding, no patience for weakness, rare real respect
-- Halsin: calm, nature-attuned, patient, wise
-- Jaheira: veteran, blunt, seen-it-all, secretly warm
-- Minsc: loud, chaotic good, always references Boo in third person
-- Minthara: cold, proud, contemptuous, can be won over
+Respond as 1-2 crew members. Stay TRUE to One Piece personality:
+- Luffy: simple, enthusiastic, food-obsessed, genuinely inspiring, never gives up
+- Zoro: blunt, minimalist, about getting stronger, naps, gets lost
+- Nami: sharp, weather/navigation focused, talks about money, actually caring
+- Usopp: cowardly but brave when it counts, tall tales, deeply loyal
+- Sanji: chivalrous to women, cooking metaphors, kicks things, flirtatious
+- Chopper: excited doctor, hates compliments, loves them, medical observations
+- Robin: calm, dark humour, archaeological references, "fufufu"
+- Franky: SUPER, cola-powered, engineering enthusiasm, builds things
+- Brook: skeleton jokes, music references, yohohoho, surprisingly wise
+- Jinbe: calm, helmsman wisdom, sea metaphors, deeply honourable
+- Yamato: Oden-obsessed, overly enthusiastic, wants to be a samurai
+- Vivi: warm, encouraging, references Alabasta, genuinely caring
 
-Only use companions IN this party: ${companionObjs.map(c=>c.name).join(", ")}.
+Only use crew IN this party: ${crewObjs.map(c=>c.name).join(", ")}.
 
 Respond ONLY as JSON, no markdown:
-{"responses":[{"companion":"Name","text":"what they say"}]}
+{"responses":[{"crew":"Name","text":"what they say"}]}
 
-React to what Ashley said. Let length match personality. Do not break character.`;
+React to what Ashley said. Match the character's voice exactly.`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages",{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
         headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
         body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:sys,messages:[{role:"user",content:`Ashley says: "${text}"`}]})
       });
-      const data = await res.json();
+      const data=await res.json();
       if(data.error) throw new Error(data.error.message);
       let parsed;
-      try { parsed = JSON.parse(data.content?.[0]?.text||"{}"); } catch { parsed={responses:[{companion:companionObjs[0]?.name,text:data.content?.[0]?.text||"..."}]}; }
+      try{ parsed=JSON.parse(data.content?.[0]?.text||"{}"); }catch{ parsed={responses:[{crew:crewObjs[0]?.name,text:data.content?.[0]?.text||"..."}]}; }
       (parsed.responses||[]).forEach((r,i)=>{
-        const comp = COMPANIONS.find(c=>c.name===r.companion);
-        setTimeout(()=>addFeed({type:"banter",cid:comp?.id||companions[0],text:r.text}), i*800);
+        const comp=CREW.find(c=>c.name===r.crew);
+        setTimeout(()=>addFeed({type:"banter",cid:comp?.id||crewIds[0],text:r.text}),i*800);
       });
     } catch(err) {
-      addFeed({type:"sys",text:`[Companions unreachable: ${err.message}]`});
-    } finally {
-      setThinking(false);
-    }
+      addFeed({type:"sys",text:`[Den Den Mushi disconnected: ${err.message}]`});
+    } finally { setThinking(false); }
   }
 
   function advance() {
-    const ms = milestones[msIdx];
+    const ms=milestones[msIdx];
     addFeed({type:"ms",label:ms.l,text:ms.s});
-    const next = msIdx+1;
-    setMsIdx(next);
+    const next=msIdx+1; setMsIdx(next);
     if(next>=milestones.length) {
-      setTimeout(()=>{
-        const msgs=banterFeed.filter(b=>b.at==="done");
-        if(msgs.length){ const m=pick(msgs); addFeed({type:"banter",cid:m.id,text:m.line}); }
-      },800);
+      setTimeout(()=>{ const ms=banterFeed.filter(b=>b.at==="done"); if(ms.length){ const m=pick(ms); addFeed({type:"banter",cid:m.id,text:m.line}); } },800);
     } else if(next===2) {
-      setTimeout(()=>{
-        const msgs=banterFeed.filter(b=>b.at==="push");
-        if(msgs.length){ const m=pick(msgs); addFeed({type:"banter",cid:m.id,text:m.line}); }
-      },600);
+      setTimeout(()=>{ const ms=banterFeed.filter(b=>b.at==="push"); if(ms.length){ const m=pick(ms); addFeed({type:"banter",cid:m.id,text:m.line}); } },600);
     }
   }
 
-  function resolveEnc(choice, idx) {
+  function resolveEvent(choice,idx) {
     addFeed({type:"enc_res",text:choice.out});
     setBonusXP(b=>b+choice.xp);
-    setEncDone(d=>[...d,idx]);
-    setEncounter(null);
+    setEvDone(d=>[...d,idx]);
+    setEvent(null);
   }
 
-  const done = msIdx>=milestones.length;
-  const mins = Math.floor(elapsed/60), secs = elapsed%60;
-  const curMs = milestones[msIdx];
+  const done=msIdx>=milestones.length;
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  const curMs=milestones[msIdx];
 
-  return h('div', {class:"quest-view"},
-    /* Header */
-    h('div', {class:"quest-header"},
-      h('div', {class:"row",style:"margin-bottom:8px"},
-        h('div', {style:"flex:1;min-width:0"},
-          h('div', {class:"header-deco"}, "⚔️ QUEST IN PROGRESS"),
-          h('div', {class:"quest-title"}, contract.title),
-          h('div', {class:"quest-loc"}, contract.loc)
+  return h('div',{class:"quest-view"},
+    h('div',{class:"quest-header"},
+      h('div',{class:"row",style:"margin-bottom:8px"},
+        h('div',{style:"flex:1;min-width:0"},
+          h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#d4a017;letter-spacing:3px;text-transform:uppercase;margin-bottom:3px"},"⚓ MISSION IN PROGRESS"),
+          h('div',{class:"quest-title"},mission.title),
+          h('div',{class:"quest-loc"},mission.loc)
         ),
-        h('div', {style:"text-align:right;flex-shrink:0;margin-left:10px"},
-          h('div', {class:"quest-timer"}, `⏱ ${mins}:${String(secs).padStart(2,"0")}`),
-          bonusXP>0 && h('div', {class:"quest-bonus"}, `+${bonusXP} XP`)
+        h('div',{style:"text-align:right;flex-shrink:0;margin-left:10px"},
+          h('div',{class:"quest-timer"},`⏱ ${mins}:${String(secs).padStart(2,"0")}`),
+          bonusXP>0&&h('div',{class:"quest-bonus"},`+฿${fmt(bonusXP*1000)}`)
         )
       ),
-      h('div', {class:"row",style:"gap:6px;margin-bottom:10px;flex-wrap:wrap"},
-        companionObjs.map(c=>h('div',{key:c.id,style:`background:${c.color}22;border:1.5px solid ${c.color}88;border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px`},
+      h('div',{class:"row",style:"gap:6px;margin-bottom:10px;flex-wrap:wrap"},
+        crewObjs.map(c=>h('div',{key:c.id,style:`background:${c.color}22;border:1.5px solid ${c.color}88;border-radius:3px;padding:5px 10px;display:flex;align-items:center;gap:5px`},
           h('span',{style:"font-size:16px"},c.icon),
-          h('span',{style:"font-family:'Cinzel',serif;font-size:9px;color:#fef3c7"},c.name.split(" ")[0])
+          h('span',{style:"font-family:'Cabin',sans-serif;font-size:9px;font-weight:700;color:#fdf6e3"},c.name.split(" ")[0])
         )),
-        !apiKey && h('div',{style:"background:#92400e22;border:1px solid #92400e55;border-radius:10px;padding:5px 10px"},
-          h('span',{style:"font-family:'Cinzel',serif;font-size:9px;color:#c4a97d"},"No API key")
+        !apiKey&&h('div',{style:"background:#d4a01722;border:1px solid #d4a01766;border-radius:3px;padding:5px 10px"},
+          h('span',{style:"font-family:'Cabin',sans-serif;font-size:9px;font-weight:700;color:#d4a017"},"No Den Den key")
         )
       ),
-      h('div', {class:"milestone-bar"},
-        milestones.map((_,i)=>h('div',{key:i,class:"ms-pip",style:`background:${i<msIdx?"#4ade80":i===msIdx?"#fbbf24":"rgba(255,255,255,0.2)"}`}))
+      h('div',{class:"milestone-bar"},
+        milestones.map((_,i)=>h('div',{key:i,class:"ms-pip",style:`background:${i<msIdx?"#d4a017":i===msIdx?"#c0392b":"rgba(255,255,255,0.15)"}`}))
       )
     ),
 
-    /* Encounter overlay */
-    encounter && h('div', {class:"enc-overlay"},
-      h('div', {class:"enc-card enc-pop"},
-        h('div', {style:"font-size:38px;text-align:center;margin-bottom:8px"}, encounter.icon),
-        h('div', {class:"enc-title"}, encounter.title),
-        h('div', {class:"enc-text"}, `"${encounter.text}"`),
-        encounter.choices.map((ch,i)=>h('button',{key:i,class:"choice-btn",onClick:()=>resolveEnc(ch,encounter.idx)},
+    event&&h('div',{class:"enc-overlay"},
+      h('div',{class:"enc-card enc-pop"},
+        h('div',{style:"font-size:40px;text-align:center;margin-bottom:8px"},event.icon),
+        h('div',{class:"enc-title"},event.title),
+        h('div',{class:"enc-text"},`"${event.text}"`),
+        event.choices.map((ch,i)=>h('button',{key:i,class:"choice-btn",onClick:()=>resolveEvent(ch,event.idx)},
           h('span',{class:"choice-label"},ch.label),
-          h('span',{class:"choice-xp"},`+${ch.xp} XP`)
+          h('span',{class:"choice-berry"},`฿${fmt(ch.xp*1000)}`)
         ))
       )
     ),
 
-    /* Feed */
-    h('div', {class:"quest-feed",ref:feedRef},
-      h('div', {class:"story-card"},
-        h('div', {style:"font-family:'Cinzel',serif;font-weight:700;color:#3b1a0a;font-size:12px;margin-bottom:6px"}, `📍 ${milestones[0].l}`),
-        h('div', {class:"flavor-text"}, `"${contract.flavor}"`),
-        h('div', {class:"contract-desc"}, contract.desc),
-        !apiKey && h('div', {style:"margin-top:10px;padding:8px 10px;background:#fef3c7;border-radius:8px;border:1px solid #c4a97d;font-family:'Cinzel',serif;font-size:10px;color:#8b4513"},
-          "💬 Add a Claude API key via ⚙️ to chat with your companions live"
+    h('div',{class:"quest-feed",ref:feedRef},
+      h('div',{class:"story-card"},
+        h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:#d4a017;text-transform:uppercase;margin-bottom:6px"},`📍 ${milestones[0].l}`),
+        h('div',{class:"flavor-text"},`"${mission.flavor}"`),
+        h('div',{class:"mission-desc"},mission.desc),
+        !apiKey&&h('div',{style:"margin-top:10px;padding:8px 10px;background:#fff9e6;border-radius:3px;border:1px solid #d4a017;font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:1px"},
+          "💬 ADD DEN DEN KEY VIA ⚙️ TO CHAT WITH YOUR CREW LIVE"
         )
       ),
-      ...feed.map(item => {
+      ...feed.map(item=>{
         if(item.type==="player") return h('div',{key:item.fid,class:"player-msg slide-up"},
           h('div',{class:"player-who"},"ASHLEY"),
-          h('div',{style:"font-family:'Crimson Text',serif;font-size:14px;color:#3b1a0a"},item.text)
+          h('div',{style:"font-family:'Lora',serif;font-size:14px;color:#1a0a00"},item.text)
         );
-        if(item.type==="banter") {
-          const comp = COMPANIONS.find(c=>c.id===item.cid);
-          if(!comp) return null;
+        if(item.type==="banter"){
+          const comp=CREW.find(c=>c.id===item.cid); if(!comp) return null;
           return h('div',{key:item.fid,class:"banter-msg banter-in",style:`border-left-color:${comp.color}`},
             h('div',{class:"banter-who"},
               h('span',{style:"font-size:18px"},comp.icon),
@@ -717,191 +722,173 @@ React to what Ashley said. Let length match personality. Do not break character.
           );
         }
         if(item.type==="ms") return h('div',{key:item.fid,class:"milestone-card slide-up"},
-          h('div',{class:"ms-label"},`✓ ${item.label}`),
+          h('div',{class:"ms-label"},`⚓ ${item.label}`),
           h('div',{class:"ms-story"},item.text)
         );
         if(item.type==="enc_res") return h('div',{key:item.fid,class:"enc-result slide-up"},
-          h('div',{class:"enc-res-h"},"ENCOUNTER RESOLVED"),
-          h('div',{style:"font-family:'Crimson Text',serif;font-size:14px;color:#3b1a0a"},item.text)
+          h('div',{class:"enc-res-h"},"Sea Event Resolved"),
+          h('div',{style:"font-family:'Lora',serif;font-size:14px;color:#1a0a00"},item.text)
         );
         if(item.type==="sys") return h('div',{key:item.fid,class:"sys-msg"},item.text);
         return null;
       }),
-      thinking && h('div',{class:"row pulsing",style:"padding:8px 4px"},
-        companionObjs[0] && h('span',{style:"font-size:18px"},companionObjs[0].icon),
-        h('span',{class:"sys-msg",style:"margin:0 8px"},"thinking...")
+      thinking&&h('div',{class:"row pulsing",style:"padding:8px 4px"},
+        crewObjs[0]&&h('span',{style:"font-size:18px"},crewObjs[0].icon),
+        h('span',{class:"sys-msg",style:"margin:0 8px"},"Den Den Mushi connecting...")
       ),
       h('div',{style:"height:20px"})
     ),
 
-    /* Footer */
-    h('div', {class:"quest-footer"},
-      h('div', {class:"chat-row"},
-        h('input', {
-          class:"chat-input",
-          value:input,
-          placeholder: apiKey?"Say something to your party...":"Add API key to chat live",
-          onInput: e=>setInput(e.target.value),
-          onKeyDown: e=>{ if(e.key==="Enter"){ e.preventDefault(); sendMessage(); } },
-          disabled: thinking
-        }),
-        h('button', {class:"send-btn",disabled:!input.trim()||thinking,onClick:sendMessage}, "➤")
+    h('div',{class:"quest-footer"},
+      h('div',{class:"chat-row"},
+        h('input',{class:"chat-input",value:input,placeholder:apiKey?"Talk to your crew...":"Add Den Den key to chat live",onInput:e=>setInput(e.target.value),onKeyDown:e=>{if(e.key==="Enter"){e.preventDefault();sendMsg();}},disabled:thinking}),
+        h('button',{class:"send-btn",disabled:!input.trim()||thinking,onClick:sendMsg},"➤")
       ),
       !done
         ? h('div',null,
-            curMs?.c && h('div',{class:"ms-cue"},curMs.c),
+            curMs?.c&&h('div',{class:"ms-cue"},curMs.c),
             h('div',{class:"ms-action"},
-              h('button',{class:"ms-advance",onClick:advance}, `✓ ${curMs?.l||"Advance"}`),
-              h('button',{class:"quit-btn",onClick:onAbandon},"Quit")
+              h('button',{class:"ms-advance",onClick:advance},`⚓ ${curMs?.l||"Advance"}`),
+              h('button',{class:"quit-btn",onClick:onAbandon},"Abandon")
             )
           )
         : h('div',null,
-            h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#166534;text-align:center;font-size:13px;margin-bottom:6px"}, `⚜️ Quest Complete! +${bonusXP} bonus XP`),
-            h('button',{class:"primary-btn",onClick:()=>onFinish(bonusXP)}, "Claim Reward & Record Quest →")
+            h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;color:#166534;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px"},`⚓ Mission Complete! +฿${fmt(bonusXP*1000)} bonus`),
+            h('button',{class:"primary-btn",onClick:()=>onFinish(bonusXP)},"Claim Bounty →")
           )
     )
   );
 }
 
-/* ── LogView ── */
-function LogView({ contract, companions, bonusXP, onComplete, onBack }) {
+function LogView({ mission, crewIds, bonusXP, onComplete, onBack }) {
   const [effort, setEffort] = useState(null);
-  const [notes, setNotes]   = useState("");
-  const ef = EFFORT.find(e=>e.v===effort);
-  const baseXP = Math.round((contract?.xp||150)*(ef?.mult||1));
-  const noteBonus = notes.trim().length>10 ? 25 : 0;
-  const total = baseXP + noteBonus + (bonusXP||0);
+  const [notes,  setNotes]  = useState("");
+  const ef=EFFORT.find(e=>e.v===effort);
+  const baseXP=Math.round((mission?.xp||150)*(ef?.mult||1));
+  const noteBonus=notes.trim().length>10?25:0;
+  const total=baseXP+noteBonus+(bonusXP||0);
 
-  return h('div', {class:"view fade-in"},
-    h('div', {class:"sub-header"},
+  return h('div',{class:"view fade-in"},
+    h('div',{class:"sub-header"},
       h('button',{class:"back-btn",onClick:onBack},"← Back"),
-      h('div',{class:"sub-header-title"},"Record Your Quest"),
+      h('div',{class:"sub-header-title"},"Mission Log"),
       h('div',{style:"min-width:60px"})
     ),
-    h('div', {style:"padding:16px"},
-      h('div',{style:"font-family:'Cinzel',serif;font-weight:700;font-size:19px;color:#3b1a0a;margin-bottom:4px"},"How hard did you push?"),
-      h('div',{style:"font-family:'Crimson Text',serif;font-style:italic;font-size:14px;color:#92400e;margin-bottom:14px"},"Sets your final XP multiplier."),
+    h('div',{style:"padding:16px"},
+      h('div',{style:"font-family:'Pirata One',cursive;font-size:26px;color:#1a0a00;margin-bottom:4px"},"How hard did you push?"),
+      h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:14px;color:#c0392b;margin-bottom:14px"},"Sets your bounty multiplier."),
       EFFORT.map(e=>h('button',{key:e.v,class:`option-row${effort===e.v?" selected":""}`,onClick:()=>setEffort(e.v)},
         h('span',{style:"font-size:26px"},e.icon),
         h('div',{style:"flex:1"},
           h('div',{class:"opt-label"},e.label),
           h('div',{class:"opt-sub"},e.desc)
         ),
-        h('div',{style:"font-family:'Cinzel',serif;font-weight:800;color:#8b4513;font-size:14px"},`×${e.mult}`)
+        h('div',{style:"font-family:'Pirata One',cursive;color:#c0392b;font-size:16px"},`×${e.mult}`)
       )),
       h('div',{style:"margin-top:18px"},
-        h('div',{style:"font-family:'Cinzel',serif;font-weight:700;font-size:17px;color:#3b1a0a;margin-bottom:4px"},"Chronicle (optional)"),
-        h('div',{style:"font-family:'Crimson Text',serif;font-style:italic;font-size:14px;color:#92400e;margin-bottom:10px"},"Notes unlock +25 bonus XP."),
-        h('textarea',{
-          style:"width:100%;padding:14px;background:#fffbf4;border:1.5px solid #c4a97d;border-radius:10px;font-family:'Crimson Text',serif;font-size:15px;color:#3b1a0a;resize:none;min-height:90px",
-          placeholder:"What happened? What did you overcome?",
-          value:notes,
-          onInput:e=>setNotes(e.target.value)
-        })
+        h('div',{style:"font-family:'Pirata One',cursive;font-size:22px;color:#1a0a00;margin-bottom:4px"},"Captain's Log"),
+        h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:14px;color:#c0392b;margin-bottom:10px"},"Notes unlock bonus bounty."),
+        h('textarea',{style:"width:100%;padding:14px;background:#fdf6e3;border:2px solid #d4a01766;border-radius:3px;font-family:'Lora',serif;font-size:15px;color:#1a0a00;resize:none;min-height:90px",placeholder:"What happened out there?",value:notes,onInput:e=>setNotes(e.target.value)})
       ),
-      bonusXP>0 && h('div',{class:"xp-estimate",style:"margin-top:10px"},
-        h('div',{style:"font-family:'Crimson Text',serif;color:#166534;font-size:13px"},"Encounter bonus"),
-        h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#166534;font-size:16px"},`+${bonusXP} XP`)
+      bonusXP>0&&h('div',{class:"xp-estimate",style:"margin-top:10px"},
+        h('div',{style:"font-family:'Lora',serif;color:#166534;font-size:13px"},"Sea event bonus"),
+        h('div',{style:"font-family:'Pirata One',cursive;color:#166534;font-size:18px"},`+฿${fmt(bonusXP*1000)}`)
       ),
       h('div',{class:"xp-estimate",style:"margin-top:8px"},
-        h('div',{style:"font-family:'Crimson Text',serif;color:#92400e;font-size:14px"},"Total reward"),
-        h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#8b4513;font-size:22px"},`⚜️ +${effort?total:"?"} XP`)
+        h('div',{style:"font-family:'Lora',serif;color:#c0392b;font-size:14px"},"Total bounty"),
+        h('div',{style:"font-family:'Pirata One',cursive;color:#c0392b;font-size:26px"},`฿ ${effort?fmt(total*1000):"???"}`)
       ),
       h('button',{class:"primary-btn",style:"margin-top:14px",disabled:!effort,onClick:()=>onComplete(effort,notes,total)},
-        "⚔️ Complete & Claim Reward"
+        "⚓ Log Mission & Claim Bounty"
       )
     )
   );
 }
 
-/* ── PartyView ── */
-function PartyView({ gs }) {
-  return h('div', {class:"view fade-in"},
-    h('div', {class:"page-title-area"},
-      h('div',{class:"page-title"},"Your Party"),
-      h('div',{class:"page-sub"},"Companions grow stronger with every quest.")
+function CrewView({ gs }) {
+  return h('div',{class:"view fade-in"},
+    h('div',{class:"page-title-area"},
+      h('div',{class:"page-title"},"Straw Hat Crew"),
+      h('div',{class:"page-sub"},"Sail together, grow stronger together.")
     ),
-    COMPANIONS.map(c => {
-      const ch = gs.ch[c.id]||{hp:100,xp:0,level:1,status:"ready"};
-      const injured = ch.status==="injured";
-      return h('div', {key:c.id,class:"comp-row",style:`border-color:${injured?"#fca5a5":c.color+"44"};background:${injured?"#fff8f8":"#fffbf4"}`},
-        h('div', {class:"comp-icon",style:`background:${c.color}18;border:2px solid ${c.color}55`}, c.icon),
-        h('div', {style:"flex:1"},
-          h('div', {class:"row"},
-            h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#3b1a0a;font-size:14px"},c.name),
-            h('div',{style:`font-size:11px;color:${injured?"#dc2626":"#166534"};background:${injured?"#fee2e2":"#dcfce7"};border:1px solid ${injured?"#fca5a5":"#86efac"};padding:1px 8px;border-radius:20px;font-family:'Crimson Text',serif;font-weight:600`},injured?"⚠ Injured":"Ready")
+    CREW.map(c=>{
+      const ch=gs.ch[c.id]||{hp:100,xp:0,level:1,status:"ready"};
+      const injured=ch.status==="injured";
+      return h('div',{key:c.id,class:"crew-row",style:`border-color:${injured?"#c0392b":c.color+"44"};background:${injured?"#fff5f5":"#fdf6e3"}`},
+        h('div',{class:"crew-icon-box",style:`background:${c.color}15;border-color:${injured?"#c0392b":c.color}55`},c.icon),
+        h('div',{style:"flex:1"},
+          h('div',{class:"row"},
+            h('div',{style:"font-family:'Pirata One',cursive;font-size:18px;color:#1a0a00"},c.name),
+            h('div',{style:`font-size:11px;font-family:'Cabin',sans-serif;font-weight:700;color:${injured?"#c0392b":"#166534"};background:${injured?"#fee2e2":"#dcfce7"};border:1px solid ${injured?"#fca5a5":"#86efac"};padding:1px 8px;border-radius:2px;letter-spacing:1px;text-transform:uppercase`},injured?"⚠ Injured":"Ready")
           ),
-          h('div',{style:`font-family:'Crimson Text',serif;color:${c.color};font-size:12px;margin-bottom:4px`},`${c.race} · ${c.role} · Level ${ch.level}`),
+          h('div',{style:`font-family:'Cabin',sans-serif;font-weight:700;font-size:11px;color:${c.color};letter-spacing:1px;text-transform:uppercase;margin-bottom:4px`},`${c.role} · Level ${ch.level}`),
           h('div',{class:"hp-track"},h('div',{class:"hp-fill",style:`width:${ch.hp}%;background:${injured?"#ef4444":ch.hp>60?"#166534":"#ca8a04"}`})),
-          h('div',{style:"font-family:'Crimson Text',serif;font-style:italic;color:rgba(146,64,14,0.7);font-size:12px;margin-top:5px"},`"${injured?c.injuredQ:c.healthyQ}"`)
+          h('div',{style:"font-family:'Lora',serif;font-style:italic;color:rgba(192,57,43,0.7);font-size:12px;margin-top:5px"},`"${injured?c.injuredQ:c.healthyQ}"`)
         )
       );
     })
   );
 }
 
-/* ── JournalView ── */
-function JournalView({ gs }) {
-  const sorted = [...gs.allW].reverse();
-  return h('div', {class:"view fade-in"},
-    h('div', {class:"page-title-area"},
-      h('div',{class:"page-title"},"Quest Journal"),
-      h('div',{class:"page-sub"},`${gs.char.total} quests etched into the annals.`)
+function JournalViewComp({ gs }) {
+  const sorted=[...gs.allW].reverse();
+  return h('div',{class:"view fade-in"},
+    h('div',{class:"page-title-area"},
+      h('div',{class:"page-title"},"Captain's Log"),
+      h('div',{class:"page-sub"},`${gs.char.total} missions recorded.`)
     ),
-    sorted.length===0 && h('div',{class:"empty-state"},"No quests recorded yet.\nYour legend begins with the first step."),
-    sorted.map(w => {
-      const ef = EFFORT.find(e=>e.v===w.effort);
-      const comps = (w.companions||[]).map(id=>COMPANIONS.find(c=>c.id===id)).filter(Boolean);
+    sorted.length===0&&h('div',{class:"empty-state"},"No missions logged yet.\n\nEvery pirate king starts somewhere.\nYour log begins with the next mission."),
+    sorted.map(w=>{
+      const ef=EFFORT.find(e=>e.v===w.effort);
+      const crew=(w.crewIds||[]).map(id=>CREW.find(c=>c.id===id)).filter(Boolean);
       return h('div',{key:w.id,class:"journal-entry"},
         h('div',{class:"row",style:"margin-bottom:8px"},
-          h('span',{style:"font-size:24px"},w.icon||"⚔️"),
+          h('span',{style:"font-size:24px"},w.icon||"⚓"),
           h('div',{style:"flex:1"},
-            h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#3b1a0a;font-size:14px"},w.title||"Quest"),
-            h('div',{style:"font-family:'Crimson Text',serif;color:#92400e;font-size:12px;font-style:italic"},new Date(w.date).toLocaleDateString("en-IE",{weekday:"long",month:"long",day:"numeric"}))
+            h('div',{style:"font-family:'Pirata One',cursive;font-size:18px;color:#1a0a00"},w.title||"Mission"),
+            h('div',{style:"font-family:'Lora',serif;color:#c0392b;font-size:12px;font-style:italic"},new Date(w.date).toLocaleDateString("en-IE",{weekday:"long",month:"long",day:"numeric"}))
           ),
-          h('div',{style:"font-family:'Cinzel',serif;font-weight:700;color:#8b4513;font-size:15px"},`+${w.xp} XP`)
+          h('div',{style:"font-family:'Pirata One',cursive;color:#d4a017;font-size:16px"},`฿${fmt((w.xp||0)*1000)}`)
         ),
         h('div',{class:"row",style:"gap:4px;margin-bottom:6px"},
-          comps.map(c=>h('span',{key:c.id,style:"font-size:18px"},c.icon)),
-          h('span',{style:"font-family:'Crimson Text',serif;color:rgba(146,64,14,0.6);font-size:12px;margin-left:4px"},`${ef?.icon||""} ${ef?.label||""}`)
+          crew.map(c=>h('span',{key:c.id,style:"font-size:18px"},c.icon)),
+          h('span',{style:"font-family:'Lora',serif;color:rgba(192,57,43,0.6);font-size:12px;margin-left:4px"},`${ef?.icon||""} ${ef?.label||""}`)
         ),
-        w.notes && h('div',{class:"journal-note"},`"${w.notes}"`)
+        w.notes&&h('div',{class:"journal-note"},`"${w.notes}"`)
       );
     })
   );
 }
 
-/* ── ApiSetup ── */
 function ApiSetup({ currentKey, onSave, onCancel }) {
   const [key, setKey] = useState(currentKey||"");
-  return h('div', {class:"view fade-in"},
-    h('div', {class:"api-setup"},
-      h('div',{style:"font-family:'Cinzel',serif;font-size:10px;color:#8b4513;letter-spacing:3px;margin-bottom:10px"},"⚙️ COMPANION SETTINGS"),
-      h('h1',null,"Live Companion Banter"),
-      h('p',null,"Add your Claude API key to unlock live, in-character responses from your party. Your companions will actually respond to you — in their own voice, reacting to your quest, your effort, your complaints."),
+  return h('div',{class:"view fade-in"},
+    h('div',{class:"api-setup"},
+      h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px"},"⚙️ Den Den Mushi"),
+      h('h1',null,"Live Crew Comms"),
+      h('p',null,"Add your Claude API key to unlock live in-character responses from your crew. Luffy will actually cheer you on. Zoro will tell you not to embarrass them. Robin will make a dark joke."),
       h('p',{style:"margin-top:-8px"},"Your key is stored only on this device and never sent anywhere except the Anthropic API."),
       h('div',{class:"api-hint"},
-        h('div',{class:"api-hint-h"},"HOW TO GET YOUR KEY"),
+        h('div',{class:"api-hint-h"},"How to get your key"),
         h('p',null,"1. Go to console.anthropic.com\n2. Sign in or create a free account\n3. Click API Keys in the sidebar\n4. Create a new key and paste it below")
       ),
-      h('label',{class:"api-label"},"YOUR API KEY"),
+      h('label',{class:"api-label"},"API Key"),
       h('input',{type:"password",class:"api-input",value:key,placeholder:"sk-ant-...",onInput:e=>setKey(e.target.value)}),
-      h('button',{class:"primary-btn",disabled:!key.trim(),onClick:()=>onSave(key.trim())},"Save & Enable Live Banter"),
+      h('button',{class:"primary-btn",disabled:!key.trim(),onClick:()=>onSave(key.trim())},"Connect Den Den Mushi"),
       h('div',{style:"height:10px"}),
-      currentKey && h('button',{class:"ghost-btn",style:"margin-bottom:10px",onClick:()=>onSave("")},"Remove Key & Use Static Banter"),
+      currentKey&&h('button',{class:"ghost-btn",style:"margin-bottom:10px",onClick:()=>onSave("")},"Disconnect & Use Static Banter"),
       h('button',{class:"ghost-btn",onClick:onCancel},"Cancel")
     )
   );
 }
 
-/* ── Celebration ── */
 function Celebration() {
   return h('div',{class:"celeb-screen"},
     h('div',{class:"celebrating"},
-      h('div',{class:"celeb-icon"},"⚜️"),
-      h('div',{class:"celeb-title"},"Contract Complete!"),
-      h('div',{class:"celeb-sub"},"Your companions honour your deeds."),
-      h('div',{style:"font-size:40px;margin-top:20px"},"🗡️ ⚔️ 🛡️")
+      h('div',{class:"celeb-icon wave-bob"},"🏴‍☠️"),
+      h('div',{class:"celeb-title"},"Mission Complete!"),
+      h('div',{class:"celeb-sub"},"The crew raises the Jolly Roger."),
+      h('div',{style:"font-size:36px;margin-top:20px;letter-spacing:8px"},"⚓ 🌊 ⚓")
     )
   );
 }
@@ -910,26 +897,24 @@ function Celebration() {
    ROOT APP
 ═══════════════════════════════════════════════════ */
 function App() {
-  const [gs, setGs]         = useState(()=>{ const s=LS.get("hj_v4"); return s?{...initState(),...s}:initState(); });
+  const [gs, setGs]         = useState(()=>{ const s=LS.get("gl_v1"); return s?{...initState(),...s}:initState(); });
   const [view, setView]     = useState("home");
-  const [apiKey, setApiKey] = useState(()=>{ try{ return localStorage.getItem("hj_apikey")||""; }catch{ return ""; } });
+  const [apiKey, setApiKey] = useState(()=>{ try{ return localStorage.getItem("gl_apikey")||""; }catch{ return ""; } });
   const [celebrating, setCelebrating] = useState(false);
   const [showApi, setShowApi]         = useState(false);
 
-  // Quest flow state
-  const [activeContract, setActiveContract]   = useState(null);
-  const [activeCompanions, setActiveCompanions] = useState([]);
-  const [questBonusXP, setQuestBonusXP]       = useState(0);
-  const [questPhase, setQuestPhase]           = useState("pick"); // pick | quest | log
+  const [activeMission,  setActiveMission]  = useState(null);
+  const [activeCrew,     setActiveCrew]     = useState([]);
+  const [questBonus,     setQuestBonus]     = useState(0);
+  const [questPhase,     setQuestPhase]     = useState("pick");
 
-  useEffect(()=>{ LS.set("hj_v4",gs); },[gs]);
+  useEffect(()=>{ LS.set("gl_v1",gs); },[gs]);
 
-  // New week check
   useEffect(()=>{
-    if(gs.weekKey!==weekKey()) {
-      const done = gs.weekW.length;
-      const newStreak = done>=4 ? gs.streak+1 : 0;
-      const injured = done<4 ? [...new Set(gs.weekW.flatMap(w=>w.companions||[]))].slice(0,4-done) : [];
+    if(gs.weekKey!==weekKey()){
+      const done=gs.weekW.length;
+      const newStreak=done>=4?gs.streak+1:0;
+      const injured=done<4?[...new Set(gs.weekW.flatMap(w=>w.crewIds||[]))].slice(0,4-done):[];
       setGs(prev=>{
         const ch={...prev.ch};
         injured.forEach(id=>{ if(ch[id]) ch[id]={...ch[id],hp:Math.max(20,ch[id].hp-30),status:"injured"}; });
@@ -938,68 +923,57 @@ function App() {
     }
   },[]);
 
-  function saveApiKey(k) {
-    try{ localStorage.setItem("hj_apikey",k); }catch{}
-    setApiKey(k);
-    setShowApi(false);
+  function saveKey(k) {
+    try{ localStorage.setItem("gl_apikey",k); }catch{}
+    setApiKey(k); setShowApi(false);
   }
 
-  function startContract(contract) {
-    setActiveContract(contract);
-    setActiveCompanions([]);
-    setQuestBonusXP(0);
-    setQuestPhase("pick");
-    setView("quest_flow");
+  function startMission(mission) {
+    setActiveMission(mission); setActiveCrew([]); setQuestBonus(0);
+    setQuestPhase("pick"); setView("mission_flow");
   }
 
-  function onPartyConfirmed(companions) {
-    setActiveCompanions(companions);
-    setQuestPhase("quest");
-  }
+  function onCrewConfirmed(crew) { setActiveCrew(crew); setQuestPhase("quest"); }
+  function onQuestFinished(bonus) { setQuestBonus(bonus); setQuestPhase("log"); }
 
-  function onQuestFinished(bonusXP) {
-    setQuestBonusXP(bonusXP);
-    setQuestPhase("log");
-  }
-
-  function onWorkoutComplete(effort, notes, totalXP) {
-    const ef = EFFORT.find(e=>e.v===effort);
-    const workout = {
+  function onMissionComplete(effort, notes, totalXP) {
+    const ef=EFFORT.find(e=>e.v===effort);
+    const workout={
       id:Date.now(), date:new Date().toISOString(),
-      cid:activeContract.id, title:activeContract.title, icon:activeContract.icon,
-      companions:activeCompanions, effort, notes, xp:totalXP, day:todayIdx()
+      cid:activeMission.id, title:activeMission.title, icon:activeMission.icon,
+      crewIds:activeCrew, effort, notes, xp:totalXP, day:todayIdx()
     };
     setGs(prev=>{
       const ch={...prev.ch};
-      activeCompanions.forEach(id=>{
+      activeCrew.forEach(id=>{
         if(ch[id]){ const nx=ch[id].xp+Math.round(20*(ef?.mult||1)); ch[id]={...ch[id],hp:Math.min(100,ch[id].hp+15),xp:nx,level:Math.floor(nx/200)+1,status:"ready"}; }
       });
       const cxp=prev.char.xp+totalXP;
-      return {...prev,weekW:[...prev.weekW,workout],allW:[...prev.allW,workout],ch,char:{...prev.char,xp:cxp,level:Math.floor(cxp/500)+1,total:prev.char.total+1}};
+      const newBounty=prev.char.bounty+totalXP*50000;
+      return {...prev,weekW:[...prev.weekW,workout],allW:[...prev.allW,workout],ch,char:{...prev.char,xp:cxp,level:Math.floor(cxp/500)+1,total:prev.char.total+1,bounty:newBounty}};
     });
     setCelebrating(true);
     setTimeout(()=>{ setCelebrating(false); setView("home"); setQuestPhase("pick"); },2800);
   }
 
   if(celebrating) return h(Celebration);
-  if(showApi) return h('div',{id:"app-inner"},h(ApiSetup,{currentKey:apiKey,onSave:saveApiKey,onCancel:()=>setShowApi(false)}));
+  if(showApi)     return h('div',{style:"height:100%;display:flex;flex-direction:column"},h(ApiSetup,{currentKey:apiKey,onSave:saveKey,onCancel:()=>setShowApi(false)}));
 
-  const mainView = () => {
-    if(view==="quest_flow") {
-      if(questPhase==="pick") return h(PickPartyView,{contract:activeContract,gs,onConfirm:onPartyConfirmed,onBack:()=>setView("home")});
-      if(questPhase==="quest") return h(QuestModeView,{contract:activeContract,companions:activeCompanions,gs,apiKey,onFinish:onQuestFinished,onAbandon:()=>setView("home")});
-      if(questPhase==="log")  return h(LogView,{contract:activeContract,companions:activeCompanions,bonusXP:questBonusXP,onComplete:onWorkoutComplete,onBack:()=>setQuestPhase("quest")});
+  const mainView=()=>{
+    if(view==="mission_flow"){
+      if(questPhase==="pick")  return h(PickCrewView,{mission:activeMission,gs,onConfirm:onCrewConfirmed,onBack:()=>setView("home")});
+      if(questPhase==="quest") return h(QuestView,{mission:activeMission,crewIds:activeCrew,gs,apiKey,onFinish:onQuestFinished,onAbandon:()=>setView("home")});
+      if(questPhase==="log")   return h(LogView,{mission:activeMission,crewIds:activeCrew,bonusXP:questBonus,onComplete:onMissionComplete,onBack:()=>setQuestPhase("quest")});
     }
-    if(view==="party")   return h(PartyView,{gs});
-    if(view==="journal") return h(JournalView,{gs});
-    return h(HomeView,{gs,setGs,startContract});
+    if(view==="party")   return h(CrewView,{gs});
+    if(view==="journal") return h(JournalViewComp,{gs});
+    return h(HomeView,{gs,setGs,startMission});
   };
 
-  const navView = view==="quest_flow" ? "home" : view;
-
-  return h('div', {id:"app-inner",style:"height:100%;display:flex;flex-direction:column"},
+  const navView=view==="mission_flow"?"home":view;
+  return h('div',{style:"height:100%;display:flex;flex-direction:column"},
     mainView(),
-    view!=="quest_flow" && h(NavBar,{view:navView,setView,hasKey:!!apiKey,onApiSetup:()=>setShowApi(true)})
+    view!=="mission_flow"&&h(NavBar,{view:navView,setView,hasKey:!!apiKey,onApiSetup:()=>setShowApi(true)})
   );
 }
 
