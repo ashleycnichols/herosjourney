@@ -229,6 +229,33 @@
   .xp-estimate { background:#fff9e6; border:2px solid #d4a017; border-radius:3px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
   .badge { font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; border:2px solid; border-radius:2px; padding:2px 10px; letter-spacing:1px; text-transform:uppercase; }
 
+  /* ── Briefing hero section ── */
+  .briefing-section { margin:14px 14px 0; background:#0a1628; border:2px solid #d4a017; border-radius:4px; overflow:hidden; box-shadow:3px 3px 0 #1a0a00; }
+  .briefing-header  { background:linear-gradient(90deg,#0a1628,#1a2d4a); padding:12px 14px 10px; border-bottom:1px solid #d4a01744; display:flex; align-items:center; gap:10px; }
+  .briefing-arc     { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a017; letter-spacing:2px; text-transform:uppercase; }
+  .briefing-feed    { padding:12px 14px; min-height:80px; max-height:220px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .briefing-msg     { display:flex; gap:8px; margin-bottom:10px; }
+  .briefing-bubble  { background:#1a2d4a; border:1px solid #d4a01744; border-radius:0 10px 10px 10px; padding:10px 12px; flex:1; }
+  .briefing-who     { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+  .briefing-text    { font-family:'Lora',serif; font-style:italic; font-size:14px; color:#fdf6e3; line-height:1.55; }
+  .briefing-player  { background:#d4a01722; border:1px solid #d4a01766; border-radius:10px 0 10px 10px; padding:10px 12px; margin-bottom:10px; }
+  .briefing-p-who   { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a017; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+  .briefing-p-text  { font-family:'Lora',serif; font-size:14px; color:#fdf6e3; }
+  .briefing-input-row { display:flex; gap:8px; padding:10px 14px; border-top:1px solid #d4a01733; }
+  .briefing-input   { flex:1; padding:9px 14px; background:#1a2d4a; border:1.5px solid #d4a01766; border-radius:20px; font-family:'Lora',serif; font-size:14px; color:#fdf6e3; }
+  .briefing-input::placeholder { color:#d4a01766; }
+  .briefing-input:focus { border-color:#d4a017; }
+  .briefing-send    { width:38px; height:38px; border-radius:50%; background:#d4a017; color:#0a1628; font-size:15px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:900; }
+  .briefing-send:disabled { opacity:0.3; }
+  .briefing-thinking { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#d4a01788; padding:2px 4px; }
+
+  .workout-type-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:12px 14px 14px; border-top:1px solid #d4a01733; }
+  .wt-btn { background:#1a2d4a; border:1.5px solid #d4a01766; border-radius:4px; padding:14px 10px; display:flex; flex-direction:column; align-items:center; gap:5px; transition:border-color 0.15s, background 0.15s; }
+  .wt-btn:active { background:#d4a01722; border-color:#d4a017; }
+  .wt-icon  { font-size:26px; }
+  .wt-label { font-family:'Cabin',sans-serif; font-size:11px; font-weight:700; color:#fdf6e3; letter-spacing:0.5px; text-align:center; }
+  .wt-sub   { font-family:'Lora',serif; font-style:italic; font-size:10px; color:#d4a01799; text-align:center; }
+
   /* ── Utils ── */
   .row    { display:flex; align-items:center; gap:8px; }
   .spacer { flex:1; }
@@ -333,6 +360,27 @@ const BANTER = {
   vivi:   [{at:"start",l:["The people of Alabasta never gave up. Neither will we!","You can do this! I believe in you completely!","We fight for what matters. Let that carry you!"]},{at:"mid",l:["You're doing so well! Keep going!","The desert was harder than this, and we made it through that!","I'm so proud of you already. Don't stop now!"]},{at:"push",l:["Almost there! You've come so far!","Don't give up! The finish is RIGHT THERE!","I crossed a desert kingdom for the people I love. You can push through this!"]},{at:"done",l:["You did it! I'm so proud!","That was incredible! The crew would be so happy to see that!","You're stronger than you know. This proved it."]}],
 };
 
+// Which crew member leads each arc's briefing, and their opening line
+const BRIEFINGS = {
+  arlong:      { crew:"luffy",    line:"Nami's village is suffering because of Arlong. That ends today. You ready to train like you mean it?" },
+  merry:       { crew:"franky",   line:"The Going Merry needs you. Every rep, every set — you're doing it for her. Let's get SUPER to work." },
+  hody:        { crew:"jinbe",    line:"Fish-Man Island's future depends on what happens next. Train with the focus of someone who understands the stakes." },
+  dressrosa:   { crew:"robin",    line:"The Colosseum doesn't care about your feelings. Fufufu. But I do. Show me you're ready for this." },
+  marinechase: { crew:"nami",     line:"I've calculated our escape route. All you need to do is be fast enough. Can you manage that?" },
+  skypiea:     { crew:"usopp",    line:"The great warrior Usopp has personally scouted the Upper Yard! It is extremely dangerous! We should train immediately!" },
+  thriller:    { crew:"brook",    line:"Yohohoho! Thriller Bark is behind us, but the training it demands is not! Shall we begin? SKULL JOKE!" },
+  wano_run:    { crew:"yamato",   line:"ODEN CLIMBED MOUNTAINS! Every session is a step toward Wano! I am SO EXCITED to train with you today!" },
+  cp9:         { crew:"robin",    line:"The Six Powers aren't learned — they're earned. Fufufu. I know this better than most. Shall we begin?" },
+  haki_train:  { crew:"zoro",     line:"Rayleigh trained alone for two years. You've got me. Don't waste it. Start moving." },
+  amazon:      { crew:"nami",     line:"The Kuja don't warm up. They just go. I've updated the charts — conditions are perfect. No excuses today." },
+  two_years:   { crew:"luffy",    line:"I got stronger for my crew. You're training for something too. Tell me — what is it? Then let's go." },
+  sunny:       { crew:"franky",   line:"The Thousand Sunny is SUPER. This crew is SUPER. And today's training? ABSOLUTELY SUPER. Let's GO." },
+  impel_down:  { crew:"luffy",    line:"Level 4 was the hardest thing I'd ever done. And I did it anyway. Your turn. What kind of workout are we doing?" },
+};
+
+// Fallback briefing for any unmapped mission
+const DEFAULT_BRIEFING = { crew:"luffy", line:"We're pirates! We don't wait around — we train, we get stronger, and we sail on. What kind of workout are we doing today?" };
+
 const SEA_EVENTS = [
   { id:"s1", icon:"🏴‍☠️", title:"A Jolly Roger on the Horizon", text:"Another pirate ship. Their flag isn't one you recognise. They're signalling — but it might be a trap.", choices:[{label:"Signal back — show confidence",  xp:40, out:"They lower their weapons and wave. Turns out they're lost. You point them toward the nearest island. +40 Berries"},{label:"Change course — avoid them",  xp:15, out:"Smart. Unknown ships mean unknown intentions. +15 Berries"}] },
   { id:"s2", icon:"🌊", title:"Sudden Squall",                   text:"The sky turned in minutes. A proper Grand Line storm — the kind Nami would've charted if she'd had more warning.", choices:[{label:"Drive through it — full speed", xp:55, out:"Drenched. Unstoppable. The crew holds the line and the Sunny makes it through. +55 Berries"},{label:"Reef the sails and hold",      xp:20, out:"Tactical. You weather it out and emerge intact. +20 Berries"}] },
@@ -378,6 +426,130 @@ function initState() {
    COMPONENTS
 ═══════════════════════════════════════════════════ */
 
+function BriefingSection({ apiKey, onSelectWorkoutType }) {
+  const missions    = getDailyMissions();
+  const todayArc    = missions[0]; // use today's first mission as the arc anchor
+  const briefing    = BRIEFINGS[todayArc?.id] || DEFAULT_BRIEFING;
+  const crewMember  = CREW.find(c=>c.id===briefing.crew) || CREW[0];
+
+  const [feed,     setFeed]     = useState([{type:"crew", cid:crewMember.id, text:briefing.line}]);
+  const [input,    setInput]    = useState("");
+  const [thinking, setThinking] = useState(false);
+  const feedRef = useRef(null);
+
+  useEffect(()=>{ if(feedRef.current) feedRef.current.scrollTop=feedRef.current.scrollHeight; },[feed,thinking]);
+
+  async function sendMsg() {
+    const text=input.trim(); if(!text||thinking) return;
+    setInput("");
+    setFeed(f=>[...f,{type:"player",text}]);
+    if(!apiKey) {
+      // static fallback — pick a random banter line from the crew member
+      const b=BANTER[crewMember.id]||[];
+      const pool=b.find(x=>x.at==="start")?.l||["Let's go!"];
+      setTimeout(()=>setFeed(f=>[...f,{type:"crew",cid:crewMember.id,text:pick(pool)}]),700);
+      return;
+    }
+    setThinking(true);
+    try {
+      const history=feed.map(f=>{
+        if(f.type==="crew") return `${crewMember.name}: "${f.text}"`;
+        if(f.type==="player") return `Ashley: "${f.text}"`;
+        return "";
+      }).filter(Boolean).join("\n");
+
+      const sys=`You are ${crewMember.name} from One Piece, in the pre-mission briefing of a workout app called Grand Line.
+
+Today's arc: "${todayArc?.title}" — ${todayArc?.desc}
+Your role: ${crewMember.role}
+
+You're motivating Ashley (a real person who's about to work out) before she picks her workout type for today. Stay completely in character. Be encouraging, specific to the arc, and genuine to how ${crewMember.name} actually talks.
+
+Personality reminder:
+${crewMember.id==="luffy"?"Simple, enthusiastic, food-obsessed, never gives up, inspires through action":
+  crewMember.id==="zoro"?"Blunt, minimal words, about getting stronger, never gets lost mentally even if geographically":
+  crewMember.id==="nami"?"Sharp, navigator brain, weather metaphors, talks about odds and charts, actually caring":
+  crewMember.id==="usopp"?"Cowardly but brave, tall tales, calls himself a great warrior, deeply loyal":
+  crewMember.id==="franky"?"SUPER enthusiastic, cola-powered, engineering metaphors, builds things, everything is SUPER":
+  crewMember.id==="robin"?"Calm, dark wit, fufufu, archaeological references, warm underneath":
+  crewMember.id==="yamato"?"Oden-obsessed, overly enthusiastic, wants to be a samurai, huge energy":
+  crewMember.id==="jinbe"?"Calm, sea metaphors, helmsman wisdom, deeply honourable, measured":
+  crewMember.id==="brook"?"Skeleton jokes, yohohoho, music references, surprisingly wise and warm":
+  "Passionate, in character, encouraging"}
+
+Keep response to 1-3 sentences. React naturally to what Ashley said. Do not break character. No JSON needed — just speak as ${crewMember.name}.`;
+
+      const res=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:200,system:sys,messages:[
+          ...feed.map(f=>({role:f.type==="player"?"user":"assistant",content:f.type==="player"?f.text:f.text})),
+          {role:"user",content:text}
+        ]})
+      });
+      const data=await res.json();
+      if(data.error) throw new Error(data.error.message);
+      const reply=data.content?.[0]?.text||"...";
+      setFeed(f=>[...f,{type:"crew",cid:crewMember.id,text:reply}]);
+    } catch(err) {
+      setFeed(f=>[...f,{type:"crew",cid:crewMember.id,text:"Den Den Mushi's acting up. But I'm still here. Pick your workout."}]);
+    } finally { setThinking(false); }
+  }
+
+  return h('div',{class:"briefing-section"},
+    // Arc header
+    h('div',{class:"briefing-header"},
+      h('span',{style:"font-size:26px"},crewMember.icon),
+      h('div',null,
+        h('div',{class:"briefing-arc"},`Today's Arc — ${todayArc?.title||"Grand Line"}`),
+        h('div',{style:"font-family:'Pirata One',cursive;font-size:16px;color:#fdf6e3"},crewMember.name)
+      )
+    ),
+
+    // Chat feed
+    h('div',{class:"briefing-feed",ref:feedRef},
+      feed.map((item,i)=>{
+        if(item.type==="crew") {
+          const c=CREW.find(x=>x.id===item.cid)||crewMember;
+          return h('div',{key:i,class:"briefing-msg banter-in"},
+            h('span',{style:"font-size:22px;flex-shrink:0"},c.icon),
+            h('div',{class:"briefing-bubble"},
+              h('div',{class:"briefing-who",style:`color:${c.color}`},c.name),
+              h('div',{class:"briefing-text"},`"${item.text}"`)
+            )
+          );
+        }
+        return h('div',{key:i,class:"briefing-player slide-up"},
+          h('div',{class:"briefing-p-who"},"Ashley"),
+          h('div',{class:"briefing-p-text"},item.text)
+        );
+      }),
+      thinking&&h('div',{class:"briefing-msg pulsing"},
+        h('span',{style:"font-size:22px"},crewMember.icon),
+        h('div',{class:"briefing-bubble"},h('div',{class:"briefing-thinking"},"..."))
+      )
+    ),
+
+    // Chat input
+    h('div',{class:"briefing-input-row"},
+      h('input',{class:"briefing-input",value:input,placeholder:`Talk to ${crewMember.name}...`,onInput:e=>setInput(e.target.value),onKeyDown:e=>{if(e.key==="Enter"){e.preventDefault();sendMsg();}},disabled:thinking}),
+      h('button',{class:"briefing-send",disabled:!input.trim()||thinking,onClick:sendMsg},"➤")
+    ),
+
+    // Workout type picker
+    h('div',{class:"workout-type-grid"},
+      WORKOUT_TYPES.map(wt=>{
+        const m=missions.find(x=>x.type===wt.id);
+        return h('button',{key:wt.id,class:"wt-btn",onClick:()=>onSelectWorkoutType(wt.id,m)},
+          h('div',{class:"wt-icon"},wt.icon),
+          h('div',{class:"wt-label"},wt.label),
+          m&&h('div',{class:"wt-sub"},m.title)
+        );
+      })
+    )
+  );
+}
+
 function NavBar({ view, setView, hasKey, onApiSetup }) {
   const tabs = [{id:"home",icon:"🗺️",label:"Missions"},{id:"party",icon:"👥",label:"Crew"},{id:"journal",icon:"📜",label:"Log"}];
   return h('nav', {class:"navbar"},
@@ -391,7 +563,7 @@ function NavBar({ view, setView, hasKey, onApiSetup }) {
   );
 }
 
-function HomeView({ gs, setGs, startMission }) {
+function HomeView({ gs, setGs, startMission, apiKey, onSelectWorkoutType }) {
   const [expanded, setExpanded] = useState(null);
   const { char, ch, weekW, streak, best } = gs;
   const xpPct = Math.min(100, ((char.xp % 500)/500)*100);
@@ -416,6 +588,8 @@ function HomeView({ gs, setGs, startMission }) {
       ),
       h('div',{class:"header-waves"})
     ),
+
+    h(BriefingSection, {apiKey, onSelectWorkoutType}),
 
     h('div', {class:"card"},
       h('div', {class:"row",style:"margin-bottom:12px"},
@@ -933,6 +1107,12 @@ function App() {
     setQuestPhase("pick"); setView("mission_flow");
   }
 
+  function onSelectWorkoutType(typeId, mission) {
+    // If today's rotation has a mission for this type, use it; otherwise find first matching
+    const m = mission || MISSIONS.filter(x=>x.type===typeId)[0];
+    if(m) startMission(m);
+  }
+
   function onCrewConfirmed(crew) { setActiveCrew(crew); setQuestPhase("quest"); }
   function onQuestFinished(bonus) { setQuestBonus(bonus); setQuestPhase("log"); }
 
@@ -967,7 +1147,7 @@ function App() {
     }
     if(view==="party")   return h(CrewView,{gs});
     if(view==="journal") return h(JournalViewComp,{gs});
-    return h(HomeView,{gs,setGs,startMission});
+    return h(HomeView,{gs,setGs,startMission,apiKey,onSelectWorkoutType});
   };
 
   const navView=view==="mission_flow"?"home":view;
