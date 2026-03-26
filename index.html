@@ -300,50 +300,292 @@ const EFFORT = [
   { v:4, label:"Gear Fourth",  desc:"Left it all on deck",   mult:1.75, icon:"🔥" },
 ];
 
-const MISSIONS = [
-  /* STRENGTH */
-  { id:"arlong",     title:"Defeat Arlong's Crew",        loc:"Arlong Park, East Blue",         desc:"Arlong's fishmen have terrorised Nami's village for years. Fight your way through the park and put an end to it.",                                  type:"strength", diff:"Uncommon", xp:220, traits:["strength","combat","endurance"],    criteria:"Heavy compound lifts. Push press, rows, deadlifts.",                    icon:"🐟", flavor:"\"This is my sea! And humans are WEAK!\" — Arlong" },
-  { id:"merry",      title:"Repair the Going Merry",      loc:"Shipyard, Water 7",              desc:"The Going Merry is falling apart. Haul timber, drive bolts, and wrestle the ship back into shape before the next tide.",                              type:"strength", diff:"Common",   xp:170, traits:["strength","endurance","discipline"],  criteria:"Full body pushing and pulling. It's all heavy work.",                   icon:"🐑", flavor:"The ship creaks and groans. She's asking for help." },
-  { id:"hody",       title:"Battle in the Ryugu Palace",  loc:"Fish-Man Island",                desc:"Hody Jones has taken the palace. Fight through his crew in the underwater halls.",                                                                     type:"strength", diff:"Rare",     xp:320, traits:["strength","combat","courage"],       criteria:"Max effort. Every set counts.",                                          icon:"👑", flavor:"\"Fish-Man Island has no need of humans or their kings.\"" },
-  { id:"dressrosa",  title:"Clear the Colosseum",         loc:"Corrida Colosseum, Dressrosa",   desc:"To win SMILE and protect the crew, you've entered the colosseum tournament. Fight every block until you're standing alone.",                           type:"strength", diff:"Uncommon", xp:240, traits:["strength","combat","endurance"],    criteria:"Circuit format. Keep moving between rounds.",                            icon:"🏟️", flavor:"The crowd roars. Somewhere in the stands, your crew is watching." },
-  /* RUN */
-  { id:"marinechase",title:"Outrun the Marine Pursuit",   loc:"Loguetown, East Blue",           desc:"The Marines have your scent. Weave through market stalls and rooftops. Don't get caught.",                                                             type:"run",      diff:"Common",   xp:150, traits:["speed","agility","courage"],          criteria:"Sprint intervals. Push on every straight.",                             icon:"⚓", flavor:"\"STRAW HAT! YOU WON'T ESCAPE!\" — Smoker" },
-  { id:"skypiea",    title:"Cross the White Sea",         loc:"Skypiea — Upper Yard",           desc:"The only way through the Upper Yard is to run it. Enel's priests are everywhere. Move fast, trust the log pose.",                                      type:"run",      diff:"Uncommon", xp:195, traits:["speed","endurance","agility"],        criteria:"Sustained pace. No stopping for lightning.",                            icon:"⚡", flavor:"\"God does not permit passage.\" — Enel. You go anyway." },
-  { id:"thriller",   title:"Escape Thriller Bark",        loc:"Thriller Bark, Florian Triangle", desc:"Gekko Moriah has the shadows. Getting out means running — through mist, through fog, past things you don't want to look at.",                         type:"run",      diff:"Common",   xp:155, traits:["speed","courage","endurance"],         criteria:"Steady pace. Don't stop when it gets dark.",                            icon:"🌫️", flavor:"The mast of Thriller Bark disappears into the mist behind you. Keep running." },
-  { id:"wano_run",   title:"The Mountain Path to Wano",   loc:"Wano — Mt. Fuji approach",       desc:"The only way into the inner chamber is up — a brutal mountain trail in the rain, carrying supplies for the alliance.",                                  type:"run",      diff:"Uncommon", xp:200, traits:["endurance","discipline","strength"],  criteria:"Long and hilly. This is a sustained effort.",                           icon:"⛩️", flavor:"The samurai do not complain about the climb." },
-  /* MOBILITY */
-  { id:"cp9",        title:"Master the Six Powers",       loc:"Enies Lobby",                    desc:"CP9 move like no human should. To even understand them, you have to move through the forms they use — Soru, Geppo, Tekkai.",                          type:"mobility", diff:"Uncommon", xp:190, traits:["agility","speed","discipline"],       criteria:"Controlled movement. Flow between positions.",                          icon:"🕶️", flavor:"\"The Six Powers cannot be learned. They must be felt.\" — Rob Lucci" },
-  { id:"haki_train", title:"Haki Awakening",              loc:"Rusukaina Island",                desc:"Two years of training. Rayleigh demands you hold perfect form while your body screams otherwise.",                                                      type:"mobility", diff:"Rare",     xp:290, traits:["discipline","endurance","courage"],   criteria:"Static holds and slow movements. Control is everything.",               icon:"✊", flavor:"\"Conqueror's Haki isn't learned. But the body must be ready.\" — Rayleigh" },
-  { id:"amazon",     title:"Train with the Kuja Tribe",   loc:"Amazon Lily",                    desc:"The Kuja warriors have agreed to teach you. Their warm-up alone is legendary.",                                                                         type:"mobility", diff:"Common",   xp:145, traits:["agility","strength","discipline"],   criteria:"Flow and hold. Precision over power.",                                   icon:"🏹", flavor:"\"Warriors of Kuja do not stretch. They move.\" — Hancock" },
-  /* HOME */
-  { id:"two_years",  title:"Two Years of Solitary Training", loc:"Somewhere in the New World",  desc:"No crew. No audience. Just you, the training, and the goal of becoming strong enough to protect them when it matters.",                               type:"home",     diff:"Common",   xp:160, traits:["discipline","endurance","courage"],   criteria:"No equipment needed. Discipline is the equipment.",                     icon:"🌅", flavor:"\"I'll get stronger. I promised.\"" },
-  { id:"sunny",      title:"Deck Drills on the Sunny",    loc:"Thousand Sunny, New World",      desc:"The crew's strength is built between islands. Franky designed the drills. Zoro runs them. You show up.",                                                type:"home",     diff:"Common",   xp:140, traits:["endurance","strength","discipline"],  criteria:"Bodyweight circuit. Full rounds.",                                       icon:"🌞", flavor:"The Sunny's deck is big enough. There are no excuses." },
-  { id:"impel_down", title:"Survive Level 4",             loc:"Impel Down — Blazing Hell",      desc:"The heat is almost unbearable. The guards are relentless. You have to move through it or burn.",                                                        type:"home",     diff:"Uncommon", xp:200, traits:["endurance","courage","strength"],    criteria:"High intensity. Short rests. Keep moving.",                             icon:"🔥", flavor:"\"Welcome to Hell.\" — Magellan" },
+// One arc per day. Workout type chosen by the user flavours how it plays out.
+const ARCS = [
+  { id:"arlong",      title:"Defeat Arlong's Crew",           loc:"Arlong Park, East Blue",          diff:"Uncommon", xp:220, icon:"🐟", flavor:"\"This is my sea! And humans are WEAK!\" — Arlong",
+    desc:{
+      strength:"Arlong's fishmen are built like walls. You're going through them anyway — press, pull, and push until the park falls.",
+      run:"The park is a maze of docks and bridges. Get through every section before Arlong's lieutenants cut you off.",
+      mobility:"Arlong's grip is deadly. You need the flexibility and body control to slip out of holds and stay in the fight.",
+      home:"No weights, no gym — just you, the ground, and the fury of knowing what Arlong did to Nami's village.",
+    },
+    criteria:{
+      strength:"Heavy compound lifts. Push press, rows, deadlifts. Every set for Nami.",
+      run:"Sprint intervals through the circuit. Push on every straight.",
+      mobility:"Flow through forms and holds. Precision lets you fight smarter, not just harder.",
+      home:"Bodyweight circuits. No rest until Arlong is down.",
+    },
+    traits:["strength","combat","endurance"] },
+  { id:"merry",       title:"Repair the Going Merry",          loc:"Shipyard, Water 7",               diff:"Common",   xp:170, icon:"🐑", flavor:"The ship creaks and groans. She's asking for help.",
+    desc:{
+      strength:"Haul timber, drive bolts, drag canvas. The Merry needs brute force and the will to keep swinging the hammer.",
+      run:"Parts are scattered across all of Water 7. Sprint between the shipyard, the market, and the docks before the tide turns.",
+      mobility:"Shipwork requires getting into impossible angles — under the hull, inside the rigging. Move precisely, move carefully.",
+      home:"No dry dock, no crane. Just bodyweight, ingenuity, and the refusal to let her sink.",
+    },
+    criteria:{
+      strength:"Full body push and pull. It's all heavy work today.",
+      run:"Multiple sprint relays across Water 7. Pace yourself between sprints.",
+      mobility:"Controlled movement through full range. Precision over power.",
+      home:"Circuit training on deck. Franky's watching. Don't embarrass yourself.",
+    },
+    traits:["strength","endurance","discipline"] },
+  { id:"hody",        title:"Battle in the Ryugu Palace",      loc:"Fish-Man Island",                 diff:"Rare",     xp:320, icon:"👑", flavor:"\"Fish-Man Island has no need of humans or their kings.\"",
+    desc:{
+      strength:"Hody's crew are enormous and enhanced. Match force with force in the underwater halls of the palace.",
+      run:"The palace corridors are flooded and vast. Move through them faster than Hody's reinforcements can arrive.",
+      mobility:"Fighting underwater demands perfect body control. Every movement costs more — which means every movement must count.",
+      home:"The bubble holds air but not excuses. Train like Fish-Man Island's freedom depends on it.",
+    },
+    criteria:{
+      strength:"Max effort. Every set counts. No wasted reps.",
+      run:"Sustained pace under pressure. The water resistance is the point.",
+      mobility:"Slow, controlled, deliberate. Underwater form demands it.",
+      home:"High intensity. You have everything you need.",
+    },
+    traits:["strength","combat","courage"] },
+  { id:"dressrosa",   title:"Clear the Corrida Colosseum",     loc:"Dressrosa",                       diff:"Uncommon", xp:240, icon:"🏟️", flavor:"The crowd roars. Somewhere in the stands, your crew is watching.",
+    desc:{
+      strength:"Block after block of colosseum fighters. Fight through every round until you're the last one standing.",
+      run:"The colosseum is enormous. Sprint between the blocks, outmanoeuvre every opponent before they can set their feet.",
+      mobility:"The fighters here are powerful. You win by being impossible to pin down — fluid, flexible, elusive.",
+      home:"No arena, no crowd — just the discipline of training as if your crew's lives depended on the outcome. They do.",
+    },
+    criteria:{
+      strength:"Circuit format. Heavy sets, short rests. Keep moving between rounds.",
+      run:"Agility and speed work. Intervals with direction changes.",
+      mobility:"Flow sequences and balance holds. Be the opponent they can't read.",
+      home:"Bodyweight rounds. Full effort every time.",
+    },
+    traits:["strength","combat","endurance"] },
+  { id:"marinechase", title:"Outrun the Marine Pursuit",       loc:"Loguetown, East Blue",            diff:"Common",   xp:160, icon:"⚓", flavor:"\"STRAW HAT! YOU WON'T ESCAPE!\" — Smoker",
+    desc:{
+      strength:"Smoker's not far behind. You need to be stronger than the obstacles in your way — crash through them.",
+      run:"Through the market, across the rooftops, down to the harbour. Sprint. Don't look back.",
+      mobility:"The only way through a Marine blockade is under, over, and around it. Move like they can't touch you.",
+      home:"Nowhere to run right now — so you train so that next time, you're faster than anyone they send.",
+    },
+    criteria:{
+      strength:"Power movements. Explosive push, pull, carry.",
+      run:"Sprint intervals. Push on every straight, recover on the bends.",
+      mobility:"Agility and flow. Be impossible to catch.",
+      home:"High intensity bodyweight. Train like Smoker is timing you.",
+    },
+    traits:["speed","agility","courage"] },
+  { id:"skypiea",     title:"Cross the White Sea",             loc:"Skypiea — Upper Yard",            diff:"Uncommon", xp:195, icon:"⚡", flavor:"\"God does not permit passage.\" — Enel. You go anyway.",
+    desc:{
+      strength:"Enel's priests guard every section of the Upper Yard. Go through them — not around.",
+      run:"The Upper Yard is vast and the priests are fast. Cover the distance before Enel can call down lightning.",
+      mobility:"Moving through Skypiea means flowing between platforms, vines, and clouds. Precision keeps you alive.",
+      home:"You're somewhere in the sky. The crew needs you ready. Train with what you have.",
+    },
+    criteria:{
+      strength:"Compound lifts. Power for pushing through obstacles.",
+      run:"Sustained pace. No stopping for lightning.",
+      mobility:"Flow and balance. The ground is unreliable up here.",
+      home:"Bodyweight circuit. The clouds don't care about your excuses.",
+    },
+    traits:["speed","endurance","agility"] },
+  { id:"thriller",    title:"Escape Thriller Bark",            loc:"Florian Triangle",                diff:"Common",   xp:155, icon:"🌫️", flavor:"The mast disappears into the mist behind you. Keep running.",
+    desc:{
+      strength:"Moriah's shadows have your crew's strength. Take it back — lift until there's nothing left to take.",
+      run:"Through the mist, past things you don't want to look at, toward the dawn. Just run.",
+      mobility:"Thriller Bark is a ship the size of an island with the layout of a nightmare. Move through it carefully.",
+      home:"The shadows are out there. You stay in here and get stronger so they can't touch you.",
+    },
+    criteria:{
+      strength:"Heavy sets. Take back what Moriah stole.",
+      run:"Steady pace. Eyes forward. Don't stop when it gets dark.",
+      mobility:"Controlled movement. The floor is not always flat.",
+      home:"Bodyweight rounds. Moriah doesn't care how tired you are.",
+    },
+    traits:["speed","courage","endurance"] },
+  { id:"wano",        title:"The Road to Wano",                loc:"Wano Country",                    diff:"Uncommon", xp:200, icon:"⛩️", flavor:"The samurai do not complain about the climb.",
+    desc:{
+      strength:"Wano's alliance needs warriors. Lift like a samurai who knows what's coming.",
+      run:"The mountain path to the inner chamber is brutal — rain, mud, and a gradient that doesn't apologise.",
+      mobility:"The sword forms of Wano demand full range of motion and perfect control. Honour the tradition.",
+      home:"Training on deck with Zoro's philosophy — no equipment, no excuses, just iron will.",
+    },
+    criteria:{
+      strength:"Heavy compound work. The samurai respect strength.",
+      run:"Long and hilly. This is a sustained effort, not a sprint.",
+      mobility:"Slow, precise sword-form sequences. Control over speed.",
+      home:"Bodyweight discipline. Wano-style.",
+    },
+    traits:["endurance","discipline","strength"] },
+  { id:"cp9",         title:"Master the Six Powers",           loc:"Enies Lobby",                     diff:"Uncommon", xp:190, icon:"🕶️", flavor:"\"The Six Powers cannot be learned. They must be felt.\" — Rob Lucci",
+    desc:{
+      strength:"Tekkai — the iron body. You build it the old-fashioned way: heavy, sustained, relentless.",
+      run:"Soru — instant movement. You can't replicate it yet, but you can build the legs that understand it.",
+      mobility:"Geppo, Rankyaku, Shigan. Every Six Power begins with body control. Flow through the forms.",
+      home:"Kami-e — the paper body. Calm, yielding, responsive. Train that calm today.",
+    },
+    criteria:{
+      strength:"Heavy sets. Build the iron body.",
+      run:"Speed intervals. Chase the feeling of Soru.",
+      mobility:"Controlled flow sequences. CP9 style.",
+      home:"Focused bodyweight. Precision over power.",
+    },
+    traits:["agility","speed","discipline"] },
+  { id:"haki",        title:"Haki Awakening",                  loc:"Rusukaina Island",                diff:"Rare",     xp:290, icon:"✊", flavor:"\"Conqueror's Haki isn't learned. But the body must be ready.\" — Rayleigh",
+    desc:{
+      strength:"Rayleigh says the body must be capable before Haki can be controlled. Make it capable.",
+      run:"Two years of running the island. Every circuit is a step toward the reunion with your crew.",
+      mobility:"Observation Haki begins in stillness. Hold the form. Feel the space around you. Don't move until you must.",
+      home:"Armament Haki hardens what's already there. Build what's there first.",
+    },
+    criteria:{
+      strength:"Heavy, sustained. The island demands it.",
+      run:"Long distance. Two years, one circuit at a time.",
+      mobility:"Static holds and slow movement. Control is everything.",
+      home:"Disciplined bodyweight. Rayleigh is watching.",
+    },
+    traits:["discipline","endurance","courage"] },
+  { id:"amazon",      title:"Train with the Kuja Warriors",    loc:"Amazon Lily",                     diff:"Common",   xp:145, icon:"🏹", flavor:"\"Warriors of Kuja do not stretch. They move.\" — Hancock",
+    desc:{
+      strength:"The Kuja are strong in ways that defy their frames. Match them.",
+      run:"Chase the Kuja warriors through the jungle. Keep up or get left behind.",
+      mobility:"The Kuja move like water. They're teaching you the forms today — if you can keep up.",
+      home:"Training in the warriors' camp. No weight room, just the jungle and the drill.",
+    },
+    criteria:{
+      strength:"Full body strength. The Kuja don't skip anything.",
+      run:"Trail running pace. Keep the Kuja in sight.",
+      mobility:"Flow and hold. Precision over power.",
+      home:"Jungle-style bodyweight. Whatever the Kuja use.",
+    },
+    traits:["agility","strength","discipline"] },
+  { id:"two_years",   title:"Two Years of Solitary Training",  loc:"Somewhere on the Grand Line",     diff:"Common",   xp:160, icon:"🌅", flavor:"\"I'll get stronger. I promised.\"",
+    desc:{
+      strength:"No crew. No audience. Just iron and the image of their faces when you see them again.",
+      run:"One island. One circuit. Every day for two years. Today is one of those days.",
+      mobility:"Stillness and precision. The training no one sees is the training that matters most.",
+      home:"This is what the two years looked like — just you, the work, and the promise.",
+    },
+    criteria:{
+      strength:"Heavy sets. No one's watching. Do them anyway.",
+      run:"Steady long distance. One circuit. Don't stop.",
+      mobility:"Slow, deliberate, focused. This is where the real work lives.",
+      home:"Full bodyweight circuit. You have everything you need.",
+    },
+    traits:["discipline","endurance","courage"] },
+  { id:"impel_down",  title:"Survive Impel Down",              loc:"Impel Down — Blazing Hell",       diff:"Uncommon", xp:200, icon:"🔥", flavor:"\"Welcome to Hell.\" — Magellan",
+    desc:{
+      strength:"Level 4 is called Blazing Hell for a reason. The heat is your opponent as much as the guards.",
+      run:"The only way through Impel Down is fast. Every second you're there is a second Magellan can find you.",
+      mobility:"The prison is designed to restrict movement. Prove it wrong.",
+      home:"You're in your own Level 4 today. Turn the heat up and don't stop moving.",
+    },
+    criteria:{
+      strength:"Heavy sets under heat. Short rests.",
+      run:"Sprint intervals. The guards don't jog.",
+      mobility:"Full range movement. The prison walls can't hold good form.",
+      home:"High intensity bodyweight. No rest until you're out.",
+    },
+    traits:["endurance","courage","strength"] },
 ];
 
-const MILESTONES = {
-  arlong:     [{l:"Enter Arlong Park",           c:"Tap when you're warmed up and ready",                s:"The gates are broken. The park is worse than you imagined. Fishmen everywhere, eyes on you. Good."},{l:"Fight through the first wave",    c:"Tap when your main sets are done",                   s:"The crew works with you. You've broken their formation. Arlong hasn't appeared yet."},{l:"Face Arlong himself",              c:"Tap when you're starting your final push",           s:"He's enormous and furious and completely certain you'll lose. You have different information."},{l:"Nami's village is free",           c:"Tap when you're completely done",                    s:"Arlong Park falls into the sea. Nami cries on a hillside. The sky opens up. It's over."}],
-  merry:      [{l:"Gather the timber",           c:"Tap when you're warmed up",                          s:"The yard is loud and smells of sawdust and salt. Merry needs you. The tide waits for no one."},{l:"First repairs done",               c:"Tap when your main work is done",                    s:"The worst sections are patched. She's still groaning, but differently — like relief."},{l:"Final assembly",                   c:"Tap when you're on your last push",                  s:"Every bolt matters. Every board matters. She carried you here. You carry her now."},{l:"She sails",                         c:"Tap when you're done",                               s:"The Going Merry hits the water and holds. Usopp is crying. Everyone pretends not to notice."}],
-  hody:       [{l:"Breach the palace",           c:"Tap when you're warmed up",                          s:"The water presses in from all sides. The palace is enormous and filled with enemies. Begin."},{l:"Through the halls",                c:"Tap when main working sets are done",                s:"Wave after wave. Your lungs know where they are. The palace walls blur past."},{l:"Find Hody",                         c:"Tap when you're starting your final push",           s:"He's taken a dozen pills and his eyes are wrong. This is what the whole thing was for."},{l:"Fish-Man Island is free",          c:"Tap when you're done",                               s:"He sinks. The bubble holds. Above the surface, somewhere, the sun is shining on an ocean."}],
-  dressrosa:  [{l:"Enter the Colosseum",         c:"Tap when you're warmed up",                          s:"The crowd doesn't know who you are. Yet."},{l:"Survive the B Block",              c:"Tap when your main rounds are done",                 s:"You're still standing. The fighters around you are less certain than they were."},{l:"The final block",                  c:"Tap when you're starting your last round",           s:"This is what you entered for. The SMILE. The crew. Everything."},{l:"Standing alone",                   c:"Tap when you're done",                               s:"The Colosseum goes quiet. Then it erupts. You didn't come here for the glory. But here it is."}],
-  marinechase:[{l:"The market streets",          c:"Tap when you're into your pace",                     s:"Smoker is somewhere behind you. The streets of Loguetown are a maze. You know the way."},{l:"Rooftop crossing",                  c:"Tap when you're halfway",                            s:"Below, Marines fan out through the alleys. Up here, it's just wind and the sound of your footfall."},{l:"The harbour run",                  c:"Tap when you're on your final sprint",               s:"The ship is in sight. So is Smoker. This is the part where you run."},{l:"Clear of pursuit",                 c:"Tap when you've finished",                           s:"The ship hits open water. Luffy is laughing. You don't tell him how close it was."}],
-  skypiea:    [{l:"Into the Upper Yard",         c:"Tap when you're warmed up and into pace",            s:"The sky island is strange and beautiful and trying to kill you. Start moving."},{l:"Past the priests",                  c:"Tap when you're halfway",                            s:"Satori. Gedatsu. Ohm. They were supposed to stop you. They didn't."},{l:"Enel's territory",                  c:"Tap when you're on your final stretch",              s:"Lightning cracks nearby. You don't slow down. The going was never going to be easy."},{l:"The golden bell",                  c:"Tap when you're done",                               s:"The bell rings across the sky. Below, the clouds drift. History has been corrected."}],
-  thriller:   [{l:"Into the mist",               c:"Tap when you're moving and into pace",               s:"You can't see the ship behind you anymore. You can only hear things you don't want to hear."},{l:"Through the graveyard",            c:"Tap when you're halfway",                            s:"Don't look at what's moving in the trees. Just run. Eyes forward."},{l:"Moriah's reach",                   c:"Tap when you're on your final stretch",              s:"Your shadow is yours. It was always yours. Remind your legs of that."},{l:"Free of Thriller Bark",            c:"Tap when you're done",                               s:"Dawn. The Florian Triangle releases you. The Sunny is ahead. You made it out."}],
-  wano_run:   [{l:"Start of the mountain path",  c:"Tap when you're into your pace",                     s:"The samurai say the mountain respects effort. You're about to test that theory."},{l:"Halfway up",                        c:"Tap when you're halfway",                            s:"Rain. Wind. The path narrower than it looked. Kin'emon is somewhere ahead, silent as always."},{l:"The final ascent",                 c:"Tap when you're starting your last push",            s:"You can see the summit. Your lungs are very opinionated. Keep going."},{l:"Wano's gates open",                c:"Tap when you're done",                               s:"You deliver the supplies. A samurai nods once. In Wano, that's a standing ovation."}],
-  cp9:        [{l:"Enter the training hall",     c:"Tap when you've settled and started moving",         s:"Rob Lucci watches from the corner. He says nothing. That's worse than anything he could say."},{l:"The first forms",                  c:"Tap when you've finished your first sequence",       s:"Soru — instant movement. Geppo — sky stepping. Your body is beginning to understand."},{l:"Tekkai",                            c:"Tap when you're in your deepest hold",               s:"Steel-hardened muscles. The form asks you to be immovable. Your body argues. Win the argument."},{l:"Forms complete",                   c:"Tap when you're done",                               s:"Lucci says nothing. Then: 'Again tomorrow.' It's the highest thing he offers."}],
-  haki_train: [{l:"Rayleigh begins",             c:"Tap when you've settled and started",                s:"The Dark King says nothing about what's coming. He simply demonstrates. Then waits."},{l:"First breakthrough",                c:"Tap when you've completed your first block",         s:"Something shifts. A hum behind the eyes, a pressure in the chest. You keep moving through it."},{l:"The deep hold",                    c:"Tap when you're in your hardest hold — stay there", s:"Rayleigh is watching. Two years is built in moments like this. Stay."},{l:"Session complete",                  c:"Tap when you're done — breathe",                     s:"He nods once. 'You're different than when we started.' You feel it too."}],
-  amazon:     [{l:"The Kuja greet you",          c:"Tap when you've started moving",                     s:"They're watching. They're always watching. Hancock isn't here, which somehow makes it worse."},{l:"The first sequence",               c:"Tap when you've finished your first flow",            s:"Their forms look effortless. They are not effortless. You're beginning to understand why."},{l:"The long hold",                    c:"Tap when you're in your deepest hold",               s:"One of the Kuja nods. You think it was a nod. You hold the position."},{l:"Training complete",                 c:"Tap when you're done",                               s:"A Kuja elder says something in their language. Another one translates: 'Not terrible.' High praise."}],
-  two_years:  [{l:"The training begins",         c:"Tap when you're warmed up",                          s:"No one is watching. That's the point. You're doing this because you decided to."},{l:"The hard middle",                   c:"Tap when your main work is done",                    s:"This is the part the crew will never see. The part between the dream and the reunion."},{l:"When you want to stop",             c:"Tap when you're on your last push",                  s:"They're out there, somewhere, getting stronger. So are you. Don't stop."},{l:"Another session done",              c:"Tap when you're done",                               s:"One day closer. That's all this is. One day closer."}],
-  sunny:      [{l:"Drills start",                c:"Tap when you're warmed up",                          s:"Zoro counts. You don't ask how many rounds. You'll find out."},{l:"First circuit done",               c:"Tap when your first round is done",                  s:"The deck is warm from the sun. Nami is definitely watching from the crow's nest. Don't embarrass the ship."},{l:"Zoro says more",                   c:"Tap when you're starting your last circuit",         s:"He always says more. You're starting to think that's the point."},{l:"Stand down",                        c:"Tap when you're done",                               s:"Zoro walks past without a word. Sanji brings you something to eat. The Sunny sails on."}],
-  impel_down: [{l:"Level 4 — the heat hits",     c:"Tap when you're moving",                             s:"The temperature in Level 4 is not compatible with comfort. Magellan designed it that way. Move."},{l:"Through the first section",        c:"Tap when your first block is done",                  s:"The guards are not subtle. Neither are you. Keep moving through the heat."},{l:"Almost through",                   c:"Tap when you're on your last push",                  s:"The exit is real. You can feel the difference in the air. Almost."},{l:"Out of Level 4",                    c:"Tap when you're done",                               s:"The temperature drops immediately. Ivankov is already making a speech. You don't listen. You survived."}],
+// Keep MISSIONS as alias for backwards compat in journal/log display
+const MISSIONS = ARCS;
+
+function getDailyArc() {
+  const seed = dayStamp();
+  return ARCS[hash(seed) % ARCS.length];
+}
+
+// Milestones keyed by arc id, then workout type
+const ARC_MILESTONES = {
+  arlong: {
+    strength:[{l:"Enter Arlong Park",c:"Tap when you're warmed up",s:"The gates are broken. Fishmen everywhere. They're bigger than they looked. Good."},{l:"Clear the outer guards",c:"Tap when your main sets are done",s:"The first wave breaks. Your arms are telling you things. You don't listen."},{l:"Face Arlong's lieutenants",c:"Tap when you're on your last push",s:"Hatchan, Kuroobi, Chew. Between you and the man himself. This is the part."},{l:"Arlong Park falls",c:"Tap when you're done",s:"The park collapses into the sea. Nami cries on a hillside. You don't say how much it took."}],
+    run:[{l:"Through the docks",c:"Tap when you're warmed up and moving",s:"The docks are a maze. Fishmen on every platform. You find the gaps and you run."},{l:"The bridge gauntlet",c:"Tap when you're halfway",s:"They're trying to cut you off. You're faster than they expected. Keep that advantage."},{l:"Straight to the tower",c:"Tap when you're on your last sprint",s:"Nami's room is at the top. The fastest route is a straight line. Take it."},{l:"Free of Arlong Park",c:"Tap when you've caught your breath",s:"You made it through. Behind you, the crew is handling the rest. You did your part."}],
+    mobility:[{l:"Find your range",c:"Tap when you've settled and started",s:"Arlong's grip is crushing. To escape it, you need more than strength — you need to be where his hands aren't."},{l:"The slip sequences",c:"Tap when your first sequence is done",s:"You're learning to move the way water moves — around force, not against it."},{l:"Hold under pressure",c:"Tap when you're in your deepest hold",s:"He's squeezing. You breathe. You find space. This is the whole lesson."},{l:"Out of reach",c:"Tap when you're done",s:"Arlong can't hold what he can't catch. Today you learned to be uncatchable."}],
+    home:[{l:"First set",c:"Tap when you're warmed up",s:"No gym, no weights, no excuses. Nami's village didn't have any either. Begin."},{l:"The hard middle",c:"Tap when your main work is done",s:"You're in it now. This is the part that matters."},{l:"Last push",c:"Tap when you're on your final effort",s:"Arlong never thought a human could do this. Prove him wrong."},{l:"Arlong is finished",c:"Tap when you're done",s:"The park is gone. The village is free. You're spent. It was worth it."}],
+  },
+  merry: {
+    strength:[{l:"Haul the timber",c:"Tap when you're warmed up",s:"The planks are heavy and the dock is long. Franky points at the pile. You get to work."},{l:"Drive the bolts",c:"Tap when your main sets are done",s:"Every bolt matters. The ship is starting to sound different — less groaning, more settling."},{l:"The keel repair",c:"Tap when you're on your last push",s:"The worst section. Franky says this is the one. Everything you have left goes into this."},{l:"She's ready",c:"Tap when you're done",s:"The Merry hits the water and holds. Usopp is crying. Nobody mentions it."}],
+    run:[{l:"To the timber merchant",c:"Tap when you're warmed up and moving",s:"Water 7 is enormous. The parts are scattered across the whole city. First stop: the Galley-La district."},{l:"Back to the shipyard",c:"Tap when you're halfway",s:"Arms full, lungs working. The canals are faster than the streets if you know where to jump."},{l:"Final delivery run",c:"Tap when you're on your last sprint",s:"The last parts. The tide is coming. This is the sprint that saves her."},{l:"Delivery complete",c:"Tap when you've caught your breath",s:"You drop the supplies at Franky's feet. He nods. That's everything from Franky."}],
+    mobility:[{l:"Under the hull",c:"Tap when you've settled and started",s:"The worst damage is under the waterline. Getting there requires getting into positions a shipyard school doesn't teach."},{l:"Inside the rigging",c:"Tap when your first sequence is done",s:"The ropes are salt-stiff and the angles are impossible. You find a way through anyway."},{l:"The mast work",c:"Tap when you're in your deepest hold",s:"Forty feet up. The dock sways. You hold the position and do the work."},{l:"Survey complete",c:"Tap when you're done",s:"Franky reviews your work. 'Not bad,' he says. That's five stars from Franky."}],
+    home:[{l:"Deck exercises",c:"Tap when you're warmed up",s:"No dry dock needed. The Merry's deck is enough. Franky drew the circuit on a piece of canvas."},{l:"Mid-circuit",c:"Tap when your main work is done",s:"The ship rocks gently. You find your balance and keep going."},{l:"Final rounds",c:"Tap when you're on your last circuit",s:"She's watching, in the way ships watch — the creak of the hull, the pull of the tide."},{l:"Circuits done",c:"Tap when you're done",s:"You lie on the deck and look at the mast. She carried you here. You carried her today."}],
+  },
+  hody: {
+    strength:[{l:"Breach the palace",c:"Tap when you're warmed up",s:"The water presses from all sides. The palace is enormous. Every opponent is built like a wall. Go through them."},{l:"The throne room approach",c:"Tap when your main sets are done",s:"His crew is thinning. Your lungs know where they are. Your arms don't care."},{l:"Hody's enhanced form",c:"Tap when you're on your last push",s:"He's taken another pill. His eyes are wrong. This is what you came for."},{l:"Fish-Man Island is free",c:"Tap when you're done",s:"He sinks. The bubble holds. Above the surface, the sun is shining on an ocean."}],
+    run:[{l:"Through the flooded corridors",c:"Tap when you're warmed up and moving",s:"The palace corridors stretch out ahead. The water slows everything. You push through anyway."},{l:"Outrunning the reinforcements",c:"Tap when you're halfway",s:"Hody's officers are calling in more crew. You move faster than the orders."},{l:"The final corridor",c:"Tap when you're on your last sprint",s:"You can hear the throne room ahead. Everything left goes into this stretch."},{l:"Through",c:"Tap when you've caught your breath",s:"You made it. The crew is here. Fish-Man Island will remember this day."}],
+    mobility:[{l:"Fighting underwater — feel it",c:"Tap when you've settled and started",s:"Underwater combat is different. Every movement costs double. Which means every movement must be worth it."},{l:"Conserving energy",c:"Tap when your first sequence is done",s:"The fishmen are tiring you out on purpose. You breathe, find your centre, keep your form."},{l:"The deep hold",c:"Tap when you're in your deepest hold",s:"The water pushes you. You don't move. This is Tekkai without the name."},{l:"Back to the surface",c:"Tap when you're done",s:"You break through the bubble. Air. Light. Done."}],
+    home:[{l:"Begin the session",c:"Tap when you're warmed up",s:"The battle is underwater. The training can be anywhere. Start here."},{l:"The middle",c:"Tap when your main work is done",s:"Fish-Man Island's future is in the hands of people willing to do this work."},{l:"Last push",c:"Tap when you're on your final effort",s:"Hody didn't stop. Neither do you."},{l:"Session complete",c:"Tap when you're done",s:"Done. Fish-Man Island stands. So do you."}],
+  },
+  dressrosa: {
+    strength:[{l:"Enter the Colosseum",c:"Tap when you're warmed up",s:"The crowd doesn't know who you are. The fighters do. Block A begins."},{l:"Block B cleared",c:"Tap when your main sets are done",s:"Still standing. The fighters around you are less certain than when they started."},{l:"The final block",c:"Tap when you're on your last push",s:"This is what you entered for. Everything left, right now."},{l:"Last one standing",c:"Tap when you're done",s:"The Colosseum goes quiet. Then it erupts. You didn't come for the glory. But here it is."}],
+    run:[{l:"Into the arena",c:"Tap when you're warmed up and moving",s:"The colosseum is enormous. You're not fighting — you're moving. Block to block, faster than anyone expects."},{l:"Halfway through",c:"Tap when you're halfway",s:"They keep trying to cut you off. You keep going around."},{l:"Final sprint to the exit",c:"Tap when you're on your last sprint",s:"You can see the passage. The crowd is confused. You don't stop to explain."},{l:"Out",c:"Tap when you've caught your breath",s:"Outside the colosseum, the streets of Dressrosa spread out ahead. You made it through."}],
+    mobility:[{l:"Read the opponents",c:"Tap when you've settled and started",s:"The colosseum fighters are powerful and straightforward. You win by being neither."},{l:"Find the gaps",c:"Tap when your first sequence is done",s:"Every fighter has tells. You're starting to see them. Move through the openings."},{l:"Hold under pressure",c:"Tap when you're in your deepest hold",s:"They're pushing. You hold your form. This is where the match is won."},{l:"Last form",c:"Tap when you're done",s:"The final fighter stands down. You're still standing. That's the whole story."}],
+    home:[{l:"Training begins",c:"Tap when you're warmed up",s:"No Colosseum today. Just you and the work that makes the Colosseum possible."},{l:"Mid-session",c:"Tap when your main work is done",s:"Somewhere, Luffy is eating. Somewhere, Zoro is sleeping in the wrong direction. You're here, doing this."},{l:"Last circuit",c:"Tap when you're on your final circuit",s:"This is the session nobody sees. The one that matters most."},{l:"Done",c:"Tap when you're done",s:"The Colosseum hasn't opened yet. But when it does, you'll be ready."}],
+  },
+  marinechase: {
+    strength:[{l:"Break through the blockade",c:"Tap when you're warmed up",s:"Smoker has the street blocked. You don't go around. You go through."},{l:"Through the market",c:"Tap when your main sets are done",s:"Stalls, crates, Marines. You move through all of them."},{l:"The harbour push",c:"Tap when you're on your last push",s:"The ship is close. So is Smoker. Strength is what gets you there."},{l:"On board",c:"Tap when you're done",s:"The ship clears the harbour. Luffy is laughing. You don't say how close it was."}],
+    run:[{l:"Into the market",c:"Tap when you're warmed up and moving",s:"Smoker is somewhere behind you. The streets of Loguetown are a maze. You know the way."},{l:"The rooftops",c:"Tap when you're halfway",s:"Below, Marines fan out through the alleys. Up here it's just wind and your footfall."},{l:"Straight to the ship",c:"Tap when you're on your last sprint",s:"The ship is in sight. So is Smoker. This is the sprint."},{l:"Clear",c:"Tap when you've caught your breath",s:"Open water. The East Blue falls behind. That was closer than it looked."}],
+    mobility:[{l:"Through the crowds",c:"Tap when you've started moving",s:"The market is packed. The only way through is fluid movement — weaving, ducking, never stopping."},{l:"Under the blockade",c:"Tap when your first sequence is done",s:"The Marines have the street. You go under, over, between. They can't track what they can't follow."},{l:"The tight sections",c:"Tap when you're in your deepest position",s:"Gaps too small for Marine armour. Perfect for someone who moves like water."},{l:"Through",c:"Tap when you're done",s:"You emerge at the docks. The Merry is right there. Smoker is not. You made it."}],
+    home:[{l:"Opening drills",c:"Tap when you're warmed up",s:"The Marines will come again. You train now so that when they do, this is easy."},{l:"Main circuit",c:"Tap when your main work is done",s:"Smoker doesn't rest. Neither do you."},{l:"Final push",c:"Tap when you're on your last effort",s:"Faster. Stronger. Harder to catch."},{l:"Done",c:"Tap when you're done",s:"Next time Smoker shows up, you'll be ready. Today made sure of it."}],
+  },
+  skypiea: {
+    strength:[{l:"Into the Upper Yard",c:"Tap when you're warmed up",s:"Satori, Gedatsu, Ohm. Priests with ridiculous powers standing between you and the golden bell."},{l:"Past the first priest",c:"Tap when your main sets are done",s:"Strength wins the first round. The Upper Yard opens up ahead."},{l:"Enel's guards",c:"Tap when you're on your last push",s:"The last line before Enel himself. Everything left, right here."},{l:"The bell rings",c:"Tap when you're done",s:"The golden bell rings across the sky. Below, the clouds drift. History corrected."}],
+    run:[{l:"Into the Upper Yard",c:"Tap when you're warmed up and moving",s:"The sky island is strange and beautiful and trying to kill you. Move fast, trust the log pose."},{l:"Past the priests",c:"Tap when you're halfway",s:"Satori. Gedatsu. Ohm. They were supposed to stop you. They didn't."},{l:"Enel's territory",c:"Tap when you're on your last sprint",s:"Lightning cracks nearby. You don't slow down. The going was never easy."},{l:"The golden bell",c:"Tap when you've caught your breath",s:"The bell rings. Below, the clouds drift. You didn't stop. That's why you made it."}],
+    mobility:[{l:"Moving through Skypiea",c:"Tap when you've started moving",s:"The platforms are uneven. The vines are the fastest route. You learn to use what's there."},{l:"The Ordeal of Swamp",c:"Tap when your first sequence is done",s:"Gedatsu's ordeal requires reading where you are and moving without panic. You're learning."},{l:"Cloud surfing",c:"Tap when you're in your deepest hold",s:"The clouds hold weight differently up here. Balance is everything. Hold it."},{l:"Across the Yard",c:"Tap when you're done",s:"You've crossed the Upper Yard. The way to the bell is open."}],
+    home:[{l:"Sky island warm-up",c:"Tap when you're warmed up",s:"Somewhere up in the clouds, there's a city no one believed existed. You believed. Train accordingly."},{l:"Main circuit",c:"Tap when your main work is done",s:"Enel's arrogance was thinking he was the most powerful thing up here. You're proving him wrong."},{l:"Final push",c:"Tap when you're on your last effort",s:"The bell is close. Keep going."},{l:"Done",c:"Tap when you're done",s:"The bell rings. You rang it. Nobody up here expected that."}],
+  },
+  thriller: {
+    strength:[{l:"Into Thriller Bark",c:"Tap when you're warmed up",s:"Moriah's ship is the size of an island. The shadows here are thick. You lift anyway."},{l:"Through the mansion",c:"Tap when your main sets are done",s:"Things are moving in the dark. You keep lifting. Strength is the light."},{l:"The shadow garden",c:"Tap when you're on your last push",s:"Your shadow is yours. It was always yours. Remind your muscles of that."},{l:"Out",c:"Tap when you're done",s:"Dawn breaks. The Florian Triangle releases you. Zoro is somehow fine despite everything."}],
+    run:[{l:"Into the mist",c:"Tap when you're warmed up and moving",s:"You can't see the ship behind you anymore. You can only hear things you don't want to hear."},{l:"Through the graveyard",c:"Tap when you're halfway",s:"Don't look at what's moving in the trees. Eyes forward. Run."},{l:"Moriah's reach",c:"Tap when you're on your last sprint",s:"Your shadow is yours. Remind your legs of that. Sprint."},{l:"Free",c:"Tap when you've caught your breath",s:"Dawn. The Florian Triangle releases you. The Sunny is ahead. You made it out."}],
+    mobility:[{l:"Moving through the dark",c:"Tap when you've started moving",s:"Thriller Bark is a ship the size of an island with the layout of a nightmare. Move carefully."},{l:"Avoiding the shadows",c:"Tap when your first sequence is done",s:"You can't fight what you can't see. You move around it. That's the skill."},{l:"The tight corridors",c:"Tap when you're in your deepest position",s:"Walls closing in. You breathe, find the space, pass through."},{l:"Out of Thriller Bark",c:"Tap when you're done",s:"You're through. Whatever that was back there — it didn't touch you."}],
+    home:[{l:"Training in the dark",c:"Tap when you're warmed up",s:"Moriah thrives in the dark. So do you. Begin."},{l:"Mid-session",c:"Tap when your main work is done",s:"The shadows aren't taking anything today."},{l:"Last push",c:"Tap when you're on your final effort",s:"Almost out. Keep going."},{l:"Dawn",c:"Tap when you're done",s:"You trained in the dark and came out stronger. That's the whole point."}],
+  },
+  wano: {
+    strength:[{l:"The forge",c:"Tap when you're warmed up",s:"Wano's smiths work at dawn. The metal is hot and the hammers are heavy. You fit right in."},{l:"Carrying the alliance supplies",c:"Tap when your main sets are done",s:"The samurai carry their own. You carry with them. No complaints."},{l:"Final preparations",c:"Tap when you're on your last push",s:"Kaido is up on that mountain. Everything you lift today is preparation for what's coming."},{l:"Ready",c:"Tap when you're done",s:"A samurai nods at you across the yard. In Wano, that's a standing ovation."}],
+    run:[{l:"The mountain path begins",c:"Tap when you're warmed up and moving",s:"The samurai say the mountain respects effort. You're about to test that theory."},{l:"Halfway up",c:"Tap when you're halfway",s:"Rain. Wind. Mud. The path is narrower than it looked. Keep going."},{l:"The final ascent",c:"Tap when you're on your last push",s:"You can see the summit. Your lungs have opinions. You do not ask for them."},{l:"Wano's gates open",c:"Tap when you've caught your breath",s:"You deliver. A samurai nods once. You've earned the respect of Wano."}],
+    mobility:[{l:"The sword forms",c:"Tap when you've settled and started",s:"Wano's sword art demands full range of motion. Zoro learned it watching. You learn it moving."},{l:"The crane stance",c:"Tap when your first sequence is done",s:"Balance on one leg. Hold the form. The mountain doesn't care if you wobble."},{l:"The deep flow",c:"Tap when you're in your deepest hold",s:"Kin'emon watches without expression. That might be approval. Hold the position."},{l:"Form complete",c:"Tap when you're done",s:"The sword forms of Wano are in your body now. They'll be there when you need them."}],
+    home:[{l:"Dawn training",c:"Tap when you're warmed up",s:"The samurai wake before the sun. So do you. Begin."},{l:"Mid-session",c:"Tap when your main work is done",s:"Wano's warriors train in silence. The work speaks for itself."},{l:"Last rounds",c:"Tap when you're on your final circuit",s:"Kaido is up there. You're down here. The gap closes with every rep."},{l:"Done",c:"Tap when you're done",s:"Another session. One day closer to the raid."}],
+  },
+  cp9: {
+    strength:[{l:"Tekkai begins",c:"Tap when you're warmed up",s:"The iron body. CP9 built it through decades of training. You build it the same way: heavy, sustained, relentless."},{l:"First sets done",c:"Tap when your main sets are done",s:"Lucci doesn't acknowledge effort. He acknowledges results. Keep going."},{l:"The final sets",c:"Tap when you're on your last push",s:"This is where Tekkai is actually built — in the moments you want to stop."},{l:"Iron body",c:"Tap when you're done",s:"Lucci says nothing. Then: 'Again tomorrow.' The highest praise he offers."}],
+    run:[{l:"Soru — instant movement",c:"Tap when you're warmed up and moving",s:"Ten steps in an instant. You can't do it yet. But you can build the legs that understand it."},{l:"Speed work",c:"Tap when you're halfway",s:"The fastest CP9 agents don't look fast. They look like they're already where they need to be."},{l:"The final sprint",c:"Tap when you're on your last sprint",s:"Maximum effort. This is what Soru asks of you."},{l:"Session complete",c:"Tap when you've caught your breath",s:"Kaku nods. 'Your legs know something they didn't this morning.'"}],
+    mobility:[{l:"Opening forms",c:"Tap when you've settled and started",s:"Geppo. Rankyaku. Shigan. Every Six Power begins here, in controlled movement."},{l:"The flow sequence",c:"Tap when your first sequence is done",s:"Rob Lucci watches from the corner. He says nothing. That's worse than anything he could say."},{l:"Kami-e — paper body",c:"Tap when you're in your deepest hold",s:"Yielding to force rather than resisting it. The hardest form. Hold the calm."},{l:"Forms complete",c:"Tap when you're done",s:"Lucci says: 'Again tomorrow.' You'll be here."}],
+    home:[{l:"CP9 fundamentals",c:"Tap when you're warmed up",s:"The Six Powers aren't tools. They're a way of moving through the world. Start with what you have."},{l:"Mid-session",c:"Tap when your main work is done",s:"The agents of CP9 train until the form is unconscious. You're getting there."},{l:"Final rounds",c:"Tap when you're on your last circuit",s:"Lucci is somewhere, also training. You don't stop."},{l:"Done",c:"Tap when you're done",s:"One session closer to understanding. That's the whole game."}],
+  },
+  haki: {
+    strength:[{l:"Rayleigh watches",c:"Tap when you're warmed up",s:"The Dark King says the body must be capable before Haki can be controlled. Today you make it capable."},{l:"The first breakthrough",c:"Tap when your main sets are done",s:"Something shifts. A hum behind the eyes. The body is beginning to understand."},{l:"Armament — hardening",c:"Tap when you're on your last push",s:"Armament Haki hardens what's already there. Build what's there. Then harden it."},{l:"Session complete",c:"Tap when you're done",s:"Rayleigh nods once. 'You're different than when we started.' You feel it."}],
+    run:[{l:"The island circuit",c:"Tap when you're warmed up and moving",s:"Two years of running Rusukaina. Every circuit is a step toward the reunion with your crew."},{l:"Halfway",c:"Tap when you're halfway",s:"The island's animals have learned not to bother you on the circuit. That's Observation Haki at work."},{l:"The final lap",c:"Tap when you're on your last push",s:"You can feel what's around you without looking. That's what two years builds."},{l:"Circuit done",c:"Tap when you've caught your breath",s:"One more day. One day closer. That's all this is."}],
+    mobility:[{l:"Observation Haki — stillness",c:"Tap when you've settled and started",s:"Rayleigh says Observation Haki begins in silence. You breathe. You feel the space."},{l:"The slow forms",c:"Tap when your first sequence is done",s:"Movement so controlled you can feel what's coming before it arrives."},{l:"The deep hold",c:"Tap when you're in your deepest hold — stay there",s:"Rayleigh is watching. Two years is built in moments like this one."},{l:"Released",c:"Tap when you're done — breathe",s:"He nods. 'You're ready for the next stage.' That's everything."}],
+    home:[{l:"The beginning",c:"Tap when you're warmed up",s:"Rusukaina has no gym. No equipment. Just the island and the commitment."},{l:"The hard middle",c:"Tap when your main work is done",s:"The crew is out there somewhere. Training. Waiting. So are you."},{l:"Last push",c:"Tap when you're on your final effort",s:"They're getting stronger. So are you. Don't stop."},{l:"Done",c:"Tap when you're done",s:"One day closer. That's all this is."}],
+  },
+  amazon: {
+    strength:[{l:"The Kuja watch",c:"Tap when you're warmed up",s:"They're watching. They're always watching. Hancock isn't here, which somehow makes it worse."},{l:"First sets done",c:"Tap when your main sets are done",s:"A Kuja elder nods. You think it was a nod. Keep going."},{l:"The heavy work",c:"Tap when you're on your last push",s:"The Kuja are strong in ways that defy their frames. Match them."},{l:"Training complete",c:"Tap when you're done",s:"An elder says something in their language. Translation: 'Not terrible.' Extremely high praise."}],
+    run:[{l:"Chase the warriors",c:"Tap when you're warmed up and moving",s:"The Kuja run through the jungle at a pace that seems relaxed. It is not relaxed."},{l:"Through the trees",c:"Tap when you're halfway",s:"You've lost sight of the warriors. That's fine. You know the route."},{l:"The final stretch",c:"Tap when you're on your last sprint",s:"The camp is ahead. Get there."},{l:"Back to camp",c:"Tap when you've caught your breath",s:"A warrior raises an eyebrow. That's a compliment."}],
+    mobility:[{l:"The Kuja demonstrate",c:"Tap when you've settled and started",s:"They move through the forms slowly, for your benefit. Every movement is also a fighting technique."},{l:"First sequence",c:"Tap when your first sequence is done",s:"She watches without expression. You feel every error acutely. Keep going."},{l:"The deep hold",c:"Tap when you're in your deepest hold",s:"One of the Kuja nods. You think it was a nod. Hold the position."},{l:"Complete",c:"Tap when you're done",s:"The elder approves. You are invited to return tomorrow."}],
+    home:[{l:"Amazon Lily training",c:"Tap when you're warmed up",s:"The Kuja train every day, everywhere, with anything. So do you."},{l:"Mid-session",c:"Tap when your main work is done",s:"The warriors of Kuja do not stop at halfway."},{l:"Last push",c:"Tap when you're on your final effort",s:"They're watching. Don't embarrass the crew."},{l:"Done",c:"Tap when you're done",s:"Not terrible. High praise."}],
+  },
+  two_years: {
+    strength:[{l:"The training begins",c:"Tap when you're warmed up",s:"No crew. No audience. Just iron and the image of their faces when you see them again."},{l:"The hard sets",c:"Tap when your main sets are done",s:"This is the part the crew will never see. The part between the dream and the reunion."},{l:"When you want to stop",c:"Tap when you're on your last push — don't",s:"They're getting stronger out there. So are you. Don't stop."},{l:"Another session done",c:"Tap when you're done",s:"One day closer. That's all this is."}],
+    run:[{l:"One more circuit",c:"Tap when you're warmed up and moving",s:"One island. One route. Every day. Today is one of those days."},{l:"Halfway",c:"Tap when you're halfway",s:"The island is quiet. It's been quiet for a long time. You run anyway."},{l:"Final stretch",c:"Tap when you're on your last push",s:"You can see the end. You've seen it every day for two years. It always comes."},{l:"Done",c:"Tap when you've caught your breath",s:"One day closer. The log pose resets. The crew is out there somewhere."}],
+    mobility:[{l:"Opening stillness",c:"Tap when you've settled and started",s:"Stillness and precision. The training no one sees is the training that matters most."},{l:"The slow work",c:"Tap when your first sequence is done",s:"Two years of this. The patience itself is a kind of strength."},{l:"The long hold",c:"Tap when you're in your deepest hold",s:"Hold it. This is where it's built."},{l:"Released",c:"Tap when you're done",s:"One day closer. You feel it."}],
+    home:[{l:"Begin",c:"Tap when you're warmed up",s:"This is what the two years looked like — just you, the work, and the promise."},{l:"The middle",c:"Tap when your main work is done",s:"No fanfare. No audience. Just the work."},{l:"Last rounds",c:"Tap when you're on your final circuit",s:"They're out there training too. Don't let them down."},{l:"Done",c:"Tap when you're done",s:"One session. One day. One step closer."}],
+  },
+  impel_down: {
+    strength:[{l:"Level 4 — the heat hits",c:"Tap when you're warmed up",s:"The temperature is not compatible with comfort. Magellan designed it that way. Lift anyway."},{l:"Through the first section",c:"Tap when your main sets are done",s:"The guards don't rest. Neither do you. The heat is the point."},{l:"Final sets",c:"Tap when you're on your last push",s:"The exit is real. You can feel the difference in the air. Almost."},{l:"Out of Level 4",c:"Tap when you're done",s:"The temperature drops immediately. Ivankov is making a speech. You don't listen. You survived."}],
+    run:[{l:"Level 4 — move",c:"Tap when you're warmed up and moving",s:"The only way through Impel Down is fast. Every second you're here is a second Magellan can find you."},{l:"Through the guards",c:"Tap when you're halfway",s:"They're fast. You're faster. Keep that advantage."},{l:"The final corridor",c:"Tap when you're on your last sprint",s:"The exit. You can see it. Everything left goes into this."},{l:"Out",c:"Tap when you've caught your breath",s:"The temperature drops. You're out. Ivankov is already making a speech."}],
+    mobility:[{l:"The prison restricts",c:"Tap when you've started moving",s:"Impel Down is designed to prevent movement. Every form you complete is an act of defiance."},{l:"Through the bars",c:"Tap when your first sequence is done",s:"There are spaces the guards don't think a person can fit. You fit."},{l:"Level 4 — hold it",c:"Tap when you're in your deepest hold",s:"The heat is enormous. You breathe. You hold. You don't break."},{l:"Free",c:"Tap when you're done",s:"The prison couldn't hold your body or your form."}],
+    home:[{l:"Your Level 4",c:"Tap when you're warmed up",s:"Turn the heat up. Close the windows. Begin."},{l:"Mid-session",c:"Tap when your main work is done",s:"Magellan didn't design this place for comfort. You train in it anyway."},{l:"Last push",c:"Tap when you're on your final effort",s:"Almost through. Don't stop now."},{l:"Out",c:"Tap when you're done",s:"You survived Level 4. Again."}],
+  },
 };
 
 const DEFAULT_MS = [
-  {l:"Set sail",       c:"Tap when you're warmed up and ready",           s:"The Sunny hits open water. The Grand Line stretches ahead. The crew is ready. So are you."},
-  {l:"Open ocean",     c:"Tap when your main work is done",               s:"This is the part between islands — the sustained effort, the push through, the refusal to drift."},
-  {l:"Storm ahead",    c:"Tap when you're starting your final push",      s:"You can see it. The end of this stretch. Your body knows. Push through."},
-  {l:"Port reached",   c:"Tap when you're completely done",               s:"The anchor drops. The log pose resets. Another island. Another chapter. You made it."},
+  {l:"Set sail",     c:"Tap when you're warmed up and ready",       s:"The Sunny hits open water. The Grand Line stretches ahead. The crew is ready. So are you."},
+  {l:"Open ocean",   c:"Tap when your main work is done",           s:"This is the part between islands — the sustained effort, the push through, the refusal to drift."},
+  {l:"Storm ahead",  c:"Tap when you're starting your final push",  s:"You can see it. The end of this stretch. Your body knows. Push through."},
+  {l:"Port reached", c:"Tap when you're completely done",           s:"The anchor drops. The log pose resets. Another island. Another chapter. You made it."},
 ];
+
+function getMilestones(arcId, workoutType) {
+  return ARC_MILESTONES[arcId]?.[workoutType] || DEFAULT_MS;
+}
 
 const BANTER = {
   luffy:   [{at:"start",l:["Let's goooo! I'm so fired up!","This is gonna be fun! Come on!","I'm hungry but ALSO really excited!"]},{at:"mid",l:["You're doing great! Even better than Zoro! Don't tell Zoro.","Keep going! I believe in you! Also I'm really hungry.","We're gonna WIN!"]},{at:"push",l:["This is it! THIS IS THE PART!","Don't stop! We're almost there! GOMU GOMU—","I won't let you quit! Nobody quits on MY crew!"]},{at:"done",l:["YESSSS! That was SO COOL!","You did it! You're amazing! Let's eat!","I KNEW you could do it! You're part of my crew now!"]}],
@@ -403,13 +645,6 @@ const pick     = a => a[Math.floor(Math.random()*a.length)];
 const diffColor= d => d==="Rare"?"#6d28d9":d==="Uncommon"?"#0369a1":"#166534";
 const fmt      = n => n>=1000000 ? (n/1000000).toFixed(0)+"M" : n>=1000 ? (n/1000).toFixed(0)+"K" : String(n);
 
-function getDailyMissions() {
-  const seed = dayStamp();
-  return ["strength","run","mobility","home"].map(type => {
-    const pool = MISSIONS.filter(m=>m.type===type);
-    return pool[hash(type+seed) % pool.length];
-  });
-}
 
 const LS = {
   get: k => { try{ return JSON.parse(localStorage.getItem(k)); }catch{ return null; } },
@@ -427,8 +662,7 @@ function initState() {
 ═══════════════════════════════════════════════════ */
 
 function BriefingSection({ apiKey, onSelectWorkoutType }) {
-  const missions    = getDailyMissions();
-  const todayArc    = missions[0]; // use today's first mission as the arc anchor
+  const todayArc    = getDailyArc();
   const briefing    = BRIEFINGS[todayArc?.id] || DEFAULT_BRIEFING;
   const crewMember  = CREW.find(c=>c.id===briefing.crew) || CREW[0];
 
@@ -538,12 +772,12 @@ Keep response to 1-3 sentences. React naturally to what Ashley said. Do not brea
 
     // Workout type picker
     h('div',{class:"workout-type-grid"},
-      WORKOUT_TYPES.map(wt=>{
-        const m=missions.find(x=>x.type===wt.id);
-        return h('button',{key:wt.id,class:"wt-btn",onClick:()=>onSelectWorkoutType(wt.id,m)},
+      WORKOUT_TYPES.map(wt => {
+        const arc = getDailyArc();
+        return h('button',{key:wt.id,class:"wt-btn",onClick:()=>onSelectWorkoutType(wt.id)},
           h('div',{class:"wt-icon"},wt.icon),
           h('div',{class:"wt-label"},wt.label),
-          m&&h('div',{class:"wt-sub"},m.title)
+          h('div',{class:"wt-sub"},arc.title)
         );
       })
     )
@@ -568,7 +802,7 @@ function HomeView({ gs, setGs, startMission, apiKey, onSelectWorkoutType }) {
   const { char, ch, weekW, streak, best } = gs;
   const xpPct = Math.min(100, ((char.xp % 500)/500)*100);
   const today = todayIdx();
-  const missions = getDailyMissions();
+  const arc = getDailyArc();
   const doneIds = weekW.map(w=>w.cid).filter(Boolean);
   const injured = CREW.filter(c=>ch[c.id]?.status==="injured");
 
@@ -622,41 +856,39 @@ function HomeView({ gs, setGs, startMission, apiKey, onSelectWorkoutType }) {
     ),
 
     h('div',{style:"margin:16px 14px 0"},
-      h('div',{class:"section-head"},"📋 Mission Board"),
-      h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:13px;color:#c0392b;margin-bottom:14px;margin-top:-8px"},"Rotates at midnight — choose your heading"),
-      missions.map((m,idx)=>{
-        const done=doneIds.includes(m.id), open=expanded===m.id;
-        const wt=WORKOUT_TYPES.find(w=>w.id===m.type);
-        return h('div',{key:m.id,class:"mission-card",style:`opacity:${done?0.55:1}`},
-          h('div',{class:"mission-top",onClick:()=>setExpanded(open?null:m.id)},
-            h('div',{style:"font-size:28px;line-height:1"},m.icon),
-            h('div',{style:"flex:1"},
-              h('div',{class:"row",style:"flex-wrap:wrap;gap:6px;margin-bottom:3px"},
-                h('div',{class:"mission-title"},`${done?"✓ ":""}${m.title}`),
-                h('div',{class:"tag tag-diff",style:`color:${diffColor(m.diff)};border-color:${diffColor(m.diff)};background:${diffColor(m.diff)}11`},m.diff)
-              ),
-              h('div',{class:"mission-loc"},m.loc),
-              h('div',{class:"row",style:"gap:6px;margin-top:5px;flex-wrap:wrap"},
-                h('span',{class:"tag tag-berry"},`฿ ${fmt(m.xp*1000)}`),
-                h('span',{class:"tag tag-type"},`${wt?.icon} ${wt?.label}`)
-              )
+      h('div',{class:"section-head"},"📋 Today's Arc"),
+      h('div',{style:"font-family:'Lora',serif;font-style:italic;font-size:13px;color:#c0392b;margin-bottom:14px;margin-top:-8px"},"Rotates at midnight — pick your workout type above"),
+      h('div',{class:"mission-card",style:`opacity:${doneIds.includes(arc.id)?0.55:1}`},
+        h('div',{class:"mission-top",onClick:()=>setExpanded(expanded===arc.id?null:arc.id)},
+          h('div',{style:"font-size:28px;line-height:1"},arc.icon),
+          h('div',{style:"flex:1"},
+            h('div',{class:"row",style:"flex-wrap:wrap;gap:6px;margin-bottom:3px"},
+              h('div',{class:"mission-title"},`${doneIds.includes(arc.id)?"✓ ":""}${arc.title}`),
+              h('div',{class:"tag tag-diff",style:`color:${diffColor(arc.diff)};border-color:${diffColor(arc.diff)};background:${diffColor(arc.diff)}11`},arc.diff)
             ),
-            h('div',{class:"chevron"},open?"▲":"▼")
+            h('div',{class:"mission-loc"},arc.loc),
+            h('div',{class:"row",style:"gap:6px;margin-top:5px;flex-wrap:wrap"},
+              h('span',{class:"tag tag-berry"},`฿ ${fmt(arc.xp*1000)}`),
+              h('span',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;background:#1a2d4a;color:#d4a017;padding:1px 8px;border-radius:2px"},"All workout types")
+            )
           ),
-          open && h('div',{class:"mission-body"},
-            h('div',{class:"flavor-text"},`"${m.flavor}"`),
-            h('div',{class:"mission-desc"},m.desc),
-            h('div',{class:"criteria-box"},h('div',{class:"criteria-h"},"Mission Requirements"),h('div',{class:"criteria-t"},m.criteria)),
-            h('div',{style:"margin-bottom:14px"},
-              h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px"},"Ideal Crew Traits:"),
-              m.traits.map(t=>h('span',{key:t,class:"trait-pill"},t))
-            ),
-            !done
-              ? h('button',{class:"accept-btn",onClick:()=>{ setExpanded(null); startMission(m); }},"Set Sail →")
-              : h('div',{class:"done-tag"},"Mission Complete ✓")
-          )
-        );
-      })
+          h('div',{class:"chevron"},expanded===arc.id?"▲":"▼")
+        ),
+        expanded===arc.id && h('div',{class:"mission-body"},
+          h('div',{class:"flavor-text"},`"${arc.flavor}"`),
+          h('div',{style:"margin-bottom:10px"},
+            WORKOUT_TYPES.map(wt=>h('div',{key:wt.id,style:"margin-bottom:8px"},
+              h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#d4a017;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px"},`${wt.icon} ${wt.label}`),
+              h('div',{style:"font-family:'Lora',serif;font-size:13px;color:#1a0a00;line-height:1.5"},arc.desc[wt.id])
+            ))
+          ),
+          h('div',{style:"margin-bottom:14px"},
+            h('div',{style:"font-family:'Cabin',sans-serif;font-size:10px;font-weight:700;color:#c0392b;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px"},"Crew Traits:"),
+            arc.traits.map(t=>h('span',{key:t,class:"trait-pill"},t))
+          ),
+          doneIds.includes(arc.id) && h('div',{class:"done-tag"},"Arc Complete Today ✓")
+        )
+      )
     ),
 
     h('div',{class:"stats-row"},
@@ -713,7 +945,7 @@ function PickCrewView({ mission, gs, onConfirm, onBack }) {
 }
 
 function QuestView({ mission, crewIds, gs, apiKey, onFinish, onAbandon }) {
-  const milestones = MILESTONES[mission.id] || DEFAULT_MS;
+  const milestones = getMilestones(mission.id, mission.type);
   const crewObjs   = crewIds.map(id=>CREW.find(c=>c.id===id)).filter(Boolean);
 
   const banterFeed = [];
@@ -1107,10 +1339,17 @@ function App() {
     setQuestPhase("pick"); setView("mission_flow");
   }
 
-  function onSelectWorkoutType(typeId, mission) {
-    // If today's rotation has a mission for this type, use it; otherwise find first matching
-    const m = mission || MISSIONS.filter(x=>x.type===typeId)[0];
-    if(m) startMission(m);
+  function onSelectWorkoutType(typeId) {
+    const arc = getDailyArc();
+    const wt = WORKOUT_TYPES.find(w=>w.id===typeId);
+    // Build a mission object from the arc + chosen workout type
+    const mission = {
+      ...arc,
+      type: typeId,
+      desc: arc.desc[typeId] || arc.desc.strength,
+      criteria: arc.criteria[typeId] || arc.criteria.strength,
+    };
+    startMission(mission);
   }
 
   function onCrewConfirmed(crew) { setActiveCrew(crew); setQuestPhase("quest"); }
