@@ -256,6 +256,45 @@
   .wt-label { font-family:'Cabin',sans-serif; font-size:11px; font-weight:700; color:#fdf6e3; letter-spacing:0.5px; text-align:center; }
   .wt-sub   { font-family:'Lora',serif; font-style:italic; font-size:10px; color:#d4a01799; text-align:center; }
 
+  /* ── Lift tracker ── */
+  .loadout-section { padding:16px; }
+  .exercise-category { margin-bottom:16px; }
+  .cat-label { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#d4a017; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+  .exercise-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:6px; }
+  .exercise-btn { padding:10px 12px; background:#fdf6e3; border:1.5px solid #d4a01766; border-radius:3px; text-align:left; transition:all 0.15s; }
+  .exercise-btn.selected { border-color:#c0392b; background:#fff0ee; }
+  .exercise-btn-name { font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; color:#1a0a00; }
+  .exercise-btn-cat  { font-family:'Lora',serif; font-style:italic; font-size:10px; color:#c0392b; }
+  .add-exercise-row  { display:flex; gap:8px; margin-top:8px; }
+  .add-exercise-input { flex:1; padding:10px 12px; background:#fdf6e3; border:1.5px solid #d4a01766; border-radius:3px; font-family:'Lora',serif; font-size:14px; color:#1a0a00; }
+  .add-exercise-input:focus { border-color:#c0392b; }
+  .add-exercise-btn  { padding:10px 14px; background:#d4a017; color:#0a1628; border-radius:3px; font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; border:2px solid #1a0a00; }
+  .log-set-overlay { position:fixed; inset:0; background:rgba(10,22,40,0.85); display:flex; align-items:flex-end; z-index:200; }
+  .log-set-panel   { background:#fdf6e3; border:2px solid #d4a017; border-radius:12px 12px 0 0; padding:20px; width:100%; max-width:430px; margin:0 auto; box-shadow:0 -4px 24px rgba(0,0,0,0.3); }
+  .log-set-title   { font-family:'Pirata One',cursive; font-size:22px; color:#1a0a00; margin-bottom:4px; }
+  .log-set-prev    { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#c0392b; margin-bottom:14px; }
+  .exercise-picker { display:grid; grid-template-columns:repeat(2,1fr); gap:6px; margin-bottom:14px; max-height:160px; overflow-y:auto; }
+  .ex-pick-btn     { padding:9px 10px; background:#fdf6e3; border:1.5px solid #d4a01766; border-radius:3px; text-align:left; }
+  .ex-pick-btn.active { border-color:#c0392b; background:#fff0ee; }
+  .ex-pick-name    { font-family:'Cabin',sans-serif; font-weight:700; font-size:11px; color:#1a0a00; }
+  .ex-pick-prev    { font-family:'Lora',serif; font-style:italic; font-size:10px; color:#c0392b; }
+  .weight-reps-row { display:flex; gap:10px; margin-bottom:14px; }
+  .wr-group        { flex:1; }
+  .wr-label        { font-family:'Cabin',sans-serif; font-size:10px; font-weight:700; color:#c0392b; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; display:block; }
+  .wr-input        { width:100%; padding:12px; background:#fff9e6; border:2px solid #d4a017; border-radius:3px; font-family:'Pirata One',cursive; font-size:22px; color:#1a0a00; text-align:center; }
+  .wr-input:focus  { border-color:#c0392b; }
+  .log-set-confirm { width:100%; padding:14px; background:#c0392b; color:#fdf6e3; border-radius:3px; font-family:'Pirata One',cursive; font-size:18px; border:2px solid #1a0a00; box-shadow:2px 2px 0 #1a0a00; }
+  .log-set-confirm:disabled { opacity:0.4; box-shadow:none; }
+  .log-set-cancel  { width:100%; padding:10px; background:none; border:2px solid #d4a01766; border-radius:3px; font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; color:#1a0a00; margin-top:8px; }
+  .set-card        { background:#fff9e6; border:1.5px solid #d4a017; border-radius:3px; padding:10px 12px; margin-bottom:8px; }
+  .set-card-ex     { font-family:'Cabin',sans-serif; font-weight:700; font-size:11px; color:#d4a017; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+  .set-card-detail { font-family:'Pirata One',cursive; font-size:18px; color:#1a0a00; }
+  .set-card-num    { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#c0392b; }
+  .lift-summary    { margin-top:8px; }
+  .lift-ex-row     { margin-bottom:6px; }
+  .lift-ex-name    { font-family:'Cabin',sans-serif; font-weight:700; font-size:12px; color:#1a0a00; }
+  .lift-sets       { font-family:'Lora',serif; font-size:12px; color:#c0392b; }
+
   /* ── Utils ── */
   .row    { display:flex; align-items:center; gap:8px; }
   .spacer { flex:1; }
@@ -270,6 +309,29 @@ import { useState, useEffect, useRef, useCallback } from 'https://esm.sh/preact@
 /* ═══════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════ */
+
+const CREW_IMG = {
+  luffy:   "crew/luffy.jpg",
+  zoro:    "crew/zoro.png",
+  nami:    "crew/nami.png",
+  usopp:   "crew/usopp.jpg",
+  sanji:   "crew/zanji.png",
+  chopper: "crew/chopper.png",
+  robin:   "crew/robin.jpg",
+  franky:  "crew/franky.jpg",
+  brook:   "crew/brook.png",
+  jinbe:   "crew/jimbei.png",
+  yamato:  "crew/yamato.jpg",
+  vivi:    "crew/vivi.jpg",
+};
+const ASHLEY_IMG = "crew/Ashley.png";
+
+function CrewIcon({ id, size=32, style="" }) {
+  const src = CREW_IMG[id];
+  if(src) return h('img', {src, alt:id, style:`width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;${style}`, onError:e=>{e.target.style.display="none";}});
+  const c = CREW.find(x=>x.id===id);
+  return h('span', {style:`font-size:${Math.round(size*0.75)}px`}, c?.icon||"🏴‍☠️");
+}
 
 const CREW = [
   { id:"luffy",      name:"Luffy",      role:"Captain",        icon:"👒", color:"#c0392b", rgb:"192,57,43",   strengths:["strength","courage","endurance"],       injuredQ:"...I'm hungry. Also maybe hurt.",                   healthyQ:"Let's gooo! I'm gonna be King of the Pirates!" },
@@ -602,6 +664,53 @@ const BANTER = {
   vivi:   [{at:"start",l:["The people of Alabasta never gave up. Neither will we!","You can do this! I believe in you completely!","We fight for what matters. Let that carry you!"]},{at:"mid",l:["You're doing so well! Keep going!","The desert was harder than this, and we made it through that!","I'm so proud of you already. Don't stop now!"]},{at:"push",l:["Almost there! You've come so far!","Don't give up! The finish is RIGHT THERE!","I crossed a desert kingdom for the people I love. You can push through this!"]},{at:"done",l:["You did it! I'm so proud!","That was incredible! The crew would be so happy to see that!","You're stronger than you know. This proved it."]}],
 };
 
+/* ── Exercise Library ── */
+const DEFAULT_EXERCISES = [
+  { id:"bench",      name:"Bench Press",       cat:"Push" },
+  { id:"ohp",        name:"Overhead Press",     cat:"Push" },
+  { id:"incline",    name:"Incline Press",      cat:"Push" },
+  { id:"dips",       name:"Dips",               cat:"Push" },
+  { id:"pushup",     name:"Push-ups",           cat:"Push" },
+  { id:"laterals",   name:"Lateral Raises",     cat:"Push" },
+  { id:"deadlift",   name:"Deadlift",           cat:"Pull" },
+  { id:"row",        name:"Barbell Row",        cat:"Pull" },
+  { id:"pullup",     name:"Pull-ups",           cat:"Pull" },
+  { id:"latpull",    name:"Lat Pulldown",       cat:"Pull" },
+  { id:"curl",       name:"Bicep Curls",        cat:"Pull" },
+  { id:"facepull",   name:"Face Pulls",         cat:"Pull" },
+  { id:"squat",      name:"Squat",              cat:"Legs" },
+  { id:"rdl",        name:"Romanian Deadlift",  cat:"Legs" },
+  { id:"lunge",      name:"Lunges",             cat:"Legs" },
+  { id:"legpress",   name:"Leg Press",          cat:"Legs" },
+  { id:"legcurl",    name:"Leg Curl",           cat:"Legs" },
+  { id:"calf",       name:"Calf Raises",        cat:"Legs" },
+  { id:"plank",      name:"Plank",              cat:"Core" },
+  { id:"crunch",     name:"Crunches",           cat:"Core" },
+  { id:"cable_core", name:"Cable Crunch",       cat:"Core" },
+];
+
+function getExercises() {
+  const custom = LS.get("gl_custom_ex") || [];
+  return [...DEFAULT_EXERCISES, ...custom];
+}
+
+function addCustomExercise(name) {
+  const custom = LS.get("gl_custom_ex") || [];
+  const id = "custom_" + name.toLowerCase().replace(/\s+/g,"_") + "_" + Date.now();
+  const ex = { id, name, cat:"Custom" };
+  LS.set("gl_custom_ex", [...custom, ex]);
+  return ex;
+}
+
+function getLastLift(exId, allW) {
+  for(let i = allW.length-1; i>=0; i--) {
+    const sets = allW[i].sets || [];
+    const match = sets.filter(s=>s.exId===exId);
+    if(match.length) return match[match.length-1];
+  }
+  return null;
+}
+
 // Which crew member leads each arc's briefing, and their opening line
 const BRIEFINGS = {
   arlong:      { crew:"luffy",    line:"Nami's village is suffering because of Arlong. That ends today. You ready to train like you mean it?" },
@@ -733,7 +842,7 @@ Keep response to 1-3 sentences. React naturally to what Ashley said. Do not brea
   return h('div',{class:"briefing-section"},
     // Arc header
     h('div',{class:"briefing-header"},
-      h('span',{style:"font-size:26px"},crewMember.icon),
+      h(CrewIcon,{id:crewMember.id,size:44,style:"border:2px solid "+crewMember.color+";flex-shrink:0;"}),
       h('div',null,
         h('div',{class:"briefing-arc"},`Today's Arc — ${todayArc?.title||"Grand Line"}`),
         h('div',{style:"font-family:'Pirata One',cursive;font-size:16px;color:#fdf6e3"},crewMember.name)
@@ -746,7 +855,7 @@ Keep response to 1-3 sentences. React naturally to what Ashley said. Do not brea
         if(item.type==="crew") {
           const c=CREW.find(x=>x.id===item.cid)||crewMember;
           return h('div',{key:i,class:"briefing-msg banter-in"},
-            h('span',{style:"font-size:22px;flex-shrink:0"},c.icon),
+            h(CrewIcon,{id:c.id,size:36,style:"flex-shrink:0;border:2px solid "+c.color+";"}),
             h('div',{class:"briefing-bubble"},
               h('div',{class:"briefing-who",style:`color:${c.color}`},c.name),
               h('div',{class:"briefing-text"},`"${item.text}"`)
@@ -846,7 +955,7 @@ function HomeView({ gs, setGs, startMission, apiKey, onSelectWorkoutType }) {
     injured.length>0 && h('div',{class:"injured-card"},
       h('div',{class:"injured-h"},"⚠️ Crew Members Down"),
       injured.map(c=>h('div',{key:c.id,class:"row",style:"margin-bottom:8px"},
-        h('span',{style:"font-size:20px"},c.icon),
+        h(CrewIcon,{id:c.id,size:36}),
         h('div',{style:"flex:1"},
           h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;color:#c0392b;font-size:13px"},c.name),
           h('div',{style:"font-family:'Lora',serif;font-style:italic;color:#c0392b;font-size:12px"},`"${c.injuredQ}"`)
@@ -900,6 +1009,68 @@ function HomeView({ gs, setGs, startMission, apiKey, onSelectWorkoutType }) {
   );
 }
 
+function ExerciseLoadoutView({ gs, onConfirm, onBack }) {
+  const exercises = getExercises();
+  const cats = [...new Set(exercises.map(e=>e.cat))];
+  const [sel, setSel] = useState([]);
+  const [newEx, setNewEx] = useState("");
+  const [exList, setExList] = useState(exercises);
+
+  function toggle(id) {
+    setSel(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id]);
+  }
+
+  function addEx() {
+    const name = newEx.trim();
+    if(!name) return;
+    const ex = addCustomExercise(name);
+    setExList(getExercises());
+    setSel(s=>[...s, ex.id]);
+    setNewEx("");
+  }
+
+  const allCats = [...new Set(exList.map(e=>e.cat))];
+
+  return h('div', {class:"view fade-in"},
+    h('div', {class:"sub-header"},
+      h('button', {class:"back-btn", onClick:onBack}, "← Back"),
+      h('div', {class:"sub-header-title"}, "Today's Lifts"),
+      h('div', {style:"min-width:60px"})
+    ),
+    h('div', {class:"loadout-section"},
+      h('div', {style:"font-family:'Pirata One',cursive;font-size:26px;color:#1a0a00;margin-bottom:4px"}, "What are you lifting?"),
+      h('div', {style:"font-family:'Lora',serif;font-style:italic;font-size:14px;color:#c0392b;margin-bottom:16px"}, "Pick your exercises — you'll log sets during the mission."),
+      allCats.map(cat => {
+        const catEx = exList.filter(e=>e.cat===cat);
+        return h('div', {key:cat, class:"exercise-category"},
+          h('div', {class:"cat-label"}, cat),
+          h('div', {class:"exercise-grid"},
+            catEx.map(ex => {
+              const last = getLastLift(ex.id, gs.allW);
+              const isSel = sel.includes(ex.id);
+              return h('button', {key:ex.id, class:`exercise-btn${isSel?" selected":""}`, onClick:()=>toggle(ex.id)},
+                h('div', {class:"exercise-btn-name"}, `${isSel?"✓ ":""}${ex.name}`),
+                last && h('div', {class:"exercise-btn-cat"}, `Last: ${last.kg}kg × ${last.reps}`)
+              );
+            })
+          )
+        );
+      }),
+      h('div', {class:"exercise-category"},
+        h('div', {class:"cat-label"}, "Add Custom"),
+        h('div', {class:"add-exercise-row"},
+          h('input', {class:"add-exercise-input", value:newEx, placeholder:"Exercise name...", onInput:e=>setNewEx(e.target.value), onKeyDown:e=>{ if(e.key==="Enter"){e.preventDefault();addEx();} }}),
+          h('button', {class:"add-exercise-btn", onClick:addEx, disabled:!newEx.trim()}, "+ Add")
+        )
+      ),
+      h('button', {class:"primary-btn", style:"margin-top:8px", disabled:sel.length===0, onClick:()=>onConfirm(sel)},
+        `⚓ Set Sail with ${sel.length} exercise${sel.length!==1?"s":""}`
+      ),
+      h('button', {class:"ghost-btn", style:"margin-top:8px", onClick:()=>onConfirm([])}, "Skip — no tracking today")
+    )
+  );
+}
+
 function PickCrewView({ mission, gs, onConfirm, onBack }) {
   const [sel, setSel] = useState([]);
   function toggle(id) {
@@ -929,7 +1100,7 @@ function PickCrewView({ mission, gs, onConfirm, onBack }) {
             onClick:()=>!injured&&toggle(c.id)
           },
             isSel&&h('div',{class:"crew-check",style:`color:${c.color}`},"✓"),
-            h('div',{style:"font-size:26px"},c.icon),
+            h(CrewIcon,{id:c.id,size:48}),
             h('div',{class:"crew-name"},c.name),
             h('div',{class:"crew-role"},c.role),
             match&&!isSel&&!injured&&h('div',{class:"crew-match",style:`color:${c.color}`},"★"),
@@ -944,22 +1115,29 @@ function PickCrewView({ mission, gs, onConfirm, onBack }) {
   );
 }
 
-function QuestView({ mission, crewIds, gs, apiKey, onFinish, onAbandon }) {
+function QuestView({ mission, crewIds, gs, apiKey, onFinish, onAbandon, selectedExercises, onSaveSets }) {
   const milestones = getMilestones(mission.id, mission.type);
   const crewObjs   = crewIds.map(id=>CREW.find(c=>c.id===id)).filter(Boolean);
+  const exercises  = getExercises().filter(e=>selectedExercises.includes(e.id));
 
   const banterFeed = [];
   crewIds.forEach(id=>{ const b=BANTER[id]||[]; b.forEach(({at,l})=>banterFeed.push({id,at,line:pick(l)})); });
   const events = [...SEA_EVENTS].sort(()=>Math.random()-0.5).slice(0,2);
 
-  const [msIdx,  setMsIdx]     = useState(0);
-  const [feed,   setFeed]      = useState([]);
-  const [elapsed,setElapsed]   = useState(0);
-  const [bonusXP,setBonusXP]   = useState(0);
-  const [event,  setEvent]     = useState(null);
-  const [evDone, setEvDone]    = useState([]);
-  const [input,  setInput]     = useState("");
-  const [thinking,setThinking] = useState(false);
+  const [msIdx,    setMsIdx]    = useState(0);
+  const [feed,     setFeed]     = useState([]);
+  const [elapsed,  setElapsed]  = useState(0);
+  const [bonusXP,  setBonusXP]  = useState(0);
+  const [event,    setEvent]    = useState(null);
+  const [evDone,   setEvDone]   = useState([]);
+  const [input,    setInput]    = useState("");
+  const [thinking, setThinking] = useState(false);
+  const [logOpen,  setLogOpen]  = useState(false);
+  const [logEx,    setLogEx]    = useState(exercises[0]?.id||null);
+  const [logKg,    setLogKg]    = useState("");
+  const [logReps,  setLogReps]  = useState("");
+  const [sets,     setSets]     = useState([]);
+  const [setCount, setSetCount] = useState({});
   const feedRef = useRef(null);
 
   const addFeed = useCallback(item=>setFeed(f=>[...f,{...item,fid:Date.now()+Math.random()}]),[]);
@@ -1053,6 +1231,17 @@ React to what Ashley said. Match the character's voice exactly.`;
     }
   }
 
+  function logSet() {
+    if(!logEx||!logKg||!logReps) return;
+    const ex = exercises.find(e=>e.id===logEx);
+    const setNum = (setCount[logEx]||0) + 1;
+    const setObj = { exId:logEx, exName:ex?.name||logEx, kg:parseFloat(logKg), reps:parseInt(logReps), setNum };
+    setSets(s=>[...s, setObj]);
+    setSetCount(c=>({...c,[logEx]:setNum}));
+    addFeed({type:"set", ...setObj});
+    setLogKg(""); setLogReps(""); setLogOpen(false);
+  }
+
   function resolveEvent(choice,idx) {
     addFeed({type:"enc_res",text:choice.out});
     setBonusXP(b=>b+choice.xp);
@@ -1079,7 +1268,7 @@ React to what Ashley said. Match the character's voice exactly.`;
       ),
       h('div',{class:"row",style:"gap:6px;margin-bottom:10px;flex-wrap:wrap"},
         crewObjs.map(c=>h('div',{key:c.id,style:`background:${c.color}22;border:1.5px solid ${c.color}88;border-radius:3px;padding:5px 10px;display:flex;align-items:center;gap:5px`},
-          h('span',{style:"font-size:16px"},c.icon),
+          h(CrewIcon,{id:c.id,size:28,style:"border:1.5px solid "+c.color+"88;"}),
           h('span',{style:"font-family:'Cabin',sans-serif;font-size:9px;font-weight:700;color:#fdf6e3"},c.name.split(" ")[0])
         )),
         !apiKey&&h('div',{style:"background:#d4a01722;border:1px solid #d4a01766;border-radius:3px;padding:5px 10px"},
@@ -1103,6 +1292,34 @@ React to what Ashley said. Match the character's voice exactly.`;
       )
     ),
 
+    logOpen&&exercises.length>0&&h('div',{class:"log-set-overlay",onClick:e=>{if(e.target===e.currentTarget)setLogOpen(false)}},
+      h('div',{class:"log-set-panel"},
+        h('div',{class:"log-set-title"},"Log a Set"),
+        h('div',{class:"exercise-picker"},
+          exercises.map(ex=>{
+            const last=getLastLift(ex.id,gs.allW);
+            const sc=setCount[ex.id]||0;
+            return h('button',{key:ex.id,class:`ex-pick-btn${logEx===ex.id?" active":""}`,onClick:()=>setLogEx(ex.id)},
+              h('div',{class:"ex-pick-name"},ex.name),
+              h('div',{class:"ex-pick-prev"},last?`Last: ${last.kg}kg×${last.reps}`:sc>0?`${sc} set${sc!==1?"s":""} today`:"First time")
+            );
+          })
+        ),
+        h('div',{class:"weight-reps-row"},
+          h('div',{class:"wr-group"},
+            h('label',{class:"wr-label"},"Weight (kg)"),
+            h('input',{class:"wr-input",type:"number",inputMode:"decimal",value:logKg,placeholder:"60",onInput:e=>setLogKg(e.target.value)})
+          ),
+          h('div',{class:"wr-group"},
+            h('label',{class:"wr-label"},"Reps"),
+            h('input',{class:"wr-input",type:"number",inputMode:"numeric",value:logReps,placeholder:"8",onInput:e=>setLogReps(e.target.value)})
+          )
+        ),
+        h('button',{class:"log-set-confirm",disabled:!logEx||!logKg||!logReps,onClick:logSet},"⚓ Log Set"),
+        h('button',{class:"log-set-cancel",onClick:()=>setLogOpen(false)},"Cancel")
+      )
+    ),
+
     h('div',{class:"quest-feed",ref:feedRef},
       h('div',{class:"story-card"},
         h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:#d4a017;text-transform:uppercase;margin-bottom:6px"},`📍 ${milestones[0].l}`),
@@ -1121,7 +1338,7 @@ React to what Ashley said. Match the character's voice exactly.`;
           const comp=CREW.find(c=>c.id===item.cid); if(!comp) return null;
           return h('div',{key:item.fid,class:"banter-msg banter-in",style:`border-left-color:${comp.color}`},
             h('div',{class:"banter-who"},
-              h('span',{style:"font-size:18px"},comp.icon),
+              h(CrewIcon,{id:comp.id,size:28,style:"border:2px solid "+comp.color+";"}),
               h('span',{class:"banter-name",style:`color:${comp.color}`},comp.name)
             ),
             h('div',{class:"banter-text"},`"${item.text}"`)
@@ -1136,10 +1353,18 @@ React to what Ashley said. Match the character's voice exactly.`;
           h('div',{style:"font-family:'Lora',serif;font-size:14px;color:#1a0a00"},item.text)
         );
         if(item.type==="sys") return h('div',{key:item.fid,class:"sys-msg"},item.text);
+        if(item.type==="set") return h('div',{key:item.fid,class:"set-card slide-up"},
+          h('div',{class:"set-card-ex"},item.exName),
+          h('div',{class:"row"},
+            h('div',{class:"set-card-detail"},`${item.kg}kg × ${item.reps}`),
+            h('div',{class:"spacer"}),
+            h('div',{class:"set-card-num"},`Set ${item.setNum}`)
+          )
+        );
         return null;
       }),
       thinking&&h('div',{class:"row pulsing",style:"padding:8px 4px"},
-        crewObjs[0]&&h('span',{style:"font-size:18px"},crewObjs[0].icon),
+        crewObjs[0]&&h(CrewIcon,{id:crewObjs[0].id,size:28}),
         h('span',{class:"sys-msg",style:"margin:0 8px"},"Den Den Mushi connecting...")
       ),
       h('div',{style:"height:20px"})
@@ -1155,12 +1380,13 @@ React to what Ashley said. Match the character's voice exactly.`;
             curMs?.c&&h('div',{class:"ms-cue"},curMs.c),
             h('div',{class:"ms-action"},
               h('button',{class:"ms-advance",onClick:advance},`⚓ ${curMs?.l||"Advance"}`),
+              exercises.length>0&&h('button',{class:"quit-btn",style:"background:#d4a01722;border-color:#d4a017;color:#1a0a00",onClick:()=>setLogOpen(true)},"📊 Log"),
               h('button',{class:"quit-btn",onClick:onAbandon},"Abandon")
             )
           )
         : h('div',null,
             h('div',{style:"font-family:'Cabin',sans-serif;font-weight:700;color:#166534;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px"},`⚓ Mission Complete! +฿${fmt(bonusXP*1000)} bonus`),
-            h('button',{class:"primary-btn",onClick:()=>onFinish(bonusXP)},"Claim Bounty →")
+            h('button',{class:"primary-btn",onClick:()=>{ onSaveSets(sets); onFinish(bonusXP); }},"Claim Bounty →")
           )
     )
   );
@@ -1221,7 +1447,7 @@ function CrewView({ gs }) {
       const ch=gs.ch[c.id]||{hp:100,xp:0,level:1,status:"ready"};
       const injured=ch.status==="injured";
       return h('div',{key:c.id,class:"crew-row",style:`border-color:${injured?"#c0392b":c.color+"44"};background:${injured?"#fff5f5":"#fdf6e3"}`},
-        h('div',{class:"crew-icon-box",style:`background:${c.color}15;border-color:${injured?"#c0392b":c.color}55`},c.icon),
+        h('div',{class:"crew-icon-box",style:`background:${c.color}15;border-color:${injured?"#c0392b":c.color}55;overflow:hidden;`},h(CrewIcon,{id:c.id,size:54})),
         h('div',{style:"flex:1"},
           h('div',{class:"row"},
             h('div',{style:"font-family:'Pirata One',cursive;font-size:18px;color:#1a0a00"},c.name),
@@ -1257,10 +1483,20 @@ function JournalViewComp({ gs }) {
           h('div',{style:"font-family:'Pirata One',cursive;color:#d4a017;font-size:16px"},`฿${fmt((w.xp||0)*1000)}`)
         ),
         h('div',{class:"row",style:"gap:4px;margin-bottom:6px"},
-          crew.map(c=>h('span',{key:c.id,style:"font-size:18px"},c.icon)),
+          crew.map(c=>h(CrewIcon,{key:c.id,id:c.id,size:28})),
           h('span',{style:"font-family:'Lora',serif;color:rgba(192,57,43,0.6);font-size:12px;margin-left:4px"},`${ef?.icon||""} ${ef?.label||""}`)
         ),
-        w.notes&&h('div',{class:"journal-note"},`"${w.notes}"`)
+        w.notes&&h('div',{class:"journal-note"},`"${w.notes}"`),
+        w.sets&&w.sets.length>0&&h('div',{class:"lift-summary"},
+          (() => {
+            const byEx = {};
+            w.sets.forEach(s=>{ if(!byEx[s.exId]) byEx[s.exId]={name:s.exName,sets:[]}; byEx[s.exId].sets.push(s); });
+            return Object.values(byEx).map(ex=>h('div',{key:ex.name,class:"lift-ex-row"},
+              h('span',{class:"lift-ex-name"},ex.name+": "),
+              h('span',{class:"lift-sets"},ex.sets.map(s=>`${s.kg}kg×${s.reps}`).join(" · "))
+            ));
+          })()
+        )
       );
     })
   );
@@ -1313,6 +1549,8 @@ function App() {
   const [activeCrew,     setActiveCrew]     = useState([]);
   const [questBonus,     setQuestBonus]     = useState(0);
   const [questPhase,     setQuestPhase]     = useState("pick");
+  const [activeExercises,setActiveExercises]= useState([]);
+  const [activeSets,     setActiveSets]     = useState([]);
 
   useEffect(()=>{ LS.set("gl_v1",gs); },[gs]);
 
@@ -1352,7 +1590,9 @@ function App() {
     startMission(mission);
   }
 
-  function onCrewConfirmed(crew) { setActiveCrew(crew); setQuestPhase("quest"); }
+  function onCrewConfirmed(crew) { setActiveCrew(crew); setQuestPhase(activeMission.type==="strength" ? "loadout" : "quest"); }
+  function onLoadoutConfirmed(exIds) { setActiveExercises(exIds); setQuestPhase("quest"); }
+  function onSaveSets(sets) { setActiveSets(sets); }
   function onQuestFinished(bonus) { setQuestBonus(bonus); setQuestPhase("log"); }
 
   function onMissionComplete(effort, notes, totalXP) {
@@ -1360,7 +1600,8 @@ function App() {
     const workout={
       id:Date.now(), date:new Date().toISOString(),
       cid:activeMission.id, title:activeMission.title, icon:activeMission.icon,
-      crewIds:activeCrew, effort, notes, xp:totalXP, day:todayIdx()
+      crewIds:activeCrew, effort, notes, xp:totalXP, day:todayIdx(),
+      sets:activeSets, type:activeMission.type
     };
     setGs(prev=>{
       const ch={...prev.ch};
@@ -1380,9 +1621,10 @@ function App() {
 
   const mainView=()=>{
     if(view==="mission_flow"){
-      if(questPhase==="pick")  return h(PickCrewView,{mission:activeMission,gs,onConfirm:onCrewConfirmed,onBack:()=>setView("home")});
-      if(questPhase==="quest") return h(QuestView,{mission:activeMission,crewIds:activeCrew,gs,apiKey,onFinish:onQuestFinished,onAbandon:()=>setView("home")});
-      if(questPhase==="log")   return h(LogView,{mission:activeMission,crewIds:activeCrew,bonusXP:questBonus,onComplete:onMissionComplete,onBack:()=>setQuestPhase("quest")});
+      if(questPhase==="pick")    return h(PickCrewView,{mission:activeMission,gs,onConfirm:onCrewConfirmed,onBack:()=>setView("home")});
+      if(questPhase==="loadout") return h(ExerciseLoadoutView,{gs,onConfirm:onLoadoutConfirmed,onBack:()=>setQuestPhase("pick")});
+      if(questPhase==="quest")   return h(QuestView,{mission:activeMission,crewIds:activeCrew,gs,apiKey,onFinish:onQuestFinished,onAbandon:()=>setView("home"),selectedExercises:activeExercises,onSaveSets});
+      if(questPhase==="log")     return h(LogView,{mission:activeMission,crewIds:activeCrew,bonusXP:questBonus,onComplete:onMissionComplete,onBack:()=>setQuestPhase("quest")});
     }
     if(view==="party")   return h(CrewView,{gs});
     if(view==="journal") return h(JournalViewComp,{gs});
