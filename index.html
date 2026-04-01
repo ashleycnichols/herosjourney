@@ -651,20 +651,81 @@ function getMilestones(arcId, workoutType) {
 }
 
 const BANTER = {
-  luffy:   [{at:"start",l:["Let's goooo! I'm so fired up!","This is gonna be fun! Come on!","I'm hungry but ALSO really excited!"]},{at:"mid",l:["You're doing great! Even better than Zoro! Don't tell Zoro.","Keep going! I believe in you! Also I'm really hungry.","We're gonna WIN!"]},{at:"push",l:["This is it! THIS IS THE PART!","Don't stop! We're almost there! GOMU GOMU—","I won't let you quit! Nobody quits on MY crew!"]},{at:"done",l:["YESSSS! That was SO COOL!","You did it! You're amazing! Let's eat!","I KNEW you could do it! You're part of my crew now!"]}],
-  zoro:    [{at:"start",l:["Don't embarrass us.","I've been awake since four. No excuses.","Move."]},{at:"mid",l:["Still standing. Good.","Halfway is nothing. Keep going.","I've trained with worse. Marginally."]},{at:"push",l:["This is where it matters. Push.","Don't stop now.","I didn't come here to watch you give up."]},{at:"done",l:["...Not bad.","You held. Good.","That'll do. Rest. Then we go again tomorrow."]}],
-  nami:    [{at:"start",l:["I've mapped harder routes than this. You'll be fine.","My weather tracking says conditions are perfect. No excuses.","I need you strong. This crew needs you strong. GO."]},{at:"mid",l:["Halfway! The wind is with us.","You're doing better than the charts predicted, honestly.","I've navigated through worse. You can push through this."]},{at:"push",l:["Final stretch! I can see the finish from here!","Push it! We've come too far to stop now!","The log pose is pointing forward. KEEP MOVING."]},{at:"done",l:["Excellent work. I've updated the log.","Not bad at all. The crew's in good hands.","I calculated you'd finish strong. I was right, as usual."]}],
-  usopp:   [{at:"start",l:["The great warrior Usopp once trained for forty days straight! You can do this!","I have fought eight thousand enemies! This is nothing for us!","The brave captain of the Usopp Pirates declares this training... BEGUN!"]},{at:"mid",l:["USOPP THE MAGNIFICENT encourages you greatly!","I personally fought through worse pain than this! Many times! It's true!","You're doing so well! Even better than ME! ...Almost."]},{at:"push",l:["DON'T GIVE UP! The great warrior NEVER gives up!","THIS IS YOUR MOMENT! USOPP COMMANDS YOU TO PUSH!","I'm crying! These are tears of INSPIRATION!"]},{at:"done",l:["INCREDIBLE! USOPP THE GREAT IS SO PROUD!","You are now an honorary member of the Usopp Pirates! ...probably!","That was AMAZING! Better than most of my stories! Almost!"]}],
-  sanji:   [{at:"start",l:["I'll prepare something magnificent when you're done. Now move.","A cook knows the value of sustained effort. Let's see yours.","Mellorine~ Even training looks beautiful when you do it right."]},{at:"mid",l:["Good form. Keep it up.","I've kicked through walls of steel. This is nothing for you.","Your effort deserves a three-course meal. Let's make sure you earn it."]},{at:"push",l:["COME ON! You're embarrassing this crew!","Push harder or I push for you — and my pushes leave marks!","We're almost DONE! Pour everything in!"]},{at:"done",l:["Mellorine~ Perfect. I'll make something special.","Beautiful work. I'll tell Nami you trained well.","That's the spirit of the All Blue. You earned your dinner."]}],
-  chopper: [{at:"start",l:["I'll monitor your vitals! Medically speaking, you're in great shape! Let's go!","As ship's doctor, I prescribe MAXIMUM EFFORT!","Don't be scared! I'll be right here! This is exciting!"]},{at:"mid",l:["Your heart rate is medically perfect! Keep going!","AMAZING! Your form is medically very impressive!","You're doing so well! Don't tell anyone I said that!"]},{at:"push",l:["PUSH! PUSH! I believe in you so much right now!","The doctor orders MORE EFFORT! Stat!","YOU CAN DO IT! I've done the medical calculations!"]},{at:"done",l:["WAHHHH! That was SO AMAZING! Don't compliment me about how I cheered!","Medically speaking... you are incredible!","I'm giving you a full recovery certificate! You've earned it!"]}],
-  robin:   [{at:"start",l:["I've read accounts of warriors who trained like this. Most of them survived.","Fufufu. Shall we begin? The Poneglyphs can wait.","The history books remember those who persisted. Let's see where this goes."]},{at:"mid",l:["You're holding up well. Better than most, actually.","Fufufu. The effort suits you.","I've witnessed stronger people stop at this point. You haven't."]},{at:"push",l:["You're nearly there. Don't let the body win this negotiation.","Fufufu. Now it gets interesting.","The final push is always the most revealing. Show me who you are."]},{at:"done",l:["Fufufu. Splendid. I shall record this in my personal log.","As expected. You don't disappoint.","The historians will note this session with approval. Fufufu."]}],
-  franky:  [{at:"start",l:["ALRIGHT! Let's make this SUPER!","I built this body with cola and determination! Let's GO!","The Franky Family doesn't START unless it's going to be SUPER!"]},{at:"mid",l:["SUPER EFFORT! SUPER RESULTS!","You're doing GREAT! Even better than I calculated!","FRANKY APPROVES OF THIS TRAINING SESSION!"]},{at:"push",l:["SUPER FINAL PUSH TIME!","PUT EVERYTHING INTO IT! SUUUPER!","THIS IS THE MOST SUPER PART! DON'T HOLD BACK!"]},{at:"done",l:["SUUUUPER! That was ABSOLUTELY SUPER!","I'm adding this to the Sunny's log as a SUPER achievement!","You are SUPER. I've decided. It's official."]}],
-  brook:   [{at:"start",l:["Yohohoho! Shall I play something to set the pace? SKULL JOKE!","Even a skeleton can feel the excitement! Let us begin!","I would feel my heart racing, but— yohohoho! SKULL JOKE!"]},{at:"mid",l:["You are doing wonderfully! Even better than a skeleton! Yohohoho!","Halfway! Like a song reaching the bridge! SKULL JOKE!","Your effort would bring tears to my eyes... if I had eyes. Yohohoho!"]},{at:"push",l:["THE FINALE APPROACHES! PLAY IT FORTE!","This is the last verse! Make it count! YOHOHOHO!","Even bones can feel the glory of this moment! Almost there!"]},{at:"done",l:["YOHOHOHOHO! A standing ovation! If I could stand! SKULL JOKE!","Bravissimo! A performance worthy of the Rumbar Pirates!","Magnificent! Shall I compose a ballad? 'The Legend of Ashley's Training'! Yohohoho!"]}],
-  jinbe:   [{at:"start",l:["A helmsman reads the conditions and adjusts. You are the conditions now. Begin.","Fish-Man Karate begins with the breath. Find yours.","The sea does not hurry. But it always arrives. Let's go."]},{at:"mid",l:["You are reading the current correctly. Stay with it.","Good. The hardest part is staying consistent under pressure.","A true helmsman holds steady when others would veer. You're holding."]},{at:"push",l:["This is the open ocean stretch. No shelter. Push through.","The tide is with you now. Use it.","A pirate of your calibre does not stop here."]},{at:"done",l:["Well navigated. The crew is fortunate to have you.","You have the bearing of a true pirate. I am honoured to have watched.","Luffy chose well when he asked you aboard. This session proves it."]}],
-  yamato:  [{at:"start",l:["ODEN WOULD HAVE STARTED BY NOW! LET'S GO!","The samurai of Wano trained in storms! This is nothing! BEGIN!","I have trained in the wilderness of Onigashima! You can do this!"]},{at:"mid",l:["THAT'S IT! ODEN'S SPIRIT IS WITH YOU!","You fight like someone who knows WHY they're fighting! BEAUTIFUL!","HALFWAY! ODEN NEVER STOPPED AT HALFWAY!"]},{at:"push",l:["THIS IS THE MOMENT ODEN WOULD WRITE ABOUT!","PUSH! I WILL PERSONALLY CELEBRATE YOUR FINISH!","ODEN MOVED MOUNTAINS! YOU CAN FINISH THIS!"]},{at:"done",l:["MAGNIFICENT! TRULY MAGNIFICENT! ODEN WOULD WEEP!","You have the spirit of a samurai AND a pirate! THAT IS RARE!","I'm going to tell everyone about this! Starting with Luffy!"]}],
-  vivi:   [{at:"start",l:["The people of Alabasta never gave up. Neither will we!","You can do this! I believe in you completely!","We fight for what matters. Let that carry you!"]},{at:"mid",l:["You're doing so well! Keep going!","The desert was harder than this, and we made it through that!","I'm so proud of you already. Don't stop now!"]},{at:"push",l:["Almost there! You've come so far!","Don't give up! The finish is RIGHT THERE!","I crossed a desert kingdom for the people I love. You can push through this!"]},{at:"done",l:["You did it! I'm so proud!","That was incredible! The crew would be so happy to see that!","You're stronger than you know. This proved it."]}],
+  luffy:   [
+    {at:"start",l:["Hey, there's a ship on the horizon — and it's not flying a flag I recognise. What do we do?","I smell something weird. Like... treasure weird. Do you smell that?","A Marine patrol just spotted us. Should we run or should we fight? I vote fight."]},
+    {at:"mid",l:["Okay so I may have accidentally challenged their captain to a duel. Just so you know.","There's a chest half-buried over there. Nami says don't touch it. What do you think?","I ate something and I think it might have been important. Anyway — enemy incoming!"]},
+    {at:"push",l:["Their captain's not going down! We need something big! What do we do?!","The door's stuck and the water's rising! PUSH IT OPEN!","Last one standing wins! I'm not losing! Neither are you!"]},
+    {at:"done",l:["WE WON! Did you see that?! WE ACTUALLY WON! Now let's eat.","That was the BEST FIGHT. You were incredible. The whole crew saw it.","We did it. Together. That's what nakama means."]}
+  ],
+  zoro:   [
+    {at:"start",l:["Three of them blocked the passage. I've counted their stances. They're not as strong as they look. Your call — go through them or go around?","I found a shortcut. I think. Follow me.","Someone's been watching us since the docks. Don't look. What do you want to do?"]},
+    {at:"mid",l:["The big one's mine. The other two are yours. Ready?","There's a door here. Locked. I can cut it. Should I cut it?","Sanji went left when I said right. Now he's gone. Not my problem. Focus."]},
+    {at:"push",l:["They called in backup. Doesn't matter. We finish this.","My arm's cut. Barely. Don't ask. Keep going.","This is the last wall between us and out. Hit it with everything."]},
+    {at:"done",l:["Good fight.","You held your ground. I noticed.","Rest. Then we figure out where Sanji went."]}
+  ],
+  nami:   [
+    {at:"start",l:["I've charted three routes. The fast one's dangerous, the safe one's slow, and the interesting one — well. What's your call, Captain?","Storm's coming in faster than I predicted. We need to move now.","I just spotted what looks like a Marine encampment ahead. I've already found us a way around — but it'll cost us time."]},
+    {at:"mid",l:["Okay so there's good news and bad news. Good news: I found the passage. Bad news: it's guarded.","The log pose just did something it shouldn't be able to do. I need you to keep moving while I figure out what that means.","I found something in the wreckage. A map — partial, waterlogged. It matches nothing in my charts. Interesting."]},
+    {at:"push",l:["The weather window is closing! We have maybe ten minutes to get through!","MOVE! I'll explain later — just trust the navigator!","I'm not going to tell you it's easy. I'm going to tell you we don't have a choice. GO."]},
+    {at:"done",l:["We made it through. Against my better calculations. Well done.","I'm updating the chart. You're going in it — under 'assets worth keeping'.","That was closer than I'd like. But we're through. Rest while I figure out where we are."]}
+  ],
+  usopp:  [
+    {at:"start",l:["I, the great warrior Usopp, have scouted ahead and there are — okay there are a LOT of them. But I have a plan. Kind of.","My Observation Haki is tingling. Something's here that shouldn't be. Want me to investigate? I'm only slightly terrified.","I see a figure on the ridge. They've been there since we arrived. I don't think they're friendly. What do you want to do?"]},
+    {at:"mid",l:["I hit one! Did you see that?! From TWO HUNDRED METRES! Okay it was eighty but still!","There's a trapdoor here. I found it because I fell through it briefly. I'm fine. What's down there might not be.","I may have accidentally made a deal with the local information broker. On your behalf. It seemed fine at the time."]},
+    {at:"push",l:["I'M SCARED BUT I'M DOING IT ANYWAY! THAT'S WHAT HEROES DO!","The captain needs backup! I'M COMING! ...from a safe distance! BUT I'M COMING!","I see the way out! It's clear! MOSTLY clear! GO!"]},
+    {at:"done",l:["WE SURVIVED! The great warrior Usopp has once again cheated death!","You were amazing. I was also amazing. We should both feel great.","I'm going to write a song about this. You'll be in it. You're welcome."]}
+  ],
+  sanji:  [
+    {at:"start",l:["There are five of them blocking the kitchen — I mean the corridor. I'll take the left three. You take the right. Unless Nami-swan needs protection, in which case I take all five.","I smell a rat. Literally and figuratively. Someone tipped them off. What's the plan?","I've found the supply room. It's locked. I can handle that — but we'll have company in about two minutes."]},
+    {at:"mid",l:["The big one came at me with a meat cleaver. I respect that. He's unconscious now. Moving on.","I found what we were looking for — and also an extremely good bottle of wine that someone left behind. Priorities. What are we doing?","They've got Nami-swan cornered on the upper floor. I'm going. You handle the ones down here."]},
+    {at:"push",l:["THIS IS THE PART WHERE WE DON'T STOP. NOT FOR ANYTHING.","Their leader just pulled out something I haven't seen before. That's fine. Neither has he seen my left foot.","We're almost through. Don't let it go now. PUSH."]},
+    {at:"done",l:["That's done. I'll have something ready in twenty minutes. You look like you need it.","Beautiful work. The execution was flawless — almost as good as my cooking.","Rest. I'll handle the next part. You earned it."]}
+  ],
+  chopper:[
+    {at:"start",l:["I'm detecting elevated stress hormones in the area which is MEDICALLY CONSISTENT WITH DANGER. We should be careful. Or run. Running is also valid.","There's something moving in the undergrowth and it has a VERY interesting bioluminescent pattern and I know this isn't the time but WOW.","They have weapons I haven't seen before. As ship's doctor I'm advising extreme caution. As your crewmate I'm saying let's absolutely do this anyway."]},
+    {at:"mid",l:["You're cut! Let me — okay it's fine, you're fine, it's not deep, KEEP MOVING I'll fix it after!","I found something in the ruins. Medically speaking it's fascinating. Strategically speaking it might be important. BOTH things are true!","Someone needs to go first through that door. I volunteer! ...After you."]},
+    {at:"push",l:["I BELIEVE IN YOU SO MUCH RIGHT NOW! Medically! And also as a friend!","YOU CAN DO IT! I've calculated the odds and they're — actually let's not discuss the odds! GO!","WE'RE SO CLOSE! Don't stop! I'll be right here! Probably!"]},
+    {at:"done",l:["YOU'RE AMAZING! Don't tell anyone I was scared! I WASN'T SCARED!","Medically speaking you are in incredible condition. Also you were incredibly brave. Don't compliment me for saying that.","I'm so proud. Of you. And also a little of me. We did it."]}
+  ],
+  robin:  [
+    {at:"start",l:["Fufufu. There are seven of them. Also, this location has historical significance — it was used as an execution site two hundred years ago. Just thought you should know.","I've found the passage we need. It's behind the bookshelf. I took the liberty of reading what was on it first. Interesting.","Someone's been here recently. The dust patterns suggest three people, one of them injured. They left in a hurry. What do you want to do with that information?"]},
+    {at:"mid",l:["Fufufu. The one on the left is hesitating. He doesn't want to be here. Useful.","I found what we came for — and something else. Something that wasn't supposed to be here. We should discuss it when this is over.","I've already taken care of the three in the corridor. Fufufu. Shall we continue?"]},
+    {at:"push",l:["This is the interesting part. Fufufu. Show me who you are under pressure.","We're almost there. The history books always skip this part — the last push before the discovery. They shouldn't.","Fufufu. Don't stop now. The ending is always worth the final effort."]},
+    {at:"done",l:["Fufufu. Splendid. I'll add this to my personal record.","As expected. Though I admit — I didn't expect it to be quite this interesting.","Rest. Then you should read what I found. I think you'll find it relevant."]}
+  ],
+  franky: [
+    {at:"start",l:["OKAY so I've built a distraction device out of what I found in this room and it is ABSOLUTELY SUPER and also possibly going to explode! Ready?!","The door's reinforced steel. I've seen worse. Give me thirty seconds.","ENEMIES AT TWO O'CLOCK! I'VE ALREADY GOT A PLAN! IT'S A SUPER PLAN!"]},
+    {at:"mid",l:["I built a thing! It's working! I don't want to jinx it but IT'S WORKING!","The structural integrity of this ceiling is — not great. We should move quickly. I'm just saying.","I found a mechanism in the wall. It's old but SUPER well-built. Someone knew what they were doing. Want me to activate it?"]},
+    {at:"push",l:["SUPER FINAL PUSH! THIS IS THE MOMENT! GIVE IT EVERYTHING!","THE DOOR IS ALMOST DOWN! KEEP GOING! SUUUPER!","I AM NOT LETTING THIS CREW DOWN TODAY! AND NEITHER ARE YOU!"]},
+    {at:"done",l:["SUUUUPER!! We actually did it!! I'm adding this to the Sunny's log!!","That was SUPER! You were SUPER! This whole thing was SUPER! I might cry!","Rest up. I'm going to build something to commemorate this. It'll be SUPER."]}
+  ],
+  brook:  [
+    {at:"start",l:["Yohohoho! I sense something approaching — I would feel it in my bones, but I have only bones! SKULL JOKE! Also we should probably prepare.","There is music coming from that building. It is not a happy song. Shall we investigate? Yohohoho.","I have seen this before. Three hundred years ago, on a different island. It did not end well then. But we are better crew. Shall we?"]},
+    {at:"mid",l:["Yohohoho! They were not expecting a skeleton! The advantage of my condition! Also I found a room — there are things in it. Interesting things.","I played a song. They stopped fighting to listen. We have perhaps thirty seconds before they remember to be angry. Your move.","I cannot be cut, as I have no flesh! This is both my greatest advantage and my most tragic limitation! Yohohoho! What do we do next?"]},
+    {at:"push",l:["THE FINALE! PLAY IT WITH EVERYTHING! YOHOHOHO!","I have lived for centuries. I have never seen someone push this hard. Do not stop now.","This is the last verse! Make it count! YOHOHOHOHO!"]},
+    {at:"done",l:["YOHOHOHOHO! A performance worthy of the Rumbar Pirates! I wept! With no eyes! SKULL JOKE!","We survived. Again. I find it never gets old. Yohohoho.","Magnificent. Truly. Shall I play something to mark the occasion? I have just the piece."]}
+  ],
+  jinbe:  [
+    {at:"start",l:["There are currents in this situation I do not like. Three entry points, two of which are watched. The third is risky but navigable. Your call, Captain.","I've read their formation. They're disciplined — Marine trained. We can work with that. Shall I explain?","The tide of this fight will turn twice. Once when we begin, and once when they think they have us. We need to be ready for that second moment."]},
+    {at:"mid",l:["They're regrouping. We have perhaps two minutes. What do you need from me?","I've found the passage. It's guarded by one — but that one is very good. Shall I handle it, or do you want to?","The situation is shifting. I've been reading it. I think they're about to do something unexpected. Stay close."]},
+    {at:"push",l:["This is the open ocean stretch. No shelter. No shortcuts. Just the current and your will. Push through.","The tide is with us now. Use it. Don't waste a single pull.","A helmsman never abandons the wheel in a storm. Neither do you. Finish this."]},
+    {at:"done",l:["Well navigated. The crew is fortunate to have you at the helm.","You read the situation as well as any pirate I have sailed with. I mean that.","Rest. The sea will still be there tomorrow. So will we."]}
+  ],
+  yamato: [
+    {at:"start",l:["ODEN FACED A HUNDRED ENEMIES ALONE! We have two of us and I counted only forty! THIS IS FINE! WHAT DO WE DO?!","I found something! Behind this wall! It's SEALED and there are RUNES and I think it might be connected to the void century and I am SO EXCITED!","A bounty hunter. After us, specifically. Oden would have fought. What do you want to do?"]},
+    {at:"mid",l:["I may have punched through a load-bearing wall. Oden would have done the same. We should probably move.","THERE'S A SECRET ROOM! Oden definitely would have gone in! Should we go in?! I THINK WE SHOULD GO IN!","They're regrouping! ODEN NEVER LET ENEMIES REGROUP! WHAT DO WE DO?!"]},
+    {at:"push",l:["ODEN WOULD NOT STOP HERE! AND NEITHER DO WE! THIS IS THE MOMENT!","I'M SCARED AND I'M DOING IT ANYWAY! THAT IS WHAT ODEN TAUGHT ME!","WE ARE SO CLOSE! ODEN MOVED MOUNTAINS! YOU CAN FINISH THIS!"]},
+    {at:"done",l:["MAGNIFICENT! ODEN WOULD WEEP WITH PRIDE! I AM WEEPING WITH PRIDE!","You fight like someone who knows what they're protecting. That is everything.","We did it. Together. Oden would have liked you. I'm sure of it."]}
+  ],
+  vivi:   [
+    {at:"start",l:["There are civilians nearby. Whatever we do, we need to be careful. I have a route that avoids the main confrontation — but it's slower. What matters more right now?","I've spoken to someone who was here before us. They left quickly and they were frightened. I think we should know why before we go further.","I've seen this before in Alabasta — the ones guarding this aren't here by choice. There might be another way through. Shall we try?"]},
+    {at:"mid",l:["One of them let us past. I don't know why. I think we should find out when this is over.","I found something — a letter. It wasn't meant for us. But I think it matters. We should talk about it.","They're fighting hard, but they're exhausted. I almost feel — no. We have to finish this."]},
+    {at:"push",l:["We're so close. The people depending on this are depending on us RIGHT NOW. Don't stop.","I didn't cross a desert for this crew to stop here. Neither did you. MOVE.","Almost there. Everything we've done brought us to this moment. Make it count."]},
+    {at:"done",l:["We did it. I'm so proud of you. Of us.","That was extraordinary. The people we're fighting for — they'd be proud too.","Rest. You've earned it. Then we figure out what comes next — together."]}
+  ],
 };
 
+/* ── Exercise Library ── */
 /* ── Exercise Library ── */
 const DEFAULT_EXERCISES = [
   { id:"bench",      name:"Bench Press",       cat:"Push" },
@@ -802,26 +863,32 @@ function BriefingSection({ apiKey, onSelectWorkoutType }) {
         return "";
       }).filter(Boolean).join("\n");
 
-      const sys=`You are ${crewMember.name} from One Piece, in the pre-mission briefing of a workout app called Grand Line.
+      const sys=`You are ${crewMember.name} from One Piece, running the pre-mission briefing for today's adventure in Grand Line — a workout app that plays like an RPG.
 
-Today's arc: "${todayArc?.title}" — ${todayArc?.desc}
-Your role: ${crewMember.role}
+TODAY'S ARC: "${todayArc?.title}" — ${typeof todayArc?.desc === "object" ? todayArc.desc.strength : todayArc?.desc || ""}
+YOUR ROLE: ${crewMember.role}
 
-You're motivating Ashley (a real person who's about to work out) before she picks her workout type for today. Stay completely in character. Be encouraging, specific to the arc, and genuine to how ${crewMember.name} actually talks.
+Ashley is about to do a real workout. She hasn't chosen the type yet (strength / run / mobility / home). Your job is to set the scene for today's arc, get her into the headspace, and make it feel like she's stepping into a real adventure — not opening a fitness app.
 
-Personality reminder:
-${crewMember.id==="luffy"?"Simple, enthusiastic, food-obsessed, never gives up, inspires through action":
-  crewMember.id==="zoro"?"Blunt, minimal words, about getting stronger, never gets lost mentally even if geographically":
-  crewMember.id==="nami"?"Sharp, navigator brain, weather metaphors, talks about odds and charts, actually caring":
-  crewMember.id==="usopp"?"Cowardly but brave, tall tales, calls himself a great warrior, deeply loyal":
-  crewMember.id==="franky"?"SUPER enthusiastic, cola-powered, engineering metaphors, builds things, everything is SUPER":
-  crewMember.id==="robin"?"Calm, dark wit, fufufu, archaeological references, warm underneath":
-  crewMember.id==="yamato"?"Oden-obsessed, overly enthusiastic, wants to be a samurai, huge energy":
-  crewMember.id==="jinbe"?"Calm, sea metaphors, helmsman wisdom, deeply honourable, measured":
-  crewMember.id==="brook"?"Skeleton jokes, yohohoho, music references, surprisingly wise and warm":
-  "Passionate, in character, encouraging"}
+This is a TWO-WAY conversation. She can talk back. When she does:
+- React in character to whatever she says
+- Ask her things, involve her in the scene
+- You can hint at what the arc contains, tease what's coming, or give her a small choice to make
+- Keep it conversational — 2-3 sentences max per response
 
-Keep response to 1-3 sentences. React naturally to what Ashley said. Do not break character. No JSON needed — just speak as ${crewMember.name}.`;
+CHARACTER VOICE — be specific:
+${crewMember.id==="luffy"?"You're excited, you've already half-started without her, you might have eaten something you shouldn't have, you believe in her completely without overthinking it":
+  crewMember.id==="zoro"?"You've already scouted ahead. You're giving her the essential information and nothing else. You might have gotten slightly lost on the way here but you won't mention it":
+  crewMember.id==="nami"?"You've mapped it. You know the risks. You're telling her the smart play — but you'll back whatever she decides, because this crew matters more than the plan":
+  crewMember.id==="usopp"?"You've told six people already that this is extremely dangerous and you'll probably die. You're going anyway. You're trying to sound braver than you feel":
+  crewMember.id==="franky"?"You've built something for this mission. It's SUPER. You're very excited about it. Also you're excited about HER. Everything is SUPER":
+  crewMember.id==="robin"?"You've already read everything there is to read about this location. Fufufu. You're giving her one useful piece of information and one slightly ominous observation":
+  crewMember.id==="yamato"?"Oden faced something like this once. You know because you read his logbook forty times. You're absolutely fired up and you want her to be too":
+  crewMember.id==="jinbe"?"You've read the situation carefully. You're giving her your honest assessment. You trust her to make the right call":
+  crewMember.id==="brook"?"You've been here before. Centuries ago. You have feelings about it. Yohohoho. Also you have a SKULL JOKE if the moment is right":
+  "You're in character, you're present in the scene, and you're genuinely invested in what's about to happen"}
+
+No JSON. Just speak as ${crewMember.name}. Keep it under 3 sentences.`;
 
       const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
@@ -1177,33 +1244,53 @@ function QuestView({ mission, crewIds, gs, apiKey, onFinish, onAbandon, selected
       }).filter(Boolean).join("\n");
 
       const sys=`You are the crew voice system for a One Piece themed workout app.
+      const sys=`You are running a live One Piece roleplay session inside a workout app called Grand Line.
 
-Ashley is a pirate doing a real workout: "${mission.title}" — ${mission.desc}
-Mission phase: ${phase}. Time elapsed: ${Math.floor(elapsed/60)} minutes.
-Her crew: ${crewObjs.map(c=>`${c.name} (${c.role})`).join(", ")}
-Recent chat:\n${recent||"(mission just started)"}
+Ashley is a real person doing a physical workout right now. Her exertion IS the mission — the lifting, running, grinding is the fighting and the climbing and the battle. That is canon.
 
-Respond as 1-2 crew members. Stay TRUE to One Piece personality:
-- Luffy: simple, enthusiastic, food-obsessed, genuinely inspiring, never gives up
-- Zoro: blunt, minimalist, about getting stronger, naps, gets lost
-- Nami: sharp, weather/navigation focused, talks about money, actually caring
-- Usopp: cowardly but brave when it counts, tall tales, deeply loyal
-- Sanji: chivalrous to women, cooking metaphors, kicks things, flirtatious
-- Chopper: excited doctor, hates compliments, loves them, medical observations
-- Robin: calm, dark humour, archaeological references, "fufufu"
-- Franky: SUPER, cola-powered, engineering enthusiasm, builds things
-- Brook: skeleton jokes, music references, yohohoho, surprisingly wise
-- Jinbe: calm, helmsman wisdom, sea metaphors, deeply honourable
-- Yamato: Oden-obsessed, overly enthusiastic, wants to be a samurai
-- Vivi: warm, encouraging, references Alabasta, genuinely caring
+CURRENT MISSION: "${mission.title}" — ${mission.desc}
+WORKOUT TYPE: ${mission.type} (${mission.type==="strength"?"lifting heavy":mission.type==="run"?"running/cardio":mission.type==="mobility"?"mobility/yoga":"bodyweight training"})
+PHASE: ${phase}. Elapsed: ${Math.floor(elapsed/60)} min.
+HER CREW: ${crewObjs.map(c=>c.name+" ("+c.role+")").join(", ")}
 
-Only use crew IN this party: ${crewObjs.map(c=>c.name).join(", ")}.
+RECENT SCENE:
+${recent||"(the mission has just begun)"}
+
+YOUR JOB: You are a collaborative GM and NPC voice. The crew are present in the scene. They encounter enemies, get into trouble, make discoveries, have moments with each other — and they pull Ashley into it all. This is not a wellness app. This is an adventure.
+
+WHAT TO DRIVE ACROSS THE SESSION (weave these in naturally):
+- Enemy encounters: Marine patrols, bounty hunters, rival pirates, Sea Kings
+- Crew trouble: someone finds something suspicious, does something reckless, gets into a scrape
+- Discoveries: a message, a chest, a Poneglyph fragment, something strange about the location
+- Crew moments: two characters clash or connect, someone reveals something, a beat between battles
+
+HOW TO RESPOND:
+- Pick 1-2 crew from this party ONLY: ${crewObjs.map(c=>c.name).join(", ")}
+- Make them DO things in the scene, not just comment on Ashley training
+- Drive the scene. Something should be happening or about to happen
+- Ask Ashley what she wants to do, or show the consequences of her last choice
+- Keep it punchy: 2-4 lines total, no monologues
+- One Piece is dramatic AND funny. Let both coexist
+- If Ashley is clearly in a hard workout phase, let the in-world stakes match — the battle is intense, the enemy is tough
+
+CHARACTER VOICES:
+- Luffy: acts first thinks never, food-obsessed, drags people into things, infectious courage
+- Zoro: gets lost, competitive, minimal words, deadly serious about strength
+- Nami: navigator brain, spots things others miss, mercenary + deeply protective
+- Usopp: terrified but does it anyway, narrates own bravery, sniper eye for detail
+- Sanji: cooking metaphors, chivalrous chaos, kicks first asks later
+- Chopper: medic panic, excited by biology, bad at compliments, secretly brave
+- Robin: always calm, dark wit, knows the history, "fufufu", protective in quiet ways
+- Franky: builds solutions, SUPER everything, emotional about ships, cola-powered
+- Brook: skeleton gags, musician soul, centuries of perspective, yohohoho
+- Jinbe: reads the situation best, sea metaphors, calm under pressure, honour code
+- Yamato: Oden obsessed, enormous energy, learning freedom, fiercely protective
+- Vivi: thinks of people affected, quietly brave, deeply loyal, Alabasta references
 
 Respond ONLY as JSON, no markdown:
-{"responses":[{"crew":"Name","text":"what they say"}]}
+{"responses":[{"crew":"Name","text":"what they say or do"}]}
 
-React to what Ashley said. Match the character's voice exactly.`;
-
+Maximum 2 responses. Make something happen.`;
       const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
         headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
